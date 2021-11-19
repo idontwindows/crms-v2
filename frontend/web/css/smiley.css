@@ -1,0 +1,134 @@
+/* -----------smiley----------- */
+
+/*body {
+    align-items: center;
+    display: flex;
+    font-family: Helvetica, sans-serif;
+    height: 100vh;
+    justify-content: center;
+    margin: 0;
+  }
+  body div {
+    font-size: 15px;
+    margin-top: 15px;
+    text-align: center;
+  }*/
+
+@media (min-width:360px) {
+  form#smileys input[type=radio] {
+    -webkit-appearance: none;
+    width: 40px;
+    height: 40px;
+    border: none;
+    cursor: pointer;
+    transition: border 0.2s ease;
+    filter: grayscale(100%);
+    margin: 0 5px;
+    transition: all 0.2s ease;
+  }
+
+  .checkboxgroup {
+    display: inline-block;
+    text-align: center;
+    margin-top: 5px;
+    /*width: 150px;*/
+  }
+
+  .checkboxgroup {
+    display: inline-block;
+    text-align: center;
+  }
+
+  .checkboxgroup label {
+    display: block;
+    font-size: 8px;
+  }
+}
+
+@media (min-width:1024px) {
+  form#smileys input[type=radio] {
+    -webkit-appearance: none;
+    width: 70px;
+    height: 70px;
+    border: none;
+    cursor: pointer;
+    transition: border 0.2s ease;
+    filter: grayscale(100%);
+    margin: 0 5px;
+    transition: all 0.2s ease;
+  }
+
+  .checkboxgroup {
+    display: inline-block;
+    text-align: center;
+    margin-top: 5px;
+    width: 110px;
+  }
+
+  .checkboxgroup {
+    display: inline-block;
+    text-align: center;
+  }
+
+  .checkboxgroup label {
+    display: block;
+    font-size: 13px;
+  }
+}
+
+
+
+form#smileys input[type=radio]:hover,
+form#smileys input[type=radio]:checked {
+  filter: grayscale(0);
+}
+
+form#smileys input[type=radio]:focus {
+  outline: 0;
+}
+
+form#smileys input[type=radio].smiley1 {
+  background: url("../images/angry.svg") center;
+  background-size: cover;
+}
+
+form#smileys input[type=radio].smiley2 {
+  background: url("../images/sad.svg") center;
+  background-size: cover;
+}
+
+form#smileys input[type=radio].smiley3 {
+  background: url("../images/neutral.svg") center;
+  background-size: cover;
+}
+
+form#smileys input[type=radio].smiley4 {
+  background: url("../images/smile.svg") center;
+  ;
+  background-size: cover;
+}
+
+form#smileys input[type=radio].smiley5 {
+  background: url("../images/grinning.svg") center;
+  background-size: cover;
+}
+
+.mtt {
+  position: fixed;
+  bottom: 10px;
+  right: 20px;
+  color: #999;
+  text-decoration: none;
+}
+
+.mtt span {
+  color: #e74c3c;
+}
+
+.mtt:hover {
+  color: #666;
+}
+
+.mtt:hover span {
+  color: #c0392b;
+}
