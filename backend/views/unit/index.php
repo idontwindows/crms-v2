@@ -3,8 +3,21 @@
 
 use yii\helpers\Url;
 
+if (
+    isset($_SERVER['HTTPS']) &&
+    ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
+    isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+    $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'
+) {
+    $protocol = 'https://';
+} else {
+    $protocol = 'http://';
+}
+$serveruri = $protocol . "$_SERVER[HTTP_HOST]";
+
 $this->title = 'Unit';
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div ng-controller="unitCtrl">
     <div class="card">
@@ -25,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <tr ng-repeat="unit in units">
                         <th scope="row">{{ $index + 1 }}</th>
                         <td class="w-25 p-3">{{ unit.unit_name }}</td>
-                        <td class="w-50 p-3"><a href="{{ unit.unit_url }}" target="_blank">{{ unit.unit_url }}</a></td>
+                        <td class="w-50 p-3"><a href="<?= $serveruri  ?>{{ unit.unit_url }}" target="_blank"><?= $serveruri  ?>{{ unit.unit_url }}</a></td>
                         <td>{{ unit.region }}</td>
                         <td>
                             <button type="button" class="btn btn-success btn-sm" ng-click="view(unit.unit_id)"><i class="fa fa-eye"></i></button>

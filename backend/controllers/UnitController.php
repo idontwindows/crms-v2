@@ -164,7 +164,7 @@ class UnitController extends \yii\web\Controller
                 $unit = Unit::find()->where(['unit_id' => $unit_id])->one();
                 $unit->unit_name =  $request->unitname;
                 $unit->region_id = $request->region;
-                $unit->unit_url = 'http://localhost:8084/site/index?id=' . base64_encode(base64_encode($unit_id));
+                $unit->unit_url = '/site/index?id=' . base64_encode(base64_encode($unit_id));
                 $unit->save(false);
 
                 foreach ($request->question as $question) {
