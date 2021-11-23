@@ -42,7 +42,7 @@ class UnitController extends \yii\web\Controller
                             'api-customer',
                             'api-region',
                             'update',
-                            'update-api'
+                            'questions-api'
                         ],
                         'allow' => true,
                         'roles' => ['@'],
@@ -78,10 +78,13 @@ class UnitController extends \yii\web\Controller
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $sessionid = Yii::$app->session->getId();
         $con = Yii::$app->db;
-        $sql = "SELECT `unit_id`,
-                        `unit_name`,
-                        `unit_url` 
-                FROM `tbl_unit`
+        $sql = "SELECT a.`unit_id`,
+                        a.`unit_name`,
+                        a.`unit_url`, 
+                        UPPER(b.`region_code`) AS `region`
+                FROM `tbl_unit` AS a
+                INNER JOIN tbl_region AS b 
+                ON b.`region_id` = a.`region_id`
                 WHERE " . $this->getOrRegions() .
                 " ORDER BY `unit_id` DESC";
         $fetchData = $con->createCommand($sql)->queryAll();
@@ -141,15 +144,52 @@ class UnitController extends \yii\web\Controller
     {
         //$question_group_unit_id = 6;
         if(Yii::$app->request->isPost){
-            return;
+            $postdata = file_get_contents("php://input");
+            $request = json_decode($postdata);
+            $message = 'success';
+            if (empty($request->region)) $message = 'empty';
+            if (empty($request->unitname)) $message = 'empty';
+            //if(empty($request->mailText)) $message = 'empty';
+            foreach ($request->question as $question) {
+                if (empty($question->parentAttrib)) {
+                    $message = 'empty';
+                }
+                foreach ($question->items as $item) {
+                    if (empty($item->childAttrib)) {
+                        $message = 'empty';
+                    }
+                }
+            }
+            if ($message == 'success') {
+                $unit = Unit::find()->where(['unit_id' => $unit_id])->one();
+                $unit->unit_name =  $request->unitname;
+                $unit->region_id = $request->region;
+                $unit->unit_url = 'http://localhost:8084/site/index?id=' . base64_encode(base64_encode($unit_id));
+                $unit->save(false);
+
+                foreach ($request->question as $question) {
+                    $parent = QuestionGroupUnit::find()->where(['question_group_unit_id' => $question->question_group_unit_id])->one();
+                    $parent->question_group_unit_name = $question->parentAttrib;
+                    $parent->unit_id = $unit_id;
+                    $parent->save(false);
+                    foreach ($question->items as $item) {
+                        $child = QuestionUnit::find()->where(['question_unit_id' => $item->question_unit_id])->one();
+                        $child->question = $item->childAttrib;
+                        $child->question_group_unit_id = $question->question_group_unit_id;
+                        $child->save(false);
+                    }
+                }
+                return $message;
+            }
+            return $postdata;
         }
         return $this->render('_update');
     }
-    public function actionUpdateApi($unit_id){
+    public function actionQuestionsApi($unit_id){
         $con = Yii::$app->db;
         $sql_question_grp = "SELECT  question_group_unit_id,question_group_unit_name as `parentAttrib` FROM tbl_question_group_unit WHERE unit_id = :unit_id";
         $data_question_grp = $con->createCommand($sql_question_grp, [':unit_id' => $unit_id])->queryAll();
-        $sql_question = "SELECT a.`question` AS `childAttrib`
+        $sql_question = "SELECT a.`question_unit_id`, a.`question` AS `childAttrib`
                        FROM tbl_question_unit AS a 
                        WHERE a.`question_group_unit_id` = :question_group_unit_id";
         $sql_unit = 'SELECT unit_name AS unitname, region_id AS region FROM tbl_unit WHERE unit_id = :unit_id';
@@ -284,12 +324,18 @@ class UnitController extends \yii\web\Controller
         $string = "";
         foreach($regions as $region){
             if(count($regions) > 1){
-                $string.= ' OR `region_id` = '. $region->region_id;
+                $string.= ' OR a.`region_id` = '. $region->region_id;
             }
-            $string.= ' OR `region_id` = '. $region->region_id;
+            $string.= ' OR a.`region_id` = '. $region->region_id;
         }
         //$result = str_replace('*','OR',$string);
 
         return substr($string,3);
+    }
+    public function deleteUnit($id){
+        $con = Yii::$app->db;
+        $sql = 'DELETE FROM tbl_unit WHERE unit_id = :unit_id';
+        $delete = $con->createCommand($sql,[':unit_id' => $id])->execute();
+        return $delete;
     }
 }

@@ -7,7 +7,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div ng-controller="UpdateUnitCtrl">
-    <form method="post" ng-submit="submitForm()" ng-init="Fetchdata(<?php echo $_GET['unit_id']?>)">
+    <form method="post" ng-submit="submitForm(<?php echo $_GET['unit_id']?>)" ng-init="Fetchdata(<?php echo $_GET['unit_id']?>)">
         <div class="card mb-2">
             <div class="card-header bg-info text-white">
                 Unit
@@ -68,6 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                         <div class="card-body">
                             <div class="input-group mb-3">
+                                <input type="hidden" class="form-control" id="txtParenthidden-{{$index}}" ng-model="formData.question_group_unit_id">   
                                 <input type="text" class="form-control txtParent" id="txtParent-{{$index}}" ng-model="formData.parentAttrib" placeholder="Enter parent attribute...">
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-outline-secondary btn-primary text-white" type="button" ng-click="addItem($index)"><i class="fa fa-plus"></i></button>
@@ -75,6 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             </div>
                             <fieldset ng-repeat="item in formData.items">
                                 <div class="input-group mb-3">
+                                    <input type="hidden" name="childattribhidden[]" id="txtChildhidden-{{$parent.$index}}-{{$index}}" ng-model="item.question_unit_id" class="form-control">
                                     <input type="text" name="childattributequestion[]" id="txtChild-{{$parent.$index}}-{{$index}}" ng-model="item.childAttrib" class="form-control txtChild" placeholder="Enter child attribute...">
                                     <div class="input-group-append">
                                         <button type="button" class="btn btn-outline-secondary btn-danger text-white" name="remove" type="button" ng-click="removeItem($parent.$index, $index)"><i class="fa fa-minus"></i></button>
@@ -97,7 +99,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
         </div> -->
-        <button class="btn btn-primary" type="submit">Submit</button>
+        <button class="btn btn-primary" type="submit">Update</button>
     </form>
 
 

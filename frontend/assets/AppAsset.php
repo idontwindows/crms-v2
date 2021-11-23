@@ -15,8 +15,10 @@ class AppAsset extends AssetBundle
         'css/site.css',
         'css/smiley.css',
         'css/loading.css',
+        'css/csf.css',
         'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css',
-        'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'
+        'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
+        'css/colors.min.css'
     ];
     public $js = [
         'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js',

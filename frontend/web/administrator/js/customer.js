@@ -2,11 +2,11 @@ app.controller('CustomerCtrl', ['$scope', '$element', '$http', '$window', functi
 $scope.fetchData = function(unit_id){
     $http({
         method:'GET',
-        url:backendURI + '/unit/api-customer?unit_id=' + unit_id,
+        url:backendURI + '/administrator/unit/api-customer?unit_id=' + unit_id,
     }).then(function(response){
         if(response.data.message){
             alert('Data is empty...');
-            $window.location.href = backendURI + '/unit/index';
+            $window.location.href = backendURI + '/administrator/unit/index';
         }else{
             $scope.datas = response.data;
         }       

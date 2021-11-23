@@ -73,6 +73,19 @@ $serveruri = $protocol . "$_SERVER[HTTP_HOST]";
                     <a class="navbar-brand brand-lg" href="#">DOST-IX Customer Satifation Feedback Managent System</a>
                     <a class="navbar-brand brand-sm" href="#">DOST-IX CSFMS</a>
                 </div>
+                <?php
+                if($this->context->route == 'site/region-units'){
+                    echo '';
+                }else 
+                if($this->context->route == 'site/error'){
+                    echo '';
+                } 
+                else{
+                    echo '<button type="button" class="btn btn-yellow text-dark rounded-pill font-weight-bold" id="btn-back">Back</button>';
+                } 
+                ?>
+                
+              
             </div>
         </nav>
     </header>

@@ -10,13 +10,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="card">
         <h5 class="card-header bg-info text-white">Units</h5>
         <div class="card-body">
-            <a href="/unit/create" class="btn btn-primary mb-3">Create Unit</a>
+            <a href="/administrator/unit/create" class="btn btn-primary mb-3">Create Unit</a>
             <table class="table">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Unit Name</th>
                         <th scope="col">URL</th>
+                        <th scope="col">Region</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -25,6 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <th scope="row">{{ $index + 1 }}</th>
                         <td class="w-25 p-3">{{ unit.unit_name }}</td>
                         <td class="w-50 p-3"><a href="{{ unit.unit_url }}" target="_blank">{{ unit.unit_url }}</a></td>
+                        <td>{{ unit.region }}</td>
                         <td>
                             <button type="button" class="btn btn-success btn-sm" ng-click="view(unit.unit_id)"><i class="fa fa-eye"></i></button>
                             <button type="button" class="btn btn-primary btn-sm ml-1 mr-1" ng-click="goUpdate(unit.unit_id)"><i class="fa fa-edit"></i></button>

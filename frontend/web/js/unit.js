@@ -2,7 +2,7 @@ app.controller('unitCtrl', ['$scope', '$element', '$http', '$window', function($
     $scope.Fetchdata = function() {
         $http({
             method:'GET',
-            url:backendURI + '/unit/api-unit',
+            url:backendURI + '/administrator/unit/api-unit',
         })
         .then(function(response) {
             $scope.units = response.data;
@@ -11,9 +11,9 @@ app.controller('unitCtrl', ['$scope', '$element', '$http', '$window', function($
         });
     };
     $scope.view = function(unit_id){
-        $window.location.href = backendURI + '/unit/view?unit_id=' + unit_id;
+        $window.location.href = backendURI + '/administrator/unit/view?unit_id=' + unit_id;
     };
     $scope.goUpdate = function(unit_id){
-        $window.location.href = backendURI + '/unit/update?unit_id=' + unit_id;
+        $window.location.href = backendURI + '/administrator/unit/update?unit_id=' + unit_id;
     }
 }]);

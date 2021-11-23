@@ -191,6 +191,7 @@ class SiteController extends Controller
             }
         } catch (yii\base\ErrorException $exception) {
             throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+            //return $exception;
         }
         
         //$certificate_id = $title['message_id'];
@@ -385,7 +386,7 @@ class SiteController extends Controller
                 ORDER BY `unit_name` ASC';
         $regions = $con->createCommand($sql,[':region_code' => $region_code])->queryAll();
         if($regions){
-            return $this->render('region',['regions' => $regions]);
+            return $this->render('menu',['regions' => $regions]);
         }else{
             throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
         }   

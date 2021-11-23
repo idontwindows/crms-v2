@@ -4,19 +4,40 @@ use yii\widgets\ActiveForm;
 use yii\bootstrap4\Modal;
 /* @var $this yii\web\View */
 
-$this->registerCssFile('@web/css/csf.css');
+if (
+    isset($_SERVER['HTTPS']) &&
+    ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
+    isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+    $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'
+) {
+    $protocol = 'https://';
+} else {
+    $protocol = 'http://';
+}
+$serveruri = $protocol . "$_SERVER[HTTP_HOST]";
+
+//$this->registerCssFile('@web/css/csf.css');
 $this->title = 'My Yii Application';
 
 $script1 = 'window.history.forward();';
 $this->registerJs($script1, yii\web\View::POS_END, '');
 
-$script2 = '$(window).on("load",function(){
-    $(".spanner").fadeOut("slow");
-});';
+// $script2 = '$(window).on("load",function(){
+//     $(".spanner").fadeOut("slow");
+// });';
+
 // $script2 = 'window.onload = function(){
 //     $(".spanner").fadeOut("slow");
 // }';
-$this->registerJs($script2, yii\web\View::POS_END, '');
+
+//@var string $script3 for button back
+$script3 = "$(document).ready(function() {
+                $('#btn-back').click(function() {
+                    window.location.replace('".$serveruri.'/region/'.$title["region_code"]."');
+                });
+            });";
+//$this->registerJs($script2, yii\web\View::POS_END, '');
+$this->registerJs($script3, yii\web\View::POS_END, '');
 $this->registerJsFile('/js/signature_pad.min.js', ['position' => \yii\web\View::POS_END]);
 $this->registerJsFile('/js/site.js', ['position' => \yii\web\View::POS_END]);
 $this->registerCss(".modal {background-color: rgba(0, 0, 0,0.5);} .show {display: block;}");
@@ -126,16 +147,6 @@ $this->registerCss('.modal-confirm {
 //                             width: 300px;
 //                         }
 //                     }');
-if (isset($_SERVER['HTTPS']) &&
-    ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
-    isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
-    $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
-  $protocol = 'https://';
-}
-else {
-  $protocol = 'http://';
-}
-$serveruri = $protocol . "$_SERVER[HTTP_HOST]";
 ?>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
@@ -292,7 +303,7 @@ $serveruri = $protocol . "$_SERVER[HTTP_HOST]";
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-paper-plane" aria-hidden="true"></i> Submit</button>
+            <button type="submit" class="btn btn-blue btn-lg"><i class="fa fa-paper-plane" aria-hidden="true"></i> Submit</button>
         </div>
         <div class="col-md-1"></div>
     </div>
@@ -300,9 +311,9 @@ $serveruri = $protocol . "$_SERVER[HTTP_HOST]";
     <?php ActiveForm::end(); ?>
 </div>
 
-<div class="spanner">
+<!-- <div class="spanner">
     <div class="loader"></div>
-</div>
+</div> -->
 
 <!-- Modal HTML -->
 <div id="myModalGreate" class="modal">
@@ -316,8 +327,9 @@ $serveruri = $protocol . "$_SERVER[HTTP_HOST]";
             <div class="modal-body text-center">
                 <h4>Great!</h4>
                 <p>Your response has been recorded.</p>
-                <a href="<?= $serveruri.'/region/'.$title['region_code'] ?>" class="btn btn-primary btn-lg"><i class="fa fa-circle-check" aria-hidden="true"></i> OK</a>
+                <a href="<?= $serveruri . '/region/' . $title['region_code'] ?>" class="btn btn-primary btn-lg"><i class="fa fa-circle-check" aria-hidden="true"></i> OK</a>
             </div>
         </div>
     </div>
 </div>
+

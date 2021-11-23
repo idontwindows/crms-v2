@@ -9,7 +9,7 @@
 //         }
 //     };
 // }]);
-app.controller('CreateUnitCtrl', ['$scope', '$element', '$http', '$window', function ($scope, $element, $http, $window) {
+app.controller('UpdateUnitCtrl', ['$scope', '$element', '$http', '$window', function ($scope, $element, $http, $window) {
 
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
@@ -33,10 +33,21 @@ app.controller('CreateUnitCtrl', ['$scope', '$element', '$http', '$window', func
         $scope.formData.question[parent].items.splice(index, 1);
     };
 
+    $scope.Fetchdata= function(unit_id) {
+        $http({
+            method:'GET',
+            url:backendURI + '/administrator/unit/questions-api?unit_id=' + unit_id,
+        })
+        .then(function(response) {
+            $scope.formData = response.data;
+        },function(response) {
+            $scope.message = response.message;
+        });
+    };
     $scope.Fetchregion = function() {
         $http({
             method:'GET',
-            url:backendURI + '/unit/api-region',
+            url:backendURI + '/administrator/unit/api-region',
         })
         .then(function(response) {
             $scope.regions = response.data;
@@ -44,7 +55,7 @@ app.controller('CreateUnitCtrl', ['$scope', '$element', '$http', '$window', func
             $scope.message = response.message;
         });
     };
-    $scope.submitForm = function () {
+    $scope.submitForm = function (unit_id) {
         $scope.formData.date = $scope.today
         // if ($("#txtEditor").summernote("isEmpty")) {
         //     $scope.formData.mailText = '';
@@ -55,7 +66,7 @@ app.controller('CreateUnitCtrl', ['$scope', '$element', '$http', '$window', func
 
         $http({
             method: "POST",
-            url: backendURI + "/unit/create",
+            url: backendURI + "/administrator/unit/update?unit_id=" + unit_id,
             data: $scope.formData
         }).then(function (response) {
             console.log(JSON.stringify(response.data))
@@ -104,11 +115,11 @@ app.controller('CreateUnitCtrl', ['$scope', '$element', '$http', '$window', func
                 $scope.formData = { question: [{ parentAttrib: "", items: [{ childAttrib: "" }] }], event: "", date: "", fontsize: "", yaxis: "" };
                 swal({
                     title: "Success!",
-                    text: "Data has been saved...",
+                    text: "Data has been update...",
                     icon: "success",
                   })
                     .then((value) => {
-                        $window.location.href = backendURI + '/unit/index';
+                        $window.location.href = backendURI + '/administrator/unit/index';
                     });
             }
         });
