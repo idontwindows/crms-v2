@@ -8,7 +8,7 @@ $params = array_merge(
 
 return [
     'id' => 'app-frontend',
-    'name' => 'Customer Satifation Feedback Managent System',
+    'name' => 'Customer Relation Management System',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
@@ -51,7 +51,7 @@ return [
             'showScriptName' => false,
             'rules' => [
                 'region/<region_code:\w+>' => 'site/region-units',
-                'rate/<id:\w+[=]*>' => 'site/index'
+                'csf/<id:\w+[=]*>' => 'site/csf'
                 //'region' => '<controller>/view?'
             ],
         ],
