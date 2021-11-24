@@ -94,12 +94,19 @@ class SiteController extends Controller
     //         throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
     //     }
     // }
-    public function actionIndex($id)
+    public function actionIndex()
+    {
+        $con = Yii::$app->db;
+        $sql = 'SELECT DISTINCT a.`region_id`, b.region_code FROM tbl_unit AS a INNER JOIN tbl_region AS b ON b.region_id = a.region_id ORDER BY b.`order` ASC';
+        $regions = $con->createCommand($sql)->queryAll();
+        return $this->render('index',['regions' => $regions]);
+    }
+    public function actionCsf($id)
     {
         $con = Yii::$app->db;
         $id = base64_decode(base64_decode($id));
         //$sql1 = 'SELECT * FROM `tbl_unit` WHERE `unit_id` =' . $id . ' AND `is_disabled` = 0';
-        $sql1 ='SELECT a.unit_id,
+        $sql1 = 'SELECT a.unit_id,
                         a.unit_name, 
                         a.region_id, 
                         a.unit_url, 
@@ -123,7 +130,7 @@ class SiteController extends Controller
 
         try {
             $groups = $con->createCommand($sql2)->queryAll();
-            return $this->render('index', ['groups' => $groups, 'title' => $title]);
+            return $this->render('_csf', ['groups' => $groups, 'title' => $title]);
         } catch (\yii\db\Exception $exception) {
             throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
         }
@@ -193,7 +200,7 @@ class SiteController extends Controller
             throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
             //return $exception;
         }
-        
+
         //$certificate_id = $title['message_id'];
         //$message = $this->getMessage($certificate_id);
         //$message = $message[0]['message'];
@@ -354,7 +361,7 @@ class SiteController extends Controller
         return $fetchData;
     }
 
-    public function generateCertificate($name, $image, $imageName,$font_size,$y_axis)
+    public function generateCertificate($name, $image, $imageName, $font_size, $y_axis)
     {
         $certificate = new CreateCertificate();
         $certificate->name = $name;
@@ -374,7 +381,8 @@ class SiteController extends Controller
         $fetchData = $con->createCommand($sql)->queryAll();
         return $fetchData;
     }
-    public function actionRegionUnits($region_code){
+    public function actionRegionUnits($region_code)
+    {
         $con = Yii::$app->db;
         $sql = 'SELECT a.`unit_id`,
                         a.`unit_name`,
@@ -384,11 +392,11 @@ class SiteController extends Controller
                 ON b.`region_id` = a.`region_id`
                 WHERE b.`region_code` = :region_code
                 ORDER BY `unit_name` ASC';
-        $regions = $con->createCommand($sql,[':region_code' => $region_code])->queryAll();
-        if($regions){
-            return $this->render('menu',['regions' => $regions]);
-        }else{
+        $regions = $con->createCommand($sql, [':region_code' => $region_code])->queryAll();
+        if ($regions) {
+            return $this->render('menu', ['regions' => $regions]);
+        } else {
             throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
-        }   
+        }
     }
 }
