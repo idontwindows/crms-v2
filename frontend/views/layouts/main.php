@@ -13,17 +13,41 @@ use yii\bootstrap4\NavBar;
 AppAsset::register($this);
 
 
-if (isset($_SERVER['HTTPS']) &&
+if (
+    isset($_SERVER['HTTPS']) &&
     ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
     isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
-    $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
-  $protocol = 'https://';
-}
-else {
-  $protocol = 'http://';
+    $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'
+) {
+    $protocol = 'https://';
+} else {
+    $protocol = 'http://';
 }
 $serveruri = $protocol . "$_SERVER[HTTP_HOST]";
 
+$region_code = '';
+if (isset($_GET['id'])) {
+    $con = Yii::$app->db;
+    $id = base64_decode(base64_decode($_GET['id']));
+    //$sql1 = 'SELECT * FROM `tbl_unit` WHERE `unit_id` =' . $id . ' AND `is_disabled` = 0';
+    $sql1 = 'SELECT a.unit_id,
+                a.unit_name, 
+                a.region_id, 
+                a.unit_url, 
+                a.date_created, 
+                a.is_disabled, 
+                b.region_code 
+        FROM tbl_unit AS a 
+        INNER JOIN tbl_region AS b 
+        ON b.region_id = a.region_id 
+        WHERE a.unit_id = ' . $id . ' AND a.is_disabled = 0';
+    $title = $con->createCommand($sql1)->queryOne();
+    $region_code = $title['region_code'];
+}
+
+if(isset($_GET['region_code'])){
+    $region_code = $_GET['region_code'];
+}
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -52,10 +76,10 @@ $serveruri = $protocol . "$_SERVER[HTTP_HOST]";
                 display: block !important;
             }
         }
-    </style>   
+    </style>
     <?php $this->registerCsrfMetaTags() ?>
 
-    <title>DOST-IX Customer Satifation Feedback Managent System</title>
+    <title><?= Yii::$app->name ?></title>
     <?php $this->head() ?>
     <script type="text/javascript">
         var frontendURI = "<?= $serveruri ?>";
@@ -70,22 +94,25 @@ $serveruri = $protocol . "$_SERVER[HTTP_HOST]";
         <nav id="w0" class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
             <div class="container">
                 <div class="d-flex align-items-center justify-content-center">
-                    <a class="navbar-brand brand-lg" href="#">DOST-IX Customer Satifation Feedback Managent System</a>
-                    <a class="navbar-brand brand-sm" href="#">DOST-IX CSFMS</a>
+                    <a class="navbar-brand brand-lg" href="/"><?= 'DOST '. strtoupper($region_code) .' '. Yii::$app->name ?></a>
+                    <a class="navbar-brand brand-sm" href="/">CRMS</a>
                 </div>
                 <?php
-                if($this->context->route == 'site/region-units'){
+                if ($this->context->route == 'site/region-units') {
                     echo '';
-                }else 
-                if($this->context->route == 'site/error'){
+                } else 
+                if ($this->context->route == 'site/error') {
                     echo '';
-                } 
-                else{
+                } else
+                if ($this->context->route == 'site/index') {
+                    echo '';
+                }
+                else {
                     echo '<button type="button" class="btn btn-yellow text-dark rounded-pill font-weight-bold" id="btn-back">Back</button>';
-                } 
+                }
                 ?>
-                
-              
+
+
             </div>
         </nav>
     </header>
