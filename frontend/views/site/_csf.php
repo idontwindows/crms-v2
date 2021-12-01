@@ -186,7 +186,7 @@ $this->registerCss('.modal-confirm {
                         <input type="text" class="form-control" id="txtEmail" name="customer_email" placeholder="Type your email here..." autofocus="" aria-required="true" aria-invalid="">
                         <div class="invalid-feedback invalid-feedback-email"></div>
                     </div>
-                    <!--
+<!--                     
                     <div class="form-group">
                         <label for="txtDate"><b>Date</b> (<span class="text-danger">Required</span>)</label>
                         <div class="datepicker date input-group">

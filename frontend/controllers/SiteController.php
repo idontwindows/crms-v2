@@ -175,11 +175,13 @@ class SiteController extends Controller
             $customer->customer_email = $_POST['customer_email'];
             $customer->date_created = date("Y-m-d H:i:s");
             if ($customer->save(false)) {
-                $comment = new Comment();
-                $comment->customer_id = $customerId;
-                $comment->comment = $_POST['comments'];
-                $comment->other_important_attrib = $_POST['other_important_attrib'];
-                $comment->save(false);
+                if(!empty($_POST['comments'])){
+                    $comment = new Comment();
+                    $comment->customer_id = $customerId;
+                    $comment->comment = $_POST['comments'];
+                    $comment->other_important_attrib = $_POST['other_important_attrib'];
+                    $comment->save(false);
+                }
                 foreach ($groups as $group) {
                     $j = 0;
                     foreach ($_POST['rating'][$group['question_group_unit_id']] as $rating) {

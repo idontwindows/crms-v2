@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <td class="w-50 p-3"><a href="<?= $serveruri  ?>{{ unit.unit_url }}" target="_blank"><?= $serveruri  ?>{{ unit.unit_url }}</a></td>
                         <td>{{ unit.region }}</td>
                         <td>
-                            <button type="button" class="btn btn-success btn-sm" ng-click="view(unit.unit_id)"><i class="fa fa-eye"></i></button>
+                            <!-- <button type="button" class="btn btn-success btn-sm" ng-click="view(unit.unit_id)"><i class="fa fa-eye"></i></button> -->
                             <button type="button" class="btn btn-primary btn-sm ml-1 mr-1" ng-click="goUpdate(unit.unit_id)"><i class="fa fa-edit"></i></button>
                             <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                         </td>

@@ -75,6 +75,10 @@ $serveruri = $protocol . "$_SERVER[HTTP_HOST]";
                             $this->context->route == 'unit/create' ||
                             $this->context->route == 'unit/view'
                     ],
+                    [
+                        'label' => 'Reports', 'url' => ['/reports/index'],
+                        'active' => $this->context->route == 'reports/index'
+                    ],
                 ]
             ]
         ];
