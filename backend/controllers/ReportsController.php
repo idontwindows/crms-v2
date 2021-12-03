@@ -103,6 +103,7 @@ class ReportsController extends \yii\web\Controller
         $date = date('d-m-y-'.substr((string)microtime(), 1, 8));
         $date = str_replace(".", "", $date);
         $filename = 'crms_'.$date.".xlsx";
+        \PhpOffice\PhpSpreadsheet\Shared\File::setUseUploadTempDirectory(true);
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->mergeCells('A1:F1');
