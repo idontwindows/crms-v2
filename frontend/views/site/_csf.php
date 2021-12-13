@@ -327,7 +327,7 @@ $this->registerCss('.modal-confirm {
             <div class="modal-body text-center">
                 <h4>Great!</h4>
                 <p>Your response has been recorded.</p>
-                <a href="<?= $serveruri . '/region/' . $title['region_code'] ?>" class="btn btn-primary btn-lg"><i class="fa fa-circle-check" aria-hidden="true"></i> OK</a>
+                <a href="<?= $serveruri . '/csf/' .$_GET['id'] ?>" class="btn btn-primary btn-lg"><i class="fa fa-circle-check" aria-hidden="true"></i> OK</a>
             </div>
         </div>
     </div>
