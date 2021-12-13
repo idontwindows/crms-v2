@@ -116,15 +116,14 @@ class SiteController extends Controller
                 FROM tbl_unit AS a 
                 INNER JOIN tbl_region AS b 
                 ON b.region_id = a.region_id 
-                WHERE a.unit_id = ' . $id . ' AND a.is_disabled = 0';
-
+                WHERE a.unit_id = ' . $id . ' AND a.is_disabled = 0'; 
         try {
             $title = $con->createCommand($sql1)->queryOne();
             if (!$title) {
-                throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
+                //throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
             }
         } catch (\yii\db\Exception $exception) {
-            throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
+            //throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
         }
         $sql2 = 'SELECT * FROM `tbl_question_group_unit` WHERE `unit_id` =' . $id;
 
@@ -132,8 +131,8 @@ class SiteController extends Controller
             $groups = $con->createCommand($sql2)->queryAll();
             return $this->render('_csf', ['groups' => $groups, 'title' => $title]);
         } catch (\yii\db\Exception $exception) {
-            throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
-        }
+            //throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
+        } 
     }
     /**
      * @var mixed $id must convert to base64 2x
