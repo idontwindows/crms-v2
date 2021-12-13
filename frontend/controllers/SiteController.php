@@ -124,7 +124,7 @@ class SiteController extends Controller
             }
         } catch (\yii\db\Exception $exception) {
             //throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
-            echo '<h1>Not found</h1>';
+            echo '<h1>Not found (#404)</h1>';
         }
         $sql2 = 'SELECT * FROM `tbl_question_group_unit` WHERE `unit_id` =' . $id;
 
