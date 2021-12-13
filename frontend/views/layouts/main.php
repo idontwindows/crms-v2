@@ -95,7 +95,7 @@ if(isset($_GET['region_code'])){
             <div class="container">
                 <div class="d-flex align-items-center justify-content-center">
                     <a class="navbar-brand brand-lg" href="/"><?= 'DOST '. strtoupper($region_code) .' '. Yii::$app->name ?></a>
-                    <a class="navbar-brand brand-sm" href="/">CRMS</a>
+                    <a class="navbar-brand brand-sm" href="/"><?= empty(strtoupper($region_code)) ? 'DOST CRMS' : 'RO-' . strtoupper($region_code)?></a>
                 </div>
                 <?php
                 if ($this->context->route == 'site/region-units') {
