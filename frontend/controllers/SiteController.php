@@ -120,10 +120,11 @@ class SiteController extends Controller
         try {
             $title = $con->createCommand($sql1)->queryOne();
             if (!$title) {
-                //throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
+                throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
             }
         } catch (\yii\db\Exception $exception) {
             //throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
+            echo '<h1>Not found</h1>';
         }
         $sql2 = 'SELECT * FROM `tbl_question_group_unit` WHERE `unit_id` =' . $id;
 
@@ -392,6 +393,7 @@ class SiteController extends Controller
                 INNER JOIN tbl_region AS b 
                 ON b.`region_id` = a.`region_id`
                 WHERE b.`region_code` = :region_code
+                AND a.`is_disabled` = 0
                 ORDER BY `unit_name` ASC';
         $regions = $con->createCommand($sql, [':region_code' => $region_code])->queryAll();
         if ($regions) {
