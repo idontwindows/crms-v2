@@ -48,9 +48,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="col-md-11">
                         Attributes
                     </div>
-                    <div class="col-md-1 d-flex justify-content-end">
+                    <!-- <div class="col-md-1 d-flex justify-content-end">
                         <button type="button" class="btn btn-sm btn-primary" ng-click="addQuestion()"><i class="fa fa-plus"></i></button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="card-body">
@@ -61,26 +61,26 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="col-md-11">
                                     Questions
                                 </div>
-                                <div class="col-md-1 d-flex justify-content-end">
+                                <!-- <div class="col-md-1 d-flex justify-content-end">
                                     <button type="button" class="btn btn-sm btn-warning" ng-click="removeQuestion($index)"><i class="fa fa-times"></i></button>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="input-group mb-3">
                                 <input type="hidden" class="form-control" id="txtParenthidden-{{$index}}" ng-model="formData.question_group_unit_id">   
                                 <input type="text" class="form-control txtParent" id="txtParent-{{$index}}" ng-model="formData.parentAttrib" placeholder="Enter parent attribute...">
-                                <div class="input-group-append">
+                                <!-- <div class="input-group-append">
                                     <button type="button" class="btn btn-outline-secondary btn-primary text-white" type="button" ng-click="addItem($index)"><i class="fa fa-plus"></i></button>
-                                </div>
+                                </div> -->
                             </div>
                             <fieldset ng-repeat="item in formData.items">
                                 <div class="input-group mb-3">
                                     <input type="hidden" name="childattribhidden[]" id="txtChildhidden-{{$parent.$index}}-{{$index}}" ng-model="item.question_unit_id" class="form-control">
                                     <input type="text" name="childattributequestion[]" id="txtChild-{{$parent.$index}}-{{$index}}" ng-model="item.childAttrib" class="form-control txtChild" placeholder="Enter child attribute...">
-                                    <div class="input-group-append">
+                                    <!-- <div class="input-group-append">
                                         <button type="button" class="btn btn-outline-secondary btn-danger text-white" name="remove" type="button" ng-click="removeItem($parent.$index, $index)"><i class="fa fa-minus"></i></button>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </fieldset>
                         </div>
