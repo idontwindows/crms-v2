@@ -166,11 +166,11 @@ $this->registerCss('.modal-confirm {
                 <div class="card-body">
                     <div class="d-flex align-items-center justify-content-center">
                         <img src="/images/dostlogo.png" class="rounded float-left w-25" alt="...">
-                        <div class="float-left ml-3 text-primary head-title">
-                            <h1 class="header-title mb-0"><b>DEPARTMENT</b></h1>
-                            <h1 class="header-title mb-0"><b>OF SCIENCE</b></h1>
-                            <h1 class="header-title mb-0"><b>AND</b></h1>
-                            <h1 class="header-title mb-0"><b>TECHNOLOGY</b></h1>
+                        <div class="float-left ml-3  head-title">
+                            <h1 class="header-title mb-0"><b><span class="text-primary">D</span>EPARTMENT</b></h1>
+                            <h1 class="header-title mb-0"><b><span class="text-primary">O</span>F</b></h1>
+                            <h1 class="header-title mb-0"><b><span class="text-primary">S</span>CIENCE AND</b></h1>
+                            <h1 class="header-title mb-0"><b><span class="text-primary">T</span>ECHNOLOGY</b></h1>
                         </div>
                     </div>
                     <h2 class="d-flex align-items-center justify-content-center csf-title">CUSTOMER SATISFACTION FEEDBACK</h2>
