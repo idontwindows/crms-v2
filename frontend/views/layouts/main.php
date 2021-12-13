@@ -108,7 +108,7 @@ if(isset($_GET['region_code'])){
                     echo '';
                 }
                 else {
-                    echo '<button type="button" class="btn btn-yellow text-dark rounded-pill font-weight-bold" id="btn-back">Back</button>';
+                    echo '<button type="button" class="btn btn-yellow text-dark rounded-pill font-weight-bold" id="btn-back">Return to Main Menu</button>';
                 }
                 ?>
 
