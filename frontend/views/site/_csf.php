@@ -272,7 +272,7 @@ $this->registerCss('.modal-confirm {
                 </div>
                 <?php $g++; ?>
             <?php } ?>
-            <div class="card mb-3 mt-0 border-0" style="display:none;">
+            <div class="card mb-3 mt-0 border-0">
                 <div class="card-body">
                     <p class="card-text"><b>Please indicate other important attribute/s which you think is important to your needs.</b> (<span class="text-info">Optional</span>)</p>
                     <div class="form-group">
