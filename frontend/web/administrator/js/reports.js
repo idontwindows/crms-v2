@@ -33,7 +33,7 @@ app.controller('reportsCtrl', ['$scope', '$element', '$http', '$window', functio
         $scope.Fetchdata();
     };
     $scope.OnExport = function(unit_id,from,to){
-        var win = window.open('/administrator/reports/exporttoexcel?unit_id=' + unit_id + '&datefrom=' + from + '&dateto=' + to, '_blank');
+        var win = window.open('/administrator/reports/export?unit_id=' + unit_id + '&datefrom=' + from + '&dateto=' + to, '_blank');
         win.focus()
     }
 }]);
