@@ -156,8 +156,8 @@ class ReportsController extends \yii\web\Controller
         // }
         $date = date('d-m-y-'.substr((string)microtime(), 1, 8));
         $date = str_replace(".", "", $date);
-        $filename = 'crms_'.$date.".xls";
-        $spreadsheet = IOFactory::load('../../web/template/crms-template_001.xlsx');
+        $filename = 'crms_'.$date.".xlsx";
+        $spreadsheet = IOFactory::load('../../web/template/CusSat-Index-Computation-2017.xls');
         $sheet = $spreadsheet->getActiveSheet();
         // $sheet->mergeCells('A1:F1');
         // $sheet->mergeCells('A2:F2');
@@ -173,16 +173,31 @@ class ReportsController extends \yii\web\Controller
         // $sheet->setCellValue('F5', 'Poor');
         // $sheet->mergeCells('A12:F12');
         // $sheet->setCellValue('A12', 'RESPONDENT: '.count($customers));
-        $i = 6;
-        foreach($ratings as $rating){           
-            // $sheet->setCellValue('A'. $i, $rating['question']);        
-            $sheet->setCellValue('B'. $i, $rating['rating5']);
-            $sheet->setCellValue('C'. $i, $rating['rating4']);
-            $sheet->setCellValue('D'. $i, $rating['rating3']);
-            $sheet->setCellValue('E'. $i, $rating['rating2']);
-            $sheet->setCellValue('F'. $i, $rating['rating1']);
+        $sheet->setCellValue('B5', 'FUNCTIONAL UNIT: '. $Units['unit_name']);
+        $sheet->setCellValue('B6', 'FOR THE PERIOD: '. $datefrom . ' to ' . $dateto);
+        $i = 11;
+        $item1 = array_slice($ratings,0,5,true);
+        foreach($item1 as $rating){           
+            $sheet->setCellValue('B'. $i, $rating['question']);        
+            $sheet->setCellValue('D'. $i, $rating['rating5']);
+            $sheet->setCellValue('F'. $i, $rating['rating4']);
+            $sheet->setCellValue('H'. $i, $rating['rating3']);
+            $sheet->setCellValue('J'. $i, $rating['rating2']);
+            $sheet->setCellValue('L'. $i, $rating['rating1']);
             $i++;
         }
+        $j = 19;
+        $item2 = array_slice($ratings,5,8,true);
+        foreach($item2 as $rating){           
+            $sheet->setCellValue('B'. $j, $rating['question']);        
+            $sheet->setCellValue('D'. $j, $rating['rating5']);
+            $sheet->setCellValue('F'. $j, $rating['rating4']);
+            $sheet->setCellValue('H'. $j, $rating['rating3']);
+            $sheet->setCellValue('J'. $j, $rating['rating2']);
+            $sheet->setCellValue('L'. $j, $rating['rating1']);
+            $j++;
+        }
+        $sheet->setCellValue('B23','');  
         try {
         $writer = new Xlsx($spreadsheet);
         ob_end_clean();
