@@ -1,0 +1,93 @@
+@media (min-width:360px) {
+    div#nps input[type=radio] {
+        -webkit-appearance: none;
+        width: 20px;
+        height: 20px;
+        border: none;
+        cursor: pointer;
+        transition: border 0.2s ease;
+        filter: grayscale(100%);
+        margin: 0 5px;
+        transition: all 0.2s ease;
+      }
+}
+@media (min-width:1024px) {
+    div#nps input[type=radio] {
+    -webkit-appearance: none;
+    width: 50px;
+    height: 50px;
+    border: none;
+    cursor: pointer;
+    transition: border 0.2s ease;
+    filter: grayscale(100%);
+    margin: 0 5px;
+    transition: all 0.2s ease;
+  }
+}
+
+  /* div#nps .checkboxgroup {
+    display: inline-block;
+    text-align: center;
+    margin-top: 5px;
+    width: 110px;
+  }
+
+  div#nps .checkboxgroup {
+    display: inline-block;
+    text-align: center;
+  }
+
+  div#nps .checkboxgroup label {
+    display: block;
+    font-size: 13px;
+  } */
+
+div#nps input[type=radio]:hover,
+div#nps input[type=radio]:checked {
+  filter: grayscale(0);
+}
+
+div#nps input[type=radio]:focus {
+  outline: 0;
+}
+
+div#nps input[type=radio].number1 {
+  background: url("../images/numbers/1.svg") center;
+  background-size: cover;
+}
+div#nps input[type=radio].number2 {
+    background: url("../images/numbers/2.svg") center;
+    background-size: cover;
+  }
+  div#nps input[type=radio].number3 {
+    background: url("../images/numbers/3.svg") center;
+    background-size: cover;
+  }
+  div#nps input[type=radio].number4 {
+    background: url("../images/numbers/4.svg") center;
+    background-size: cover;
+  }
+  div#nps input[type=radio].number5 {
+    background: url("../images/numbers/5.svg") center;
+    background-size: cover;
+  }
+  div#nps input[type=radio].number6 {
+    background: url("../images/numbers/6.svg") center;
+    background-size: cover;
+  }
+  div#nps input[type=radio].number7 {
+    background: url("../images/numbers/7.svg") center;
+    background-size: cover;
+  }
+  div#nps input[type=radio].number8 {
+    background: url("../images/numbers/8.svg") center;
+    background-size: cover;
+  }
+  div#nps input[type=radio].number9 {
+    background: url("../images/numbers/9.svg") center;
+    background-size: cover;
+  }
+  div#nps input[type=radio].number10 {
+    background: url("../images/numbers/10.svg") center;
+    background-size: cover;
+  }

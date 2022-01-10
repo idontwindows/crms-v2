@@ -185,7 +185,7 @@ class SiteController extends Controller
                             $rating->question_group_id = base64_decode(base64_decode($_POST['groupId'][$group['question_group_id']][$j]));
                             $rating->question_id = base64_decode(base64_decode($_POST['questionId'][$group['question_group_id']][$j]));
                             $rating->rating_point = $_POST['rating'][$group['question_group_id']][$j];
-                            $rating->rating_date = date("Y-m-d H:i:s");
+                            $rating->rating_date = date("Y-m-d");
                             $rating->save(false);
                             $j++;
                         }

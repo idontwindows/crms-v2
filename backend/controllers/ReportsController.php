@@ -62,9 +62,15 @@ class ReportsController extends \yii\web\Controller
         
         //return $this->render('index',[]);
         $data = [];
-        $data['ratings'] = $ratings;
+        $count = count($ratings);
+        $count_devide = $count / 2;
+        $feedbacks = array_slice($ratings,0,$count_devide + 1,false);
+        $importance = array_slice($ratings,$count_devide + 1,$count,false);
+        $data['feedbacks'] = $feedbacks;
+        $data['importance'] = $importance;
         $data['comments'] = $comments;
         $data['customer'] = $customers;
+        $data['count'] = intval($count);
 
        return $data;
     }
@@ -173,10 +179,12 @@ class ReportsController extends \yii\web\Controller
         // $sheet->setCellValue('F5', 'Poor');
         // $sheet->mergeCells('A12:F12');
         // $sheet->setCellValue('A12', 'RESPONDENT: '.count($customers));
+        $count = count($ratings);
+        $count_devide = $count / 2;
         $sheet->setCellValue('B5', 'FUNCTIONAL UNIT: '. $Units['unit_name']);
         $sheet->setCellValue('B6', 'FOR THE PERIOD: '. $datefrom . ' to ' . $dateto);
         $i = 11;
-        $item1 = array_slice($ratings,0,5,true);
+        $item1 = array_slice($ratings,0,$count_devide + 1,true);
         foreach($item1 as $rating){           
             $sheet->setCellValue('B'. $i, $rating['question']);        
             $sheet->setCellValue('D'. $i, $rating['rating5']);
@@ -187,7 +195,7 @@ class ReportsController extends \yii\web\Controller
             $i++;
         }
         $j = 19;
-        $item2 = array_slice($ratings,5,8,true);
+        $item2 = array_slice($ratings,$count_devide + 1,$count,true);
         foreach($item2 as $rating){           
             $sheet->setCellValue('B'. $j, $rating['question']);        
             $sheet->setCellValue('D'. $j, $rating['rating5']);

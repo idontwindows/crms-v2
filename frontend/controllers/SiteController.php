@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use common\models\Comment;
 use common\models\CreateCertificate;
 use common\models\Customer;
+use common\models\NpsRating;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -167,37 +168,54 @@ class SiteController extends Controller
         } catch (\yii\db\Exception $exception) {
             throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
         }
-
+        //$data = [];
         try {
-            $customer = new Customer();
-            $customer->customer_id = $customerId;
-            $customer->customer_name = $_POST['customer_name'];
-            $customer->customer_email = $_POST['customer_email'];
-            $customer->date_created = date("Y-m-d H:i:s");
-            if ($customer->save(false)) {
-                if(!empty($_POST['comments'])){
-                    $comment = new Comment();
-                    $comment->customer_id = $customerId;
-                    $comment->comment = $_POST['comments'];
-                    $comment->other_important_attrib = $_POST['other_important_attrib'];
-                    $comment->save(false);
-                }
-                foreach ($groups as $group) {
-                    $j = 0;
-                    foreach ($_POST['rating'][$group['question_group_unit_id']] as $rating) {
-                        $rating = new Rating();
-                        $rating->customer_id = $customerId;
-                        $rating->unit_id = base64_decode(base64_decode($id));
-                        $rating->question_group_id = base64_decode(base64_decode($_POST['groupId'][$group['question_group_unit_id']][$j]));
-                        $rating->question_id = base64_decode(base64_decode($_POST['questionId'][$group['question_group_unit_id']][$j]));
-                        $rating->rating_point = $_POST['rating'][$group['question_group_unit_id']][$j];
-                        $rating->rating_date = date("Y-m-d H:i:s");
-                        $rating->save(false);
-                        $j++;
+            if(empty($_POST['customer_age']) || empty($_POST['customer_gender']) || empty($_POST['customer_client_type'])){
+                $data['message'] = 'blank';
+                return json_encode($data);
+            }else{
+                $customer = new Customer();
+                $customer->customer_id = $customerId;
+                $customer->customer_name = $_POST['customer_name'];
+                $customer->customer_email = $_POST['customer_email'];
+                $customer->client_type = $_POST['customer_client_type'];
+                $customer->age_group = $_POST['customer_age'];
+                $customer->gender = $_POST['customer_gender'];
+                $customer->date_created = date("Y-m-d H:i:s");
+                if ($customer->save(false)) {
+                    if(!empty($_POST['comments'])){
+                        $comment = new Comment();
+                        $comment->customer_id = $customerId;
+                        $comment->comment = $_POST['comments'];
+                        $comment->other_important_attrib = $_POST['other_important_attrib'];
+                        $comment->save(false);
                     }
+                    foreach ($groups as $group) {
+                        $j = 0;
+                        foreach ($_POST['rating'][$group['question_group_unit_id']] as $rating) {
+                            $rating = new Rating();
+                            $rating->customer_id = $customerId;
+                            $rating->unit_id = base64_decode(base64_decode($id));
+                            $rating->question_group_id = base64_decode(base64_decode($_POST['groupId'][$group['question_group_unit_id']][$j]));
+                            $rating->question_id = base64_decode(base64_decode($_POST['questionId'][$group['question_group_unit_id']][$j]));
+                            $rating->rating_point = $_POST['rating'][$group['question_group_unit_id']][$j];
+                            $rating->rating_date = date("Y-m-d H:i:s");
+                            $rating->save(false);
+                            $j++;
+                        }
+                    }
+                    $nps = new NpsRating();
+                    $nps->score = $_POST['nps'];
+                    $nps->customer_id = $customerId;
+                    $nps->unit_id = base64_decode(base64_decode($id));
+                    $nps->rating_date = date("Y-m-d H:i:s");
+                    $nps->save(false);
+
+                    $data['message'] = 'success';
+                    return json_encode($data);
                 }
-                return $this->render('_thankyou');
             }
+     
         } catch (yii\base\ErrorException $exception) {
             throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
             //return $exception;

@@ -2,6 +2,7 @@
 
 use yii\widgets\ActiveForm;
 use yii\bootstrap4\Modal;
+//use kartik\rating\StarRating;
 /* @var $this yii\web\View */
 
 if (
@@ -33,13 +34,14 @@ $this->registerJs($script1, yii\web\View::POS_END, '');
 //@var string $script3 for button back
 $script3 = "$(document).ready(function() {
                 $('#btn-back').click(function() {
-                    window.location.replace('".$serveruri.'/region/'.$title["region_code"]."');
+                    window.location.replace('" . $serveruri . '/region/' . $title["region_code"] . "');
                 });
             });";
 //$this->registerJs($script2, yii\web\View::POS_END, '');
 $this->registerJs($script3, yii\web\View::POS_END, '');
 $this->registerJsFile('/js/signature_pad.min.js', ['position' => \yii\web\View::POS_END]);
 $this->registerJsFile('/js/site.js', ['position' => \yii\web\View::POS_END]);
+$this->registerJsFile('/js/sweetalert.min.js', ['position' => \yii\web\View::POS_END]);
 $this->registerCss(".modal {background-color: rgba(0, 0, 0,0.5);} .show {display: block;}");
 $this->registerCss('.modal-confirm {		
                         color: #434e65;
@@ -152,7 +154,8 @@ $this->registerCss('.modal-confirm {
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 <div class="site-csf">
     <?php $form = ActiveForm::begin([
-        'id' => 'smileys',
+        //'id' => 'smileys',
+        'id' => 'submit-rating',
         'action' => false,
         'action' => ['post-rating', 'id' => $_GET['id']],
         //'options' => ['onsubmit' => 'return validate()'],
@@ -181,12 +184,12 @@ $this->registerCss('.modal-confirm {
                     <h4 class="card-title"><?= $title['unit_name'] ?></h4>
                     <p class="card-text">This questionaire aims to solicit your honest assessment of our <?= strtolower($title['unit_name']) ?> services.
                         Please take a minute in filling out this form and help us serve you better. </p>
-                    <div class="form-group form-email required">
+                    <div class="form-group form-email">
                         <label for="txtEmail"><b>Email</b> (<span class="text-info">Optional</span>)</label>
                         <input type="text" class="form-control" id="txtEmail" name="customer_email" placeholder="Type your email here..." autofocus="" aria-required="true" aria-invalid="">
                         <div class="invalid-feedback invalid-feedback-email"></div>
                     </div>
-<!--                     
+                    <!--                     
                     <div class="form-group">
                         <label for="txtDate"><b>Date</b> (<span class="text-danger">Required</span>)</label>
                         <div class="datepicker date input-group">
@@ -197,11 +200,45 @@ $this->registerCss('.modal-confirm {
                         </div>
                     </div>
                     -->
-                    <div class="form-group form-name reruired">
+                    <div class="form-group form-name">
                         <label for="txtName"><b>Name</b> (<span class="text-info">Optional</span>)</label>
                         <input type="text" class="form-control" id="txtName" name="customer_name" placeholder="Type your name here..." aria-required="true" aria-invalid="">
                         <div class="invalid-feedback invalid-feedback-name"></div>
                     </div>
+                    <div class="row">
+                        <div class="form-group form-client-type col-md-4">
+                            <label for="select-gender"><b>Client type</b> (<span class="text-danger">Required</span>)</label>
+                            <select name="customer_client_type" id="select-client-type" class="form-control">
+                                <option value="" disabled selected>Select Client type...</option>
+                                <option value="1">Gneneral Public</option>
+                                <option value="2">Governement Employees</option>
+                                <option value="3">Businesses/Organization</option>
+                            </select>
+                        </div>
+                        <div class="form-group form-gender col-md-4">
+                            <label for="select-gender"><b>Gender</b> (<span class="text-danger">Required</span>)</label>
+                            <select name="customer_gender" id="select-gender" class="form-control">
+                                <option value="" disabled selected>Select gender...</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                        <div class="form-group form-age col-md-4">
+                            <label for="select-age"><b>Age Group</b> (<span class="text-danger">Required</span>)</label>
+                            <select name="customer_age" id="select-age" class="form-control">
+                                <option value="" disabled selected>Select age group...</option>
+                                <option value="15-19">15-19</option>
+                                <option value="20-29">20-29</option>
+                                <option value="30-39">30-39</option>
+                                <option value="40-49">40-49</option>
+                                <option value="50-59">50-59</option>
+                                <option value="60-69">60-69</option>
+                                <option value="70-79">70-79</option>
+                                <option value="80+">80+</option>
+                            </select>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <?php $g = 0; ?>
@@ -241,8 +278,7 @@ $this->registerCss('.modal-confirm {
                                         <input type="hidden" id="custId" name="questionId[<?= $group['question_group_unit_id'] ?>][<?= $q ?>]" value="<?= base64_encode(base64_encode($question['question_unit_id'])) ?>">
                                         <input type="hidden" id="groupId" name="groupId[<?= $group['question_group_unit_id'] ?>][<?= $q ?>]" value="<?= base64_encode(base64_encode($group['question_group_unit_id'])) ?>">
                                     </div>
-                                    <div class="d-flex align-items-center justify-content-center">
-
+                                    <div class="d-flex align-items-center justify-content-center" id="smileys">
                                         <div class="checkboxgroup">
                                             <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="5" class="smiley5" id="radio1" required>
                                             <label for="radio1"><b>Outstanding</b></label>
@@ -272,6 +308,70 @@ $this->registerCss('.modal-confirm {
                 </div>
                 <?php $g++; ?>
             <?php } ?>
+            <div class="card mb-3 mt-0 border-0 col col-lg-12">
+                <div class="card-body">
+                    <p class="card-text"><b>Considering your complete experience with our agency, how likely would you recommend our services to others?</b> (<span class="text-danger">Required</span>)</p>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="form-group">
+                            <!-- <?php
+                                    // echo StarRating::widget([
+                                    //     'name' => 'rating_20',
+                                    //     'id' => 'rating',
+                                    //     'pluginOptions' => [
+                                    //         'size' => 'md',
+                                    //         'stars' => 10,
+                                    //         'step' => 1,
+                                    //         'min' => 0,
+                                    //         'max' => 10,
+                                    //         'displayOnly' => false
+                                    //     ],
+                                    // ]);
+                                    ?> -->
+                            <div class="d-flex align-items-center justify-content-center" id="nps">
+                                <div class="checkbox-nps checkboxgroup">
+                                    <input type="radio" name="nps" value="1" class="number1" id="nps-radio1" required>
+
+                                </div>
+                                <div class="checkbox-nps checkboxgroup">
+                                    <input type="radio" name="nps" value="2" class="number2" id="nps-radio2" required>
+
+                                </div>
+                                <div class="checkbox-nps checkboxgroup">
+                                    <input type="radio" name="nps" value="3" class="number3" id="nps-radio3" required>
+
+                                </div>
+                                <div class="checkbox-nps checkboxgroup">
+                                    <input type="radio" name="nps" value="4" class="number4" id="nps-radio4" required>
+
+                                </div>
+                                <div class="checkbox-nps checkboxgroup">
+                                    <input type="radio" name="nps" value="5" class="number5" id="nps-radio5" required>
+                                </div>
+                                <div class="checkbox-nps checkboxgroup">
+                                    <input type="radio" name="nps" value="6" class="number6" id="nps-radio6" required>
+
+                                </div>
+                                <div class="checkbox-nps checkboxgroup">
+                                    <input type="radio" name="nps" value="7" class="number7" id="nps-radio7" required>
+
+                                </div>
+                                <div class="checkbox-nps checkboxgroup">
+                                    <input type="radio" name="nps" value="8" class="number8" id="nps-radio8" required>
+
+                                </div>
+                                <div class="checkbox-nps checkboxgroup">
+                                    <input type="radio" name="nps" value="9" class="number9" id="nps-radio9" required>
+
+                                </div>
+                                <div class="checkbox-nps checkboxgroup">
+                                    <input type="radio" name="nps" value="10" class="number10" id="nps-radio10" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="card mb-3 mt-0 border-0">
                 <div class="card-body">
                     <p class="card-text"><b>Please indicate other important attribute/s which you think is important to your needs.</b> (<span class="text-info">Optional</span>)</p>
@@ -307,6 +407,7 @@ $this->registerCss('.modal-confirm {
         </div>
         <div class="col-md-1"></div>
     </div>
+
     <!-- </form> -->
     <?php ActiveForm::end(); ?>
 </div>
@@ -327,9 +428,14 @@ $this->registerCss('.modal-confirm {
             <div class="modal-body text-center">
                 <h4>Great!</h4>
                 <p>Your response has been recorded.</p>
-                <a href="<?= $serveruri . '/csf/' .$_GET['id'] ?>" class="btn btn-primary btn-lg"><i class="fa fa-circle-check" aria-hidden="true"></i> OK</a>
+                <a href="<?= $serveruri . '/csf/' . $_GET['id'] ?>" class="btn btn-primary btn-lg"><i class="fa fa-circle-check" aria-hidden="true"></i> OK</a>
             </div>
         </div>
     </div>
 </div>
 
+<script>
+    $(document).ready(function() {
+        swal("Disclaimer", "The DOST is committed to protect and respect your personal data privacy. All information collected will only be used for documentation purposes and will not be published in any platform.", "warning");
+    });
+</script>

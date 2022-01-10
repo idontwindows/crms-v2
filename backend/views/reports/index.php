@@ -59,7 +59,32 @@ $this->params['breadcrumbs'][] = $this->title;
             </tr>
         </thead>
         <tbody ng-init="Fetchdata()">
-            <tr ng-repeat="report in reports.ratings">
+            <tr ng-repeat="report in reports.feedbacks">
+                <th scope="row">{{ $index + 1 }}</th>
+                <td class="w-50 p-3">{{ report.question }}</td>
+                <td class="text-md-center">{{ report.rating5 }}</td>
+                <td class="text-md-center">{{ report.rating4 }}</td>
+                <td class="text-md-center">{{ report.rating3 }}</td>
+                <td class="text-md-center">{{ report.rating2 }}</td>
+                <td class="text-md-center">{{ report.rating1 }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table ">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Importance of Attribute</th>
+                <th scope="col" class="text-md-center"><img class="emoticons" src="/images/grinning.svg" alt="5"></th>
+                <th scope="col" class="text-md-center"><img class="emoticons" src="/images/smile.svg" alt="4"></th>
+                <th scope="col" class="text-md-center"><img class="emoticons" src="/images/neutral.svg" alt="3"></th>
+                <th scope="col" class="text-md-center"><img class="emoticons" src="/images/sad.svg" alt="2"></th>
+                <th scope="col" class="text-md-center"><img class="emoticons" src="/images/angry.svg" alt="1"></th>
+            </tr>
+        </thead>
+        <tbody ng-init="Fetchdata()">
+            <tr ng-repeat="report in reports.importance">
                 <th scope="row">{{ $index + 1 }}</th>
                 <td class="w-50 p-3">{{ report.question }}</td>
                 <td class="text-md-center">{{ report.rating5 }}</td>

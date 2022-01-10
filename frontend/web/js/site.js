@@ -2,6 +2,9 @@ const $name = $("#txtName");
 const $resultName = $(".invalid-feedback-name");
 const $email = $("#txtEmail");
 const $resultEmail = $(".invalid-feedback-email");
+const $gender = $("#select-gender");
+const $age = $("#select-age");
+const $client = $("#select-client-type");
 
 function showLoader() {
     $(".spanner").fadeIn("fast");
@@ -83,7 +86,7 @@ $("body").on("mouseup","#signature",function () {
 });
 
 
-$("#smileys").submit(function(e) {     
+$("#submit-rating").submit(function(e) {     
     e.preventDefault(); // avoid to execute the actual submit of the form.
     e.stopImmediatePropagation();
     var form = $(this);
@@ -97,6 +100,7 @@ $("#smileys").submit(function(e) {
                 type: "POST",
                 url: url,
                 data: form.serialize(), // serializes the form's elements.
+                dataType:'JSON',
                 // beforeSend: function( jqXHR ) {
                 //         showLoader();
                 //     },
@@ -104,12 +108,42 @@ $("#smileys").submit(function(e) {
                 {
                         // window.history.replaceState(nextState, nextTitle, nextURL);
                         // hideLoader(data);
-                        $('#myModalGreate').addClass('show');
+                        if(data.message == 'blank'){
+                            if(isEmptyOrSpaces($gender.val())){
+                                $gender.removeClass('is-valid');
+                                $gender.addClass('is-invalid');
+                                $gender.focus();
+                            }else{
+                                $gender.removeClass('is-invalid');
+                                $gender.addClass('is-valid');
+                            }
+                            if(isEmptyOrSpaces($age.val())){
+                                $age.removeClass('is-valid');
+                                $age.addClass('is-invalid');
+                                $age.focus();
+                            }else{
+                                $age.removeClass('is-invalid');
+                                $age.addClass('is-valid');
+                            }
+                            if(isEmptyOrSpaces($client.val())){
+                                $client.removeClass('is-valid');
+                                $client.addClass('is-invalid');
+                                $client.focus();
+                            }else{
+                                $client.removeClass('is-invalid');
+                                $client.addClass('is-valid');
+                            }
+                            swal("Warning", "Please fill out all required fields...", "warning");
+                        }
+                        if(data.message == 'success') $('#myModalGreate').addClass('show');
+                        
                 }
             }); 
         }
         else{
-            alert('Signature required!');
+            //alert('Signature required!');
+            //console.log(form.serialize());
+            swal("Warning", "Signature is required!", "warning");
         }
     //}
     // else{

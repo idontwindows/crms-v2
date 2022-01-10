@@ -15,7 +15,7 @@
   }*/
 
 @media (min-width:360px) {
-  form#smileys input[type=radio] {
+  div#smileys input[type=radio] {
     -webkit-appearance: none;
     width: 40px;
     height: 40px;
@@ -27,26 +27,26 @@
     transition: all 0.2s ease;
   }
 
-  .checkboxgroup {
+  div#smileys .checkboxgroup {
     display: inline-block;
     text-align: center;
     margin-top: 5px;
     /*width: 150px;*/
   }
 
-  .checkboxgroup {
+  div#smileys .checkboxgroup {
     display: inline-block;
     text-align: center;
   }
 
-  .checkboxgroup label {
+  div#smileys .checkboxgroup label {
     display: block;
     font-size: 8px;
   }
 }
 
 @media (min-width:1024px) {
-  form#smileys input[type=radio] {
+  div#smileys input[type=radio] {
     -webkit-appearance: none;
     width: 70px;
     height: 70px;
@@ -58,19 +58,19 @@
     transition: all 0.2s ease;
   }
 
-  .checkboxgroup {
+  div#smileys .checkboxgroup {
     display: inline-block;
     text-align: center;
     margin-top: 5px;
     width: 110px;
   }
 
-  .checkboxgroup {
+  div#smileys .checkboxgroup {
     display: inline-block;
     text-align: center;
   }
 
-  .checkboxgroup label {
+  div#smileys .checkboxgroup label {
     display: block;
     font-size: 13px;
   }
@@ -78,37 +78,37 @@
 
 
 
-form#smileys input[type=radio]:hover,
-form#smileys input[type=radio]:checked {
+div#smileys input[type=radio]:hover,
+div#smileys input[type=radio]:checked {
   filter: grayscale(0);
 }
 
-form#smileys input[type=radio]:focus {
+div#smileys input[type=radio]:focus {
   outline: 0;
 }
 
-form#smileys input[type=radio].smiley1 {
+div#smileys input[type=radio].smiley1 {
   background: url("../images/angry.svg") center;
   background-size: cover;
 }
 
-form#smileys input[type=radio].smiley2 {
+div#smileys input[type=radio].smiley2 {
   background: url("../images/sad.svg") center;
   background-size: cover;
 }
 
-form#smileys input[type=radio].smiley3 {
+div#smileys input[type=radio].smiley3 {
   background: url("../images/neutral.svg") center;
   background-size: cover;
 }
 
-form#smileys input[type=radio].smiley4 {
+div#smileys input[type=radio].smiley4 {
   background: url("../images/smile.svg") center;
   ;
   background-size: cover;
 }
 
-form#smileys input[type=radio].smiley5 {
+div#smileys input[type=radio].smiley5 {
   background: url("../images/grinning.svg") center;
   background-size: cover;
 }
