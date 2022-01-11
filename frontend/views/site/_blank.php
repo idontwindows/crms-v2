@@ -3,7 +3,7 @@ $this->registerJsFile('/js/sweetalert.min.js', ['position' => \yii\web\View::POS
 ?>
 <script>
     $(document).ready(function() {
-        swal("", "There is no functional units to be evaluated please create one by contacting the system administrator.", "warning")
+        swal("", "There is no functional units to be evaluated please create one by logging in your agency account.", "warning")
             .then((value) => {
                 location.replace(frontendURI);
             });
