@@ -98,7 +98,8 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $con = Yii::$app->db;
-        $sql = 'SELECT DISTINCT a.`region_id`, b.region_code FROM tbl_unit AS a INNER JOIN tbl_region AS b ON b.region_id = a.region_id WHERE a.`is_disabled` = 0 ORDER BY b.`order` ASC';
+        //$sql = 'SELECT DISTINCT a.`region_id`, b.region_code FROM tbl_unit AS a INNER JOIN tbl_region AS b ON b.region_id = a.region_id WHERE a.`is_disabled` = 0 ORDER BY b.`order` ASC';
+        $sql = 'SELECT `region_id`, `region_code` FROM tbl_region ORDER BY `order` ASC';
         $regions = $con->createCommand($sql)->queryAll();
         return $this->render('index',['regions' => $regions]);
     }
