@@ -112,6 +112,32 @@ div#smileys input[type=radio].smiley5 {
   background: url("../images/grinning.svg") center;
   background-size: cover;
 }
+/*-------Numero-------*/
+div#smileys input[type=radio].numero1 {
+  background: url("../images/one.svg") center;
+  background-size: cover;
+}
+
+div#smileys input[type=radio].numero2 {
+  background: url("../images/two.svg") center;
+  background-size: cover;
+}
+
+div#smileys input[type=radio].numero3 {
+  background: url("../images/three.svg") center;
+  background-size: cover;
+}
+
+div#smileys input[type=radio].numero4 {
+  background: url("../images/four.svg") center;
+  ;
+  background-size: cover;
+}
+
+div#smileys input[type=radio].numero5 {
+  background: url("../images/five.svg") center;
+  background-size: cover;
+}
 
 .mtt {
   position: fixed;
