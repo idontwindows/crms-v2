@@ -59,7 +59,8 @@ class ReportsController extends \yii\web\Controller
         $comments = $con->createCommand($sqlComments,[':datefrom' => $datefrom, ':dateto' => $dateto, 'unit_id' => $unit_id])->queryAll();
         $sqlCustomers = 'SELECT DISTINCT a.customer_id FROM tbl_customer AS a INNER JOIN tbl_rating AS b ON b.customer_id = a.customer_id WHERE b.unit_id = :unit_id AND b.rating_date BETWEEN :datefrom AND :dateto';
         $customers = $con->createCommand($sqlCustomers,[':datefrom' => $datefrom, ':dateto' => $dateto, 'unit_id' => $unit_id])->queryAll();
-        
+        $sqlNps = 'CALL sp_nps_ratings(:datefrom,:dateto,:client_type,:age,:unit_id)';
+        $Nps = $con->createCommand($sqlNps,[':datefrom' => $datefrom, ':dateto' => $dateto, ':client_type' => 0,':age' => 'All', ':unit_id' => $unit_id])->queryAll();
         //return $this->render('index',[]);
         $data = [];
         $count = count($ratings);
@@ -70,6 +71,7 @@ class ReportsController extends \yii\web\Controller
         $data['importance'] = $importance;
         $data['comments'] = $comments;
         $data['customer'] = $customers;
+        $data['nps'] = $Nps;
         $data['count'] = intval($count);
 
        return $data;
@@ -157,6 +159,8 @@ class ReportsController extends \yii\web\Controller
         $Units = $con->createCommand($sqlUnit,['unit_id' => $unit_id])->queryOne();
         $sqlCustomers = 'SELECT DISTINCT a.customer_id FROM tbl_customer AS a INNER JOIN tbl_rating AS b ON b.customer_id = a.customer_id WHERE b.unit_id = :unit_id AND b.rating_date BETWEEN :datefrom AND :dateto';
         $customers = $con->createCommand($sqlCustomers,[':datefrom' => $datefrom, ':dateto' => $dateto, 'unit_id' => $unit_id])->queryAll();
+        $sqlNps = 'CALL sp_nps_ratings(:datefrom,:dateto,:client_type,:age,:unit_id)';
+        $Nps = $con->createCommand($sqlNps,[':datefrom' => $datefrom, ':dateto' => $dateto, ':client_type' => 0,':age' => 'All', ':unit_id' => $unit_id])->queryAll();
         // foreach($ratings as $rating){
         //     echo $rating['question'];
         // }
@@ -204,6 +208,19 @@ class ReportsController extends \yii\web\Controller
             $sheet->setCellValue('J'. $j, $rating['rating2']);
             $sheet->setCellValue('L'. $j, $rating['rating1']);
             $j++;
+        }
+
+        foreach($Nps as $Np){
+            $sheet->setCellValue('C46', $Np['score1']);        
+            $sheet->setCellValue('D46', $Np['score2']);
+            $sheet->setCellValue('E46', $Np['score3']);
+            $sheet->setCellValue('F46', $Np['score4']);
+            $sheet->setCellValue('G46', $Np['score5']);
+            $sheet->setCellValue('H46', $Np['score6']);
+            $sheet->setCellValue('I46', $Np['score7']);
+            $sheet->setCellValue('J46', $Np['score8']);
+            $sheet->setCellValue('K46', $Np['score9']);
+            $sheet->setCellValue('L46', $Np['score10']);
         }
         $sheet->setCellValue('B23','');  
         try {
