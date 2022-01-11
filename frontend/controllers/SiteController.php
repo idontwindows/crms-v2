@@ -418,7 +418,7 @@ class SiteController extends Controller
         if ($regions) {
             return $this->render('menu', ['regions' => $regions]);
         } else {
-            throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
+            return $this->render('_blank');
         }
     }
 }
