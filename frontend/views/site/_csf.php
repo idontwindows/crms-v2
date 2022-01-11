@@ -269,7 +269,12 @@ $this->registerCss('.modal-confirm {
                         <b><?= $group['question_group_unit_name'] ?></b> (<span class="text-danger">Required</span>)
                     </div>
                     <ul class="list-group list-group-flush">
-                        <?php $q = 0; ?>
+      
+                        <?php 
+                        $count = count($questions);
+                        $count_devide = intval($count / 2);
+                        $q = 0; 
+                        ?>
                         <?php foreach ($questions as $question) { ?>
                             <li class="list-group-item">
                                 <div class="form-group">
@@ -279,6 +284,7 @@ $this->registerCss('.modal-confirm {
                                         <input type="hidden" id="groupId" name="groupId[<?= $group['question_group_unit_id'] ?>][<?= $q ?>]" value="<?= base64_encode(base64_encode($group['question_group_unit_id'])) ?>">
                                     </div>
                                     <div class="d-flex align-items-center justify-content-center" id="smileys">
+                                    <?php if($g == 0){?>
                                         <div class="checkboxgroup">
                                             <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="5" class="smiley5" id="radio1" required>
                                             <label for="radio1"><b>Outstanding</b></label>
@@ -299,6 +305,28 @@ $this->registerCss('.modal-confirm {
                                             <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="1" class="smiley1" id="radio5" required>
                                             <label for="radio5"><b>Poor</b></label>
                                         </div>
+                                    <?php }else{?>
+                                        <div class="checkboxgroup">
+                                            <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="5" class="numero5" id="radio1" required>
+                                            <label for="radio1"><b>Very Important</b></label>
+                                        </div>
+                                        <div class="checkboxgroup">
+                                            <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="4" class="numero4" id="radio2" required>
+                                            <label for="radio2"><b>Important</b></label>
+                                        </div>
+                                        <div class="checkboxgroup">
+                                            <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="3" class="numero3" id="radio3" required>
+                                            <label for="radio3"><b>Moderately Important</b></label>
+                                        </div>
+                                        <div class="checkboxgroup">
+                                            <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="2" class="numero2" id="radio4" required>
+                                            <label for="radio4"><b>Slightly Important</b></label>
+                                        </div>
+                                        <div class="checkboxgroup">
+                                            <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="1" class="numero1" id="radio5" required>
+                                            <label for="radio5"><b>Not at all Important</b></label>
+                                        </div>
+                                    <?php }?>
                                     </div>
                                 </div>
                             </li>
