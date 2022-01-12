@@ -206,16 +206,17 @@ $this->registerCss('.modal-confirm {
                         <div class="invalid-feedback invalid-feedback-name"></div>
                     </div>
                     <div class="row">
-                        <div class="form-group form-client-type col-md-4">
+                        <div class="form-group form-client-type col-md-6">
                             <label for="select-gender"><b>Client type</b> (<span class="text-danger">Required</span>)</label>
                             <select name="customer_client_type" id="select-client-type" class="form-control">
                                 <option value="" disabled selected>Select Client type...</option>
                                 <option value="1">Gneneral Public</option>
-                                <option value="2">Governement Employees</option>
-                                <option value="3">Businesses/Organization</option>
+                                <option value="2">Internal Employees</option>
+                                <option value="3">Governement Employees</option>
+                                <option value="4">Businesses/Organization</option>
                             </select>
                         </div>
-                        <div class="form-group form-gender col-md-4">
+                        <div class="form-group form-gender col-md-6">
                             <label for="select-gender"><b>Gender</b> (<span class="text-danger">Required</span>)</label>
                             <select name="customer_gender" id="select-gender" class="form-control">
                                 <option value="" disabled selected>Select gender...</option>
@@ -223,7 +224,7 @@ $this->registerCss('.modal-confirm {
                                 <option value="female">Female</option>
                             </select>
                         </div>
-                        <div class="form-group form-age col-md-4">
+                        <div class="form-group form-age col-md-6">
                             <label for="select-age"><b>Age Group</b> (<span class="text-danger">Required</span>)</label>
                             <select name="customer_age" id="select-age" class="form-control">
                                 <option value="" disabled selected>Select age group...</option>
@@ -235,6 +236,15 @@ $this->registerCss('.modal-confirm {
                                 <option value="60-69">60-69</option>
                                 <option value="70-79">70-79</option>
                                 <option value="80+">80+</option>
+                            </select>
+                        </div>
+                        <div class="form-group form-client-type col-md-6">
+                            <label for="select-info"><b>Other Information</b> (<span class="text-info">Optional</span>)</label>
+                            <select name="customer_other_info" id="select-other-info" class="form-control">
+                                <option value="" disabled selected>Select info...</option>
+                                <option value="1">Person with disabilities</option>
+                                <option value="2">Pregnant woman</option>
+                                <option value="3">Senior Citizen</option>
                             </select>
                         </div>
                     </div>
@@ -284,7 +294,7 @@ $this->registerCss('.modal-confirm {
                                         <input type="hidden" id="groupId" name="groupId[<?= $group['question_group_unit_id'] ?>][<?= $q ?>]" value="<?= base64_encode(base64_encode($group['question_group_unit_id'])) ?>">
                                     </div>
                                     <div class="d-flex align-items-center justify-content-center" id="smileys">
-                                    <?php if($g == 0){?>
+                                    <?php if($group['importance'] == 0){?>
                                         <div class="checkboxgroup">
                                             <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="5" class="smiley5" id="radio1" required>
                                             <label for="radio1"><b>Outstanding</b></label>
