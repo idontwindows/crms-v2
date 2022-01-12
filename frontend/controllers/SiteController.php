@@ -182,6 +182,7 @@ class SiteController extends Controller
                 $customer->client_type = $_POST['customer_client_type'];
                 $customer->age_group = $_POST['customer_age'];
                 $customer->gender = $_POST['customer_gender'];
+                $customer->other_info = $_POST['customer_other_info'];
                 $customer->date_created = date("Y-m-d H:i:s");
                 if ($customer->save(false)) {
                     if(!empty($_POST['comments'])){
