@@ -227,13 +227,14 @@ class SiteController extends Controller
         $con = Yii::$app->db;
         $id = $_GET['id'];
         //$sql1 = 'SELECT * FROM `tbl_event` WHERE `unit_id` =' . base64_decode(base64_decode($id));
-        $sql1 = '        SELECT a.`unit_id` AS `unit_id`,
-                                b.`functional_unit_name` AS `event_name`,
+        $sql1 = 'SELECT a.`unit_id` AS `unit_id`,
+                                -- b.`functional_unit_name` AS `event_name`,
+                                a.`unit_name` AS `event_name`,
                                 a.`is_disabled` AS `is_disabled`,
                                 a.`date_created` AS `date_created`
                         FROM `tbl_unit` AS a 
-                        LEFT OUTER JOIN tbl_functional_unit AS b
-                        ON b.functional_unit_id = a.`functional_unit_id` 
+                        -- LEFT OUTER JOIN tbl_functional_unit AS b
+                        -- ON b.functional_unit_id = a.`functional_unit_id` 
                 WHERE a.`unit_id` =' . base64_decode(base64_decode($id));
 
         try {
