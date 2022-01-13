@@ -142,14 +142,98 @@ class SiteController extends Controller
      */
     public function actionPostRating()
     {
+        // $con = Yii::$app->db;
+        // $id = $_GET['id'];
+        // //$sql1 = 'SELECT * FROM `tbl_event` WHERE `unit_id` =' . base64_decode(base64_decode($id));
+        // $sql1 = 'SELECT a.`unit_id` AS `unit_id`,
+        //                 a.`unit_name` AS `event_name`,
+        //                 a.`is_disabled` AS `is_disabled`,
+        //                 a.`date_created` AS `date_created`
+        //         FROM `tbl_unit` AS a 
+        //         WHERE a.`unit_id` =' . base64_decode(base64_decode($id));
+
+        // try {
+        //     $title = $con->createCommand($sql1)->queryOne();
+        // } catch (\yii\db\Exception $exception) {
+        //     throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
+        // }
+
+        // $id = $_GET['id'];
+        // $customerId = $this->getLastCustomerId();
+        // $customerId = $customerId[0]['customer_id'] + 1;
+
+
+        // $sql2 = 'SELECT * FROM `tbl_question_group_unit` WHERE `unit_id` =' . base64_decode(base64_decode($id));
+        // try {
+        //     $groups = $con->createCommand($sql2)->queryAll();
+        // } catch (\yii\db\Exception $exception) {
+        //     throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
+        // }
+        // //$data = [];
+        // try {
+        //     if(empty($_POST['customer_age']) || empty($_POST['customer_gender']) || empty($_POST['customer_client_type'])){
+        //         $data['message'] = 'blank';
+        //         return json_encode($data);
+        //     }else{
+        //         $customer = new Customer();
+        //         $customer->customer_id = $customerId;
+        //         $customer->customer_name = $_POST['customer_name'];
+        //         $customer->customer_email = $_POST['customer_email'];
+        //         $customer->client_type = $_POST['customer_client_type'];
+        //         $customer->age_group = $_POST['customer_age'];
+        //         $customer->gender = $_POST['customer_gender'];
+        //         $customer->other_info = $_POST['customer_other_info'];
+        //         $customer->date_created = date("Y-m-d H:i:s");
+        //         if ($customer->save(false)) {
+        //             if(!empty($_POST['comments'])){
+        //                 $comment = new Comment();
+        //                 $comment->customer_id = $customerId;
+        //                 $comment->comment = $_POST['comments'];
+        //                 $comment->other_important_attrib = $_POST['other_important_attrib'];
+        //                 $comment->save(false);
+        //             }
+        //             foreach ($groups as $group) {
+        //                 $j = 0;
+        //                 foreach ($_POST['rating'][$group['question_group_unit_id']] as $rating) {
+        //                     $rating = new Rating();
+        //                     $rating->customer_id = $customerId;
+        //                     $rating->unit_id = base64_decode(base64_decode($id));
+        //                     $rating->question_group_id = base64_decode(base64_decode($_POST['groupId'][$group['question_group_unit_id']][$j]));
+        //                     $rating->question_id = base64_decode(base64_decode($_POST['questionId'][$group['question_group_unit_id']][$j]));
+        //                     $rating->rating_point = $_POST['rating'][$group['question_group_unit_id']][$j];
+        //                     $rating->rating_date = date("Y-m-d H:i:s");
+        //                     $rating->save(false);
+        //                     $j++;
+        //                 }
+        //             }
+        //             $nps = new NpsRating();
+        //             $nps->score = $_POST['nps'];
+        //             $nps->customer_id = $customerId;
+        //             $nps->unit_id = base64_decode(base64_decode($id));
+        //             $nps->rating_date = date("Y-m-d H:i:s");
+        //             $nps->save(false);
+
+        //             $data['message'] = 'success';
+        //             return json_encode($data);
+        //         }
+        //     }
+     
+        // } catch (yii\base\ErrorException $exception) {
+        //     throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        //     //return $exception;
+        // }
+
+
         $con = Yii::$app->db;
         $id = $_GET['id'];
         //$sql1 = 'SELECT * FROM `tbl_event` WHERE `unit_id` =' . base64_decode(base64_decode($id));
-        $sql1 = 'SELECT a.`unit_id` AS `unit_id`,
-                        a.`unit_name` AS `event_name`,
-                        a.`is_disabled` AS `is_disabled`,
-                        a.`date_created` AS `date_created`
-                FROM `tbl_unit` AS a 
+        $sql1 = '        SELECT a.`unit_id` AS `unit_id`,
+                                b.`functional_unit_name` AS `event_name`,
+                                a.`is_disabled` AS `is_disabled`,
+                                a.`date_created` AS `date_created`
+                        FROM `tbl_unit` AS a 
+                        LEFT OUTER JOIN tbl_functional_unit AS b
+                        ON b.functional_unit_id = a.`functional_unit_id` 
                 WHERE a.`unit_id` =' . base64_decode(base64_decode($id));
 
         try {
@@ -170,8 +254,8 @@ class SiteController extends Controller
             throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
         }
         //$data = [];
-        try {
-            if(empty($_POST['customer_age']) || empty($_POST['customer_gender']) || empty($_POST['customer_client_type'])){
+        if(Yii::$app->request->isPost){
+            if (empty($_POST['customer_age']) || empty($_POST['customer_gender']) || empty($_POST['customer_client_type'])) {
                 $data['message'] = 'blank';
                 return json_encode($data);
             }else{
@@ -182,46 +266,44 @@ class SiteController extends Controller
                 $customer->client_type = $_POST['customer_client_type'];
                 $customer->age_group = $_POST['customer_age'];
                 $customer->gender = $_POST['customer_gender'];
-                $customer->other_info = $_POST['customer_other_info'];
+                if(!empty($_POST['customer_other_info'])) $customer->other_info = $_POST['customer_other_info'];
                 $customer->date_created = date("Y-m-d H:i:s");
-                if ($customer->save(false)) {
-                    if(!empty($_POST['comments'])){
-                        $comment = new Comment();
-                        $comment->customer_id = $customerId;
-                        $comment->comment = $_POST['comments'];
-                        $comment->other_important_attrib = $_POST['other_important_attrib'];
-                        $comment->save(false);
-                    }
-                    foreach ($groups as $group) {
-                        $j = 0;
-                        foreach ($_POST['rating'][$group['question_group_unit_id']] as $rating) {
-                            $rating = new Rating();
-                            $rating->customer_id = $customerId;
-                            $rating->unit_id = base64_decode(base64_decode($id));
-                            $rating->question_group_id = base64_decode(base64_decode($_POST['groupId'][$group['question_group_unit_id']][$j]));
-                            $rating->question_id = base64_decode(base64_decode($_POST['questionId'][$group['question_group_unit_id']][$j]));
-                            $rating->rating_point = $_POST['rating'][$group['question_group_unit_id']][$j];
-                            $rating->rating_date = date("Y-m-d H:i:s");
-                            $rating->save(false);
-                            $j++;
-                        }
-                    }
-                    $nps = new NpsRating();
-                    $nps->score = $_POST['nps'];
-                    $nps->customer_id = $customerId;
-                    $nps->unit_id = base64_decode(base64_decode($id));
-                    $nps->rating_date = date("Y-m-d H:i:s");
-                    $nps->save(false);
-
-                    $data['message'] = 'success';
-                    return json_encode($data);
+                $customer->save(false);
+                if (!empty($_POST['comments'])) {
+                    $comment = new Comment();
+                    $comment->customer_id = $customerId;
+                    $comment->comment = $_POST['comments'];
+                    $comment->other_important_attrib = $_POST['other_important_attrib'];
+                    $comment->save(false);
                 }
+                foreach ($groups as $group) {
+                    $j = 0;
+                    foreach ($_POST['rating'][$group['question_group_unit_id']] as $rating) {
+                        $rating = new Rating();
+                        $rating->customer_id = $customerId;
+                        $rating->unit_id = base64_decode(base64_decode($id));
+                        $rating->question_group_id = base64_decode(base64_decode($_POST['groupId'][$group['question_group_unit_id']][$j]));
+                        $rating->question_id = base64_decode(base64_decode($_POST['questionId'][$group['question_group_unit_id']][$j]));
+                        $rating->rating_point = $_POST['rating'][$group['question_group_unit_id']][$j];
+                        $rating->rating_date = date("Y-m-d H:i:s");
+                        $rating->save(false);
+                        $j++;
+                    }
+                }
+                $nps = new NpsRating();
+                $nps->score = $_POST['nps'];
+                $nps->customer_id = $customerId;
+                $nps->unit_id = base64_decode(base64_decode($id));
+                $nps->rating_date = date("Y-m-d H:i:s");
+                $nps->save(false);
+    
+                $data['message'] = 'success';
+                return json_encode($data);
             }
-     
-        } catch (yii\base\ErrorException $exception) {
+        }else{
             throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
-            //return $exception;
         }
+           
 
         //$certificate_id = $title['message_id'];
         //$message = $this->getMessage($certificate_id);
