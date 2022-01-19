@@ -19,7 +19,12 @@ app.controller('CreateUnitCtrl', ['$scope', '$element', '$http', '$window', func
 
     $scope.success = false;
     $scope.error = false;
-    $scope.formData = { question: [{ parentAttrib: "", items: [{ childAttrib: "" }] }], unitname: "", region:"",date: "",};
+    $scope.selectedService;
+    $scope.selectedFunctionalUnit;
+    $scope.trigger = 1;
+ 
+
+    $scope.formData = { question: [{ parentAttrib: "", items: [{ childAttrib: "" }] }], services_id: "",hrdc_id:null,pstc_id:null,unit_name:"" ,region: region_id,date: ""};
     $scope.addQuestion = function () {
         $scope.formData.question.push({ parentAttrib: "", items: [{ childAttrib: "" }] });
     };
@@ -44,9 +49,39 @@ app.controller('CreateUnitCtrl', ['$scope', '$element', '$http', '$window', func
             $scope.message = response.message;
         });
     };
+    $scope.Fetchservices = function() {
+        $http({
+            method:'GET',
+            url:backendURI + '/administrator/unit/functional-unit?region_id=' + region_id,
+        })
+        .then(function(response) {
+            $scope.services = response.data;
+        },function(response) {
+            $scope.message = response.message;
+        });
+    };
+    $scope.onChange = function(index){
+        $scope.pstcs = typeof($scope.services[index].pstc) == undefined ? $scope.services[index].hrdc : $scope.services[index].pstc ;
+        $scope.trigger = $scope.services[index].trigger;
+        $scope.formData.services_id = $scope.services[index].services_id;
+        if($scope.selectedService.services_id <= 7){
+            $scope.formData.unit_name = $scope.services[index].services_name;
+        }
+    }
+    $scope.onChangeFuncUnit = function(){
+        if($scope.selectedService.services_id == 10){
+            $scope.formData.hrdc_id = $scope.selectedFunctionalUnit.id;
+            $scope.formData.pstc_id = null;
+            $scope.formData.unit_name = $scope.selectedFunctionalUnit.name;
+        }else if($scope.selectedService.services_id == 8 || $scope.selectedService.services_id == 9){
+            $scope.formData.pstc_id = $scope.selectedFunctionalUnit.id;
+            $scope.formData.hrdc_id = null;
+            $scope.formData.unit_name = $scope.selectedFunctionalUnit.name;
+        }
+    }
     $scope.submitForm = function () {
         $scope.formData.date = $scope.today
-        // if ($("#txtEditor").summernote("isEmpty")) {
+        // if ($("#txtEditor").summernote("isEmp ty")) {
         //     $scope.formData.mailText = '';
         // } else {
         //     var note = $('.note-editable').html();
