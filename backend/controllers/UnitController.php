@@ -42,7 +42,10 @@ class UnitController extends \yii\web\Controller
                             'api-customer',
                             'api-region',
                             'update',
-                            'questions-api'
+                            'questions-api',
+                            'functional-unit',
+                            'add-update',
+                            'remove-update'
                         ],
                         'allow' => true,
                         'roles' => ['@'],
@@ -85,7 +88,7 @@ class UnitController extends \yii\web\Controller
                 FROM `tbl_unit` AS a
                 INNER JOIN tbl_region AS b 
                 ON b.`region_id` = a.`region_id`
-                WHERE " . $this->getOrRegions() .
+                WHERE " . $this->getOrRegions() . " AND a.is_disabled != 1" .
                 " ORDER BY `unit_id` DESC";
         $fetchData = $con->createCommand($sql)->queryAll();
         return $fetchData;
@@ -97,8 +100,9 @@ class UnitController extends \yii\web\Controller
             $request = json_decode($postdata);
             $message = 'success';
             if (empty($request->region)) $message = 'empty';
-            if (empty($request->unitname)) $message = 'empty';
+            //if (empty($request->unitname)) $message = 'empty';
             //if(empty($request->mailText)) $message = 'empty';
+            if(empty($request->services_id)) $message = 'empty';
             foreach ($request->question as $question) {
                 if (empty($question->parentAttrib)) {
                     $message = 'empty';
@@ -114,7 +118,10 @@ class UnitController extends \yii\web\Controller
                 $unit_id = $unit_id[0]['unit_id'] + 1;
                 $unit = new Unit();
                 $unit->unit_id = $unit_id;
-                $unit->unit_name =  $request->unitname;
+                $unit->unit_name = $request->unit_name;
+                $unit->services_id =  $request->services_id;
+                $unit->pstc_id = $request->pstc_id;
+                $unit->hrdc_id = $request->hrdc_id;
                 $unit->region_id = $request->region;
                 $unit->unit_url = '/csf/' . base64_encode(base64_encode($unit_id));
                 $unit->save(false);
@@ -143,9 +150,10 @@ class UnitController extends \yii\web\Controller
     public function actionUpdate($unit_id)
     {
         //$question_group_unit_id = 6;
+        $postdata = file_get_contents("php://input");
+        $request = json_decode($postdata);
+        // $request_array = (array) $request;
         if(Yii::$app->request->isPost){
-            $postdata = file_get_contents("php://input");
-            $request = json_decode($postdata);
             $message = 'success';
             if (empty($request->region)) $message = 'empty';
             if (empty($request->unitname)) $message = 'empty';
@@ -161,11 +169,12 @@ class UnitController extends \yii\web\Controller
                 }
             }
             if ($message == 'success') {
-                $unit = Unit::find()->where(['unit_id' => $unit_id])->one();
-                $unit->unit_name =  $request->unitname;
-                $unit->region_id = $request->region;
-                $unit->unit_url = '/csf/' . base64_encode(base64_encode($unit_id));
-                $unit->save(false);
+                
+                // $unit = Unit::find()->where(['unit_id' => $unit_id])->one();
+                //$unit->unit_name =  $request->unitname;
+                //$unit->region_id = $request->region;
+                // $unit->unit_url = '/csf/' . base64_encode(base64_encode($unit_id));
+                // $unit->save(false);
 
                 foreach ($request->question as $question) {
                     $parent = QuestionGroupUnit::find()->where(['question_group_unit_id' => $question->question_group_unit_id])->one();
@@ -182,8 +191,26 @@ class UnitController extends \yii\web\Controller
                 return $message;
             }
             return $postdata;
-        }
+        };
         return $this->render('_update');
+    }
+    public function actionAddUpdate($unit_id){
+        $postdata = file_get_contents("php://input");
+        $request = json_decode($postdata);
+        $question = new QuestionUnit();
+        $question->question = null;
+        $question->question_group_unit_id = $request->group_id;
+        $question->save(false);
+        //return $postdata;
+        return true;
+    }
+    public function actionRemoveUpdate($unit_id){
+        $postdata = file_get_contents("php://input");
+        $request = json_decode($postdata);
+        $question = QuestionUnit::find()->where(['question_unit_id' => $request->question_id ])->one();
+        $question->delete();
+        //return $postdata;
+        return true;
     }
     public function actionQuestionsApi($unit_id){
         $con = Yii::$app->db;
@@ -192,13 +219,13 @@ class UnitController extends \yii\web\Controller
         $sql_question = "SELECT a.`question_unit_id`, a.`question` AS `childAttrib`
                        FROM tbl_question_unit AS a 
                        WHERE a.`question_group_unit_id` = :question_group_unit_id";
-        $sql_unit = 'SELECT unit_name AS unitname, region_id AS region FROM tbl_unit WHERE unit_id = :unit_id';
+        $sql_unit = 'SELECT a.unit_name AS unitname, a.region_id AS region, b.`services_name` FROM tbl_unit  AS a LEFT OUTER JOIN `tbl_services` AS b ON a.`services_id` = b.`services_id` WHERE a.unit_id =  :unit_id';
         $data_unit = $con->createCommand($sql_unit, [':unit_id' => $unit_id])->queryAll();
         for($i = 0; $i < count($data_question_grp); $i++){
             $data_question = $con->createCommand($sql_question,[':question_group_unit_id' => $data_question_grp[$i]['question_group_unit_id']])->queryAll();
             $data_question_grp[$i]['items'] = $data_question;
         }
-        $json = '{"question":'.json_encode($data_question_grp).',"unitname":'.json_encode($data_unit[0]['unitname']).',"region":'.json_encode($data_unit[0]['region']).'}';
+        $json = '{"question":'.json_encode($data_question_grp).',"unitname":'.json_encode($data_unit[0]['unitname']).',"region":'.json_encode($data_unit[0]['region']).',"servicename":'.json_encode($data_unit[0]['services_name']).'}';
         return $json;
     }
     public function getLastQuestionGroupId()
@@ -337,5 +364,50 @@ class UnitController extends \yii\web\Controller
         $sql = 'DELETE FROM tbl_unit WHERE unit_id = :unit_id';
         $delete = $con->createCommand($sql,[':unit_id' => $id])->execute();
         return $delete;
+    }
+    public function actionFunctionalUnit($region_id){
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $con = Yii::$app->db;
+        $sql = 'SELECT * FROM tbl_services';
+        $services = $con->createCommand($sql)->queryAll();
+        $sqlPstc = "SELECT pstc_id AS `id`, CONCAT('PSTC-',pstc_name) AS `name` FROM tbl_pstc WHERE region_id = :region_id";
+        $pstc = $con->createCommand($sqlPstc,[':region_id' => $region_id])->queryAll();
+        $sqlHrdc = "SELECT hrdc_id AS `id`, short_name AS `name` FROM tbl_hrdc WHERE region_id = :region_id";
+        $hrdc = $con->createCommand($sqlHrdc,[':region_id' => $region_id])->queryAll();
+        $count = count($services);
+        
+        for($i=0;$i<=$count-1;$i++){
+            $services[$i]['index'] = $i;
+        }
+        
+        $countPstcIndex = count($pstc);
+
+        $services[7]['pstc'] = $pstc; 
+        for($i=0;$i<=$countPstcIndex-1;$i++){
+            $services[7]['pstc'][$i]['index'] = $i;
+        }
+        $services[8]['pstc'] = $pstc;
+        for($i=0;$i<=$countPstcIndex-1;$i++){
+            $services[8]['pstc'][$i]['index'] = $i;
+        }
+        $services[7]['index_name'] = 'pstc'; 
+        $services[8]['index_name'] = 'pstc';
+        $services[9]['pstc'] = $hrdc;
+        $services[9]['index_name'] = 'hrdc';
+
+        //for triggering funtional unit dropdown list....
+        $services[0]['trigger'] = 1;
+        $services[1]['trigger'] = 1;
+        $services[2]['trigger'] = 1;
+        $services[3]['trigger'] = 1;
+        $services[4]['trigger'] = 1;
+        $services[5]['trigger'] = 1;
+        $services[6]['trigger'] = 1;
+        $services[7]['trigger'] = 0;
+        $services[8]['trigger'] = 0;
+        $services[9]['trigger'] = 0;
+      
+        return $services;
+
     }
 }
