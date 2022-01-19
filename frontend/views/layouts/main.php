@@ -106,9 +106,12 @@ if(isset($_GET['region_code'])){
                 } else
                 if ($this->context->route == 'site/index') {
                     echo '';
-                }
-                else {
+                } else 
+                if($this->context->route == 'site/csf'){
                     echo '<button type="button" class="btn btn-yellow text-dark rounded-pill font-weight-bold" id="btn-back">Return to Main Menu</button>';
+                } else
+                if($this->context->route == 'site/sub-menu'){
+                    echo '<button type="button" class="btn btn-yellow text-dark rounded-pill font-weight-bold" id="btn-back">Go Back</button>';
                 }
                 ?>
 
