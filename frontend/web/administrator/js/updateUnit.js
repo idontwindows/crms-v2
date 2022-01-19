@@ -19,18 +19,38 @@ app.controller('UpdateUnitCtrl', ['$scope', '$element', '$http', '$window', func
 
     $scope.success = false;
     $scope.error = false;
-    $scope.formData = { question: [{ parentAttrib: "", items: [{ childAttrib: "" }] }], unitname: "", region:"",date: "",};
+    $scope.formData = { question: [{ parentAttrib: "", items: [{ childAttrib: "" }] }], unitname: "", region: region_id,servicename:"",date: "",};
     $scope.addQuestion = function () {
         $scope.formData.question.push({ parentAttrib: "", items: [{ childAttrib: "" }] });
     };
     $scope.removeQuestion = function (index) {
         $scope.formData.question.splice(index, 1);
     }
-    $scope.addItem = function (index) {
+    $scope.addItem = function (index,unit_id) {
         $scope.formData.question[index].items.push({ childAttrib: "" });
+        var group_id = $scope.formData.question[index].question_group_unit_id;
+        $http({
+            method: "POST",
+            url: backendURI + "/administrator/unit/add-update?unit_id=" + unit_id,
+            data: {group_id:group_id}
+        }).then(function (response) {
+            $scope.Fetchdata(unit_id);
+            console.log($scope.formData);
+        });
+        //console.log($scope.formData);
     };
-    $scope.removeItem = function (parent, index) {
+    $scope.removeItem = function (parent, index, unit_id) {
+        var question_id = $scope.formData.question[parent].items[index].question_unit_id;
         $scope.formData.question[parent].items.splice(index, 1);
+
+        $http({
+            method: "POST",
+            url: backendURI + "/administrator/unit/remove-update?unit_id=" + unit_id,
+            data: {question_id:question_id}
+        }).then(function (response) {
+            $scope.Fetchdata(unit_id);
+            console.log($scope.formData);
+        });
     };
 
     $scope.Fetchdata= function(unit_id) {
@@ -63,7 +83,6 @@ app.controller('UpdateUnitCtrl', ['$scope', '$element', '$http', '$window', func
         //     var note = $('.note-editable').html();
         //     $scope.formData.mailText = note;
         // }
-
         $http({
             method: "POST",
             url: backendURI + "/administrator/unit/update?unit_id=" + unit_id,
