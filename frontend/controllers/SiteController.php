@@ -228,13 +228,13 @@ class SiteController extends Controller
         $id = $_GET['id'];
         //$sql1 = 'SELECT * FROM `tbl_event` WHERE `unit_id` =' . base64_decode(base64_decode($id));
         $sql1 = 'SELECT a.`unit_id` AS `unit_id`,
-                                -- b.`functional_unit_name` AS `event_name`,
+                                -- b.`services_name` AS `event_name`,
                                 a.`unit_name` AS `event_name`,
                                 a.`is_disabled` AS `is_disabled`,
                                 a.`date_created` AS `date_created`
                         FROM `tbl_unit` AS a 
-                        -- LEFT OUTER JOIN tbl_functional_unit AS b
-                        -- ON b.functional_unit_id = a.`functional_unit_id` 
+                        -- LEFT OUTER JOIN tbl_services AS b
+                        -- ON b.services_id = a.`services_id` 
                 WHERE a.`unit_id` =' . base64_decode(base64_decode($id));
 
         try {
@@ -486,23 +486,47 @@ class SiteController extends Controller
         $fetchData = $con->createCommand($sql)->queryAll();
         return $fetchData;
     }
+    // public function actionRegionUnits($region_code)
+    // {
+    //     $con = Yii::$app->db;
+    //     $sql = 'SELECT a.`unit_id`,
+    //                     a.`unit_name`,
+    //                     a.`unit_url` 
+    //             FROM `tbl_unit` AS a 
+    //             INNER JOIN tbl_region AS b 
+    //             ON b.`region_id` = a.`region_id`
+    //             WHERE b.`region_code` = :region_code
+    //             AND a.`is_disabled` = 0
+    //             ORDER BY `unit_name` ASC';
+    //     $regions = $con->createCommand($sql, [':region_code' => $region_code])->queryAll();
+    //     if ($regions) {
+    //         return $this->render('menu', ['regions' => $regions]);
+    //     } else {
+    //         return $this->render('_blank');
+    //     }
+    // }
     public function actionRegionUnits($region_code)
     {
         $con = Yii::$app->db;
-        $sql = 'SELECT a.`unit_id`,
-                        a.`unit_name`,
-                        a.`unit_url` 
-                FROM `tbl_unit` AS a 
-                INNER JOIN tbl_region AS b 
-                ON b.`region_id` = a.`region_id`
-                WHERE b.`region_code` = :region_code
-                AND a.`is_disabled` = 0
-                ORDER BY `unit_name` ASC';
-        $regions = $con->createCommand($sql, [':region_code' => $region_code])->queryAll();
-        if ($regions) {
-            return $this->render('menu', ['regions' => $regions]);
-        } else {
-            return $this->render('_blank');
+        $sql = "CALL sp_services(:region_code)";
+        
+        try{
+            $regions = $con->createCommand($sql, [':region_code' => $region_code])->queryAll();
+            if ($regions) {
+                return $this->render('menu', ['regions' => $regions]);
+            } else {
+                return $this->render('_blank');
+            }
+        }catch(yii\db\Exception $ex){
+            return $ex;
         }
+
+    }
+
+    public function actionSubMenu($region_code,$service_id){
+        $con = Yii::$app->db;
+        $sql = "SELECT unit_name,unit_url FROM tbl_unit AS a LEFT OUTER JOIN tbl_region AS b ON a.`region_id` = b.`region_id`  WHERE `services_id` = :service_id AND b.region_code = :region_code";
+        $menus = $con->createCommand($sql, [':region_code' => $region_code,':service_id' => $service_id])->queryAll();
+        return $this->render('_submenu',['menus' => $menus, 'service_id' => $service_id, 'region_code' => $region_code]);
     }
 }
