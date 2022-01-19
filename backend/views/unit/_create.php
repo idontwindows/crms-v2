@@ -4,6 +4,8 @@ $this->title = 'Create';
 //$this->registerJsFile('/js/createEvent.js', ['position' => \yii\web\View::POS_END]);
 $this->params['breadcrumbs'][] = ['label' => 'Unit', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+$region_id = Yii::$app->user->identity->region_id;
 ?>
 <div ng-controller="CreateUnitCtrl">
     <form method="post" ng-submit="submitForm()">
@@ -13,20 +15,33 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="form-group col-md-6">
+                    <?php if($region_id == ''){?>
+                    <div class="form-group col-md-4">
                         <label for="txtRegion"><b>Region</b></label>
                         <div class="input-group">
                             <select id="select-region" ng-model="formData.region" class="form-control" ng-init="Fetchregion()">
-                                    <option value="" disabled selected>Select region...</option>
-                                    <option ng-repeat="region in regions" value="{{ region.region_id }}">{{ region.region_name }}</option>                 
+                                <option value="" disabled selected>Select region...</option>
+                                <option ng-repeat="region in regions" value="{{ region.region_id }}">{{ region.region_name }}</option>
                             </select>
                         </div>
                     </div>
-                    <div class="form-group col-md-6">
+                    <?php }?>
+                    <div class="form-group <?= $region_id != ''? 'col-md-6': 'col-md-4' ?>">
+                        <label for="select-services"><b>Services</b></label>
+                        <select ng-init="Fetchservices()" id="select-services" class="form-control" ng-options="service as service.services_name for service in services track by service.services_id" ng-model="selectedService"  ng-change="onChange(selectedService.index)">
+                        <option value="" disabled>Select Services...</option>
+                        </select>
+                    </div>
+                    <div class="form-group <?= $region_id != ''? 'col-md-6': 'col-md-4' ?>">
+                        <label for="select-services"><b>Functional Unit</b></label>
+                        <select  id="select-services" class="form-control" ng-options="pstc as pstc.name for pstc in pstcs track by pstc.id" ng-model="selectedFunctionalUnit" ng-change="onChangeFuncUnit()" data-ng-disabled="trigger">
+                            <option value="" disabled>Select Functional Unit...</option>
+                        </select>
+                    </div>
+                    <!-- <div class="form-group col-md-6">
                         <label for="txtEmail"><b>Unit Name</b></label>
                         <input type="text" class="form-control" ng-model="formData.unitname" id="txtUnit" name="unit" placeholder="Type unit name here..." autofocus="" aria-required="true" aria-invalid="">
-                        <!-- <div class="invalid-feedback">{{errormessageevent}}</div> -->
-                    </div>
+                    </div> -->
 
                     <!-- <div class="form-group col-md-6">
                         <label for="txtDate"><b>Event Date</b></label>
