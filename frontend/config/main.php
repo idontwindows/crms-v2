@@ -50,6 +50,8 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'region/<region_code:\w+>/submenu/<service_id:\w+>' => 'site/sub-menu',
+                'region/<region_code:\w+>/menu' => 'site/region-units',
                 'region/<region_code:\w+>' => 'site/region-units',
                 'csf/<id:\w+[=]*>' => 'site/csf'
                 //'region' => '<controller>/view?'
