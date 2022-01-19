@@ -14,7 +14,7 @@
                                     </div>
                                     <div class="media-body text-right">
                                         <h5 class="font-weight-bold unit-title"><?= $region['unit_name']; ?></h5>
-                                        <span><a class="font-weight-bold" href="<?= $region['unit_url'] ?>">Click Here</a></span>
+                                        <span><a class="font-weight-bold" href="<?= empty($region['unit_url']) ? '/region/'. $_GET['region_code'] .'/submenu/'. $region['services_id'] : $region['unit_url'] ?>">Click Here</a></span>
                                     </div>
                                 </div>
                             </div>
@@ -33,7 +33,7 @@
                                     </div>
                                     <div class="media-body text-right">
                                         <h5 class="font-weight-bold unit-title"><?= $region['unit_name']; ?></h5>
-                                        <span><a class="font-weight-bold" href="<?= $region['unit_url'] ?>">Click Here</a></span>
+                                        <span><a class="font-weight-bold" href="<?= empty($region['unit_url']) ? '/region/'. $_GET['region_code'] .'/submenu'. $region['services_id'] : $region['unit_url'] ?>">Click Here</a></span>
                                     </div>
                                 </div>
                             </div>
