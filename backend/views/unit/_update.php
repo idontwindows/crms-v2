@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="form-group col-md-6">
+                    <!-- <div class="form-group col-md-6">
                         <label for="txtRegion"><b>Region</b></label>
                         <div class="input-group">
                             <select id="select-region" ng-model="formData.region" class="form-control" ng-init="Fetchregion()">
@@ -22,10 +22,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <option ng-repeat="region in regions" value="{{ region.region_id }}">{{ region.region_name }}</option>                 
                             </select>
                         </div>
+                    </div> -->
+                    <div class="form-group col-md-6">
+                        <label for="txtEmail"><b>Services</b></label>
+                        <input type="text" class="form-control" ng-model="formData.servicename" id="txtUnit" name="unit" placeholder="Type unit name here..." autofocus="" aria-required="true" aria-invalid="" disabled>
+                        <!-- <div class="invalid-feedback">{{errormessageevent}}</div> -->
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="txtEmail"><b>Unit Name</b></label>
-                        <input type="text" class="form-control" ng-model="formData.unitname" id="txtUnit" name="unit" placeholder="Type unit name here..." autofocus="" aria-required="true" aria-invalid="">
+                        <label for="txtEmail"><b>Functional Unit</b></label>
+                        <input type="text" class="form-control" ng-model="formData.unitname" id="txtUnit" name="unit" placeholder="Type unit name here..." autofocus="" aria-required="true" aria-invalid="" disabled>
                         <!-- <div class="invalid-feedback">{{errormessageevent}}</div> -->
                     </div>
 
@@ -70,17 +75,17 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="input-group mb-3">
                                 <input type="hidden" class="form-control" id="txtParenthidden-{{$index}}" ng-model="formData.question_group_unit_id">   
                                 <input type="text" class="form-control txtParent" id="txtParent-{{$index}}" ng-model="formData.parentAttrib" placeholder="Enter parent attribute...">
-                                <!-- <div class="input-group-append">
-                                    <button type="button" class="btn btn-outline-secondary btn-primary text-white" type="button" ng-click="addItem($index)"><i class="fa fa-plus"></i></button>
-                                </div> -->
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-outline-secondary btn-primary text-white" type="button" ng-click="addItem($index,<?=$_GET['unit_id']?>)"><i class="fa fa-plus"></i></button>
+                                </div>
                             </div>
                             <fieldset ng-repeat="item in formData.items">
                                 <div class="input-group mb-3">
                                     <input type="hidden" name="childattribhidden[]" id="txtChildhidden-{{$parent.$index}}-{{$index}}" ng-model="item.question_unit_id" class="form-control">
                                     <input type="text" name="childattributequestion[]" id="txtChild-{{$parent.$index}}-{{$index}}" ng-model="item.childAttrib" class="form-control txtChild" placeholder="Enter child attribute...">
-                                    <!-- <div class="input-group-append">
-                                        <button type="button" class="btn btn-outline-secondary btn-danger text-white" name="remove" type="button" ng-click="removeItem($parent.$index, $index)"><i class="fa fa-minus"></i></button>
-                                    </div> -->
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-outline-secondary btn-danger text-white" name="remove" type="button" ng-click="removeItem($parent.$index, $index,<?=$_GET['unit_id']?>)"><i class="fa fa-minus"></i></button>
+                                    </div>
                                 </div>
                             </fieldset>
                         </div>
