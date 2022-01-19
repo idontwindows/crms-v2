@@ -9,6 +9,7 @@ use yii\bootstrap4\Breadcrumbs;
 use yii\bootstrap4\Html;
 use yii\bootstrap4\Nav;
 use yii\bootstrap4\NavBar;
+//use Yii;
 
 AppAsset::register($this);
 
@@ -38,6 +39,7 @@ $serveruri = $protocol . "$_SERVER[HTTP_HOST]";
     <script src="/js/app.js"></script> -->
     <script type="text/javascript">
         var backendURI = "<?= $serveruri ?>";
+        var region_id  = "<?= Yii::$app->user->identity->region_id ?>";
         var event_id = "<?= !empty($_GET['id']) ? $_GET['id'] : '' ?>";
     </script>
     <style>
