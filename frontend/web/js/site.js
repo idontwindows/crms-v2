@@ -173,3 +173,21 @@ $("#submit-rating").submit(function(e) {
     // }
 });
 
+$("#select-gender").change(function(){
+    if($(this).val() == 'female'){
+        $("#check-preggy").removeAttr("disabled");
+    }else{
+        $("#check-preggy").attr("disabled", true);
+        $("#check-preggy").prop('checked', false);
+    }
+});
+
+$("#select-age").change(function(){
+    if($(this).val() == '60-69' || $(this).val() == '70-79' || $(this).val() == '80+'){
+        $("#check-senior").removeAttr("disabled");
+        $("#check-senior").prop('checked', true);
+    }else{
+        $("#check-senior").attr("disabled", true);
+        $("#check-senior").prop('checked', false);
+    }
+});
