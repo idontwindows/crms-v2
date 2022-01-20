@@ -37,7 +37,6 @@ $script3 = "$(document).ready(function() {
                     window.location.replace('" . $serveruri . '/region/' . $title["region_code"] . "');
                 });
             });";
-//$this->registerJs($script2, yii\web\View::POS_END, '');
 $this->registerJs($script3, yii\web\View::POS_END, '');
 $this->registerJsFile('/js/signature_pad.min.js', ['position' => \yii\web\View::POS_END]);
 $this->registerJsFile('/js/site.js', ['position' => \yii\web\View::POS_END]);
@@ -207,7 +206,7 @@ $this->registerCss('.modal-confirm {
                         <div class="invalid-feedback invalid-feedback-name"></div>
                     </div>
                     <div class="row">
-                        <div class="form-group form-client-type col-md-6">
+                        <div class="form-group form-client-type col-md-4">
                             <label for="select-gender"><b>Client type</b> (<span class="text-danger">Required</span>)</label>
                             <select name="customer_client_type" id="select-client-type" class="form-control">
                                 <option value="" disabled selected>Select Client type...</option>
@@ -217,7 +216,7 @@ $this->registerCss('.modal-confirm {
                                 <option value="4">Businesses/Organization</option>
                             </select>
                         </div>
-                        <div class="form-group form-gender col-md-6">
+                        <div class="form-group form-gender col-md-4">
                             <label for="select-gender"><b>Gender</b> (<span class="text-danger">Required</span>)</label>
                             <select name="customer_gender" id="select-gender" class="form-control">
                                 <option value="" disabled selected>Select gender...</option>
@@ -225,7 +224,7 @@ $this->registerCss('.modal-confirm {
                                 <option value="female">Female</option>
                             </select>
                         </div>
-                        <div class="form-group form-age col-md-6">
+                        <div class="form-group form-age col-md-4">
                             <label for="select-age"><b>Age Group</b> (<span class="text-danger">Required</span>)</label>
                             <select name="customer_age" id="select-age" class="form-control">
                                 <option value="" disabled selected>Select age group...</option>
@@ -239,7 +238,7 @@ $this->registerCss('.modal-confirm {
                                 <option value="80+">80+</option>
                             </select>
                         </div>
-                        <div class="form-group form-client-type col-md-6">
+                        <!-- <div class="form-group form-client-type col-md-6">
                             <label for="select-info"><b>Other Information</b> (<span class="text-info">Optional</span>)</label>
                             <select name="customer_other_info" id="select-other-info" class="form-control">
                                 <option value="" disabled selected>Select info...</option>
@@ -247,9 +246,35 @@ $this->registerCss('.modal-confirm {
                                 <option value="2">Pregnant woman</option>
                                 <option value="3">Senior Citizen</option>
                             </select>
+                        </div> -->
+                        <div class="form-group form-age col-md-12">
+                            <div class="card mb-3 border-1">
+                                <div class="card-header">
+                                    <b>Other Infromation</b> (<span class="text-info">Optional</span>)
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="check-dl" value="option1">
+                                            <label class="form-check-label font-weight-bold" for="check-dl">Digital Literacy</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="check-pwd" value="option2">
+                                            <label class="form-check-label font-weight-bold" for="check-pwd">Person with disability</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="check-preggy" value="option1" disabled>
+                                            <label class="form-check-label font-weight-bold" for="check-preggy">Pregnant Women</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="check-senior" value="option2" onclick="return false">
+                                            <label class="form-check-label font-weight-bold" for="check-senior">Senior Citizen</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
                 </div>
             </div>
             <?php $g = 0; ?>
@@ -280,11 +305,11 @@ $this->registerCss('.modal-confirm {
                         <b><?= $group['question_group_unit_name'] ?></b> (<span class="text-danger">Required</span>)
                     </div>
                     <ul class="list-group list-group-flush">
-      
-                        <?php 
+
+                        <?php
                         $count = count($questions);
                         $count_devide = intval($count / 2);
-                        $q = 0; 
+                        $q = 0;
                         ?>
                         <?php foreach ($questions as $question) { ?>
                             <li class="list-group-item">
@@ -295,49 +320,49 @@ $this->registerCss('.modal-confirm {
                                         <input type="hidden" id="groupId" name="groupId[<?= $group['question_group_unit_id'] ?>][<?= $q ?>]" value="<?= base64_encode(base64_encode($group['question_group_unit_id'])) ?>">
                                     </div>
                                     <div class="d-flex align-items-center justify-content-center" id="smileys">
-                                    <?php if($group['importance'] == 0){?>
-                                        <div class="checkboxgroup">
-                                            <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="5" class="smiley5" id="radio1" required>
-                                            <label for="radio1"><b>Outstanding</b></label>
-                                        </div>
-                                        <div class="checkboxgroup">
-                                            <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="4" class="smiley4" id="radio2" required>
-                                            <label for="radio2"><b>Very Satisfactory</b></label>
-                                        </div>
-                                        <div class="checkboxgroup">
-                                            <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="3" class="smiley3" id="radio3" required>
-                                            <label for="radio3"><b>Satisfactory</b></label>
-                                        </div>
-                                        <div class="checkboxgroup">
-                                            <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="2" class="smiley2" id="radio4" required>
-                                            <label for="radio4"><b>Unsatisfactory</b></label>
-                                        </div>
-                                        <div class="checkboxgroup">
-                                            <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="1" class="smiley1" id="radio5" required>
-                                            <label for="radio5"><b>Poor</b></label>
-                                        </div>
-                                    <?php }else{?>
-                                        <div class="checkboxgroup">
-                                            <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="5" class="numero5" id="radio1" required>
-                                            <label for="radio1"><b>Very Important</b></label>
-                                        </div>
-                                        <div class="checkboxgroup">
-                                            <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="4" class="numero4" id="radio2" required>
-                                            <label for="radio2"><b>Important</b></label>
-                                        </div>
-                                        <div class="checkboxgroup">
-                                            <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="3" class="numero3" id="radio3" required>
-                                            <label for="radio3"><b>Moderately Important</b></label>
-                                        </div>
-                                        <div class="checkboxgroup">
-                                            <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="2" class="numero2" id="radio4" required>
-                                            <label for="radio4"><b>Slightly Important</b></label>
-                                        </div>
-                                        <div class="checkboxgroup">
-                                            <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="1" class="numero1" id="radio5" required>
-                                            <label for="radio5"><b>Not at all Important</b></label>
-                                        </div>
-                                    <?php }?>
+                                        <?php if ($group['importance'] == 0) { ?>
+                                            <div class="checkboxgroup">
+                                                <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="5" class="smiley5" id="radio1" required>
+                                                <label for="radio1"><b>Outstanding</b></label>
+                                            </div>
+                                            <div class="checkboxgroup">
+                                                <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="4" class="smiley4" id="radio2" required>
+                                                <label for="radio2"><b>Very Satisfactory</b></label>
+                                            </div>
+                                            <div class="checkboxgroup">
+                                                <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="3" class="smiley3" id="radio3" required>
+                                                <label for="radio3"><b>Satisfactory</b></label>
+                                            </div>
+                                            <div class="checkboxgroup">
+                                                <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="2" class="smiley2" id="radio4" required>
+                                                <label for="radio4"><b>Unsatisfactory</b></label>
+                                            </div>
+                                            <div class="checkboxgroup">
+                                                <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="1" class="smiley1" id="radio5" required>
+                                                <label for="radio5"><b>Poor</b></label>
+                                            </div>
+                                        <?php } else { ?>
+                                            <div class="checkboxgroup">
+                                                <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="5" class="numero5" id="radio1" required>
+                                                <label for="radio1"><b>Very Important</b></label>
+                                            </div>
+                                            <div class="checkboxgroup">
+                                                <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="4" class="numero4" id="radio2" required>
+                                                <label for="radio2"><b>Important</b></label>
+                                            </div>
+                                            <div class="checkboxgroup">
+                                                <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="3" class="numero3" id="radio3" required>
+                                                <label for="radio3"><b>Moderately Important</b></label>
+                                            </div>
+                                            <div class="checkboxgroup">
+                                                <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="2" class="numero2" id="radio4" required>
+                                                <label for="radio4"><b>Slightly Important</b></label>
+                                            </div>
+                                            <div class="checkboxgroup">
+                                                <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="1" class="numero1" id="radio5" required>
+                                                <label for="radio5"><b>Not at all Important</b></label>
+                                            </div>
+                                        <?php } ?>
                                     </div>
                                 </div>
                             </li>
