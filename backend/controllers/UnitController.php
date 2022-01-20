@@ -45,7 +45,8 @@ class UnitController extends \yii\web\Controller
                             'questions-api',
                             'functional-unit',
                             'add-update',
-                            'remove-update'
+                            'remove-update',
+                            'pstc'
                         ],
                         'allow' => true,
                         'roles' => ['@'],
