@@ -15,7 +15,7 @@
                                     </div>
                                     <div class="media-body text-right">
                                         <h5 class="font-weight-bold unit-title"><?= $region['services_id'] == 10 ? $region['sub_unit'] : $region['unit_name']; ?></h5>
-                                        <span><a class="font-weight-bold" href="<?= empty($region['unit_url']) ? '/region/'. $_GET['region_code'] .'/submenu/'. $region['services_id'] : $region['unit_url']; ?>">Click Here</a></span>
+                                        <span><a class="font-weight-bold" href="<?= empty($region['unit_url']) ? '/region/'. $_GET['region_code'] .'/pstc/'. $region['services_id'] : $region['unit_url']; ?>">Click Here</a></span>
                                     </div>
                                 </div>
                             </div>
@@ -34,7 +34,7 @@
                                     </div>
                                     <div class="media-body text-right">
                                         <h5 class="font-weight-bold unit-title"><?= $region['services_id'] == 10 ? $region['sub_unit'] : $region['unit_name']; ?></h5>
-                                        <span><a class="font-weight-bold" href="<?= empty($region['unit_url']) ? '/region/'. $_GET['region_code'] .'/submenu'. $region['services_id'] : $region['unit_url'] ?>">Click Here</a></span>
+                                        <span><a class="font-weight-bold" href="<?= empty($region['unit_url']) ? '/region/'. $_GET['region_code'] .'/pstc/'. $region['services_id'] : $region['unit_url'] ?>">Click Here</a></span>
                                     </div>
                                 </div>
                             </div>
