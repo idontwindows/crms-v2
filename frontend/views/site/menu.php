@@ -1,3 +1,4 @@
+
 <link rel="stylesheet" type="text/css" href="/css/bootstrap-extended.min.css">
 <div class="site-menu container-fluid mt-xl-5">
     <div class="row">
@@ -13,8 +14,8 @@
                                         <i class="fa fa-check-circle text-info font-large-2 float-right"></i>
                                     </div>
                                     <div class="media-body text-right">
-                                        <h5 class="font-weight-bold unit-title"><?= $region['unit_name']; ?></h5>
-                                        <span><a class="font-weight-bold" href="<?= empty($region['unit_url']) ? '/region/'. $_GET['region_code'] .'/submenu/'. $region['services_id'] : $region['unit_url'] ?>">Click Here</a></span>
+                                        <h5 class="font-weight-bold unit-title"><?= $region['services_id'] == 10 ? $region['sub_unit'] : $region['unit_name']; ?></h5>
+                                        <span><a class="font-weight-bold" href="<?= empty($region['unit_url']) ? '/region/'. $_GET['region_code'] .'/submenu/'. $region['services_id'] : $region['unit_url']; ?>">Click Here</a></span>
                                     </div>
                                 </div>
                             </div>
@@ -32,7 +33,7 @@
                                         <i class="fa fa-check-circle info font-large-2 float-right"></i>
                                     </div>
                                     <div class="media-body text-right">
-                                        <h5 class="font-weight-bold unit-title"><?= $region['unit_name']; ?></h5>
+                                        <h5 class="font-weight-bold unit-title"><?= $region['services_id'] == 10 ? $region['sub_unit'] : $region['unit_name']; ?></h5>
                                         <span><a class="font-weight-bold" href="<?= empty($region['unit_url']) ? '/region/'. $_GET['region_code'] .'/submenu'. $region['services_id'] : $region['unit_url'] ?>">Click Here</a></span>
                                     </div>
                                 </div>
