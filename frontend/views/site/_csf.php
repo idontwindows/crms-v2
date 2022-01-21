@@ -250,7 +250,7 @@ $this->registerCss('.modal-confirm {
                         <div class="form-group form-age col-md-12">
                             <div class="card mb-3 border-1">
                                 <div class="card-header">
-                                    <b>Other Infromation</b> (<span class="text-info">Optional</span>)
+                                    <b>Other Information</b> (<span class="text-info">Optional</span>)
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
