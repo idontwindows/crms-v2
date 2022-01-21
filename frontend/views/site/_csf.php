@@ -255,19 +255,19 @@ $this->registerCss('.modal-confirm {
                                 <div class="card-body">
                                     <div class="form-group">
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="check-dl" value="option1">
+                                            <input class="form-check-input" type="checkbox" name="digital-literate" id="check-dl" value="1">
                                             <label class="form-check-label font-weight-bold" for="check-dl">Digital Literacy</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="check-pwd" value="option2">
+                                            <input class="form-check-input" type="checkbox" name="pwd" id="check-pwd" value="1">
                                             <label class="form-check-label font-weight-bold" for="check-pwd">Person with disability</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="check-preggy" value="option1" disabled>
+                                            <input class="form-check-input" type="checkbox" name="preggy" id="check-preggy" value="1" disabled>
                                             <label class="form-check-label font-weight-bold" for="check-preggy">Pregnant Women</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="check-senior" value="option2" onclick="return false">
+                                            <input class="form-check-input" type="checkbox" name="senior" id="check-senior" value="1" onclick="return false">
                                             <label class="form-check-label font-weight-bold" for="check-senior">Senior Citizen</label>
                                         </div>
                                     </div>
