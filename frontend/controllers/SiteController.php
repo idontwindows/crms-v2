@@ -267,7 +267,11 @@ class SiteController extends Controller
                 $customer->client_type = $_POST['customer_client_type'];
                 $customer->age_group = $_POST['customer_age'];
                 $customer->gender = $_POST['customer_gender'];
-                if(!empty($_POST['customer_other_info'])) $customer->other_info = $_POST['customer_other_info'];
+                //if(!empty($_POST['customer_other_info'])) $customer->other_info = $_POST['customer_other_info'];
+                if(!empty($_POST['digital-literate'])) $customer->digital_literacy = $_POST['digital-literate'];
+                if(!empty($_POST['pwd'])) $customer->pwd = $_POST['pwd'];
+                if(!empty($_POST['preggy'])) $customer->pregnant = $_POST['preggy'];
+                if(!empty($_POST['senior'])) $customer->senior_citizen = $_POST['senior'];
                 $customer->date_created = date("Y-m-d H:i:s");
                 $customer->save(false);
                 if (!empty($_POST['comments'])) {
