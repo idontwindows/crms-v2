@@ -3,6 +3,7 @@
 /* @var $this yii\web\View */
 
 $this->title = 'Dashboard';
+echo $this->context->route;
 ?>
 <div class="site-index">
     <div class="body-content">

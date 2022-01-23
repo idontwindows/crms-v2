@@ -2,6 +2,7 @@
 /* @var $this yii\web\View */
 
 use yii\helpers\Url;
+use yii\helpers\Html;
 
 if (
     isset($_SERVER['HTTPS']) &&
@@ -15,7 +16,7 @@ if (
 }
 $serveruri = $protocol . "$_SERVER[HTTP_HOST]";
 
-$this->title = 'Unit';
+$this->title = 'Funtional Units';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
@@ -23,7 +24,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="card">
         <h5 class="card-header bg-info text-white">Units</h5>
         <div class="card-body">
-            <a href="/administrator/unit/create" class="btn btn-primary mb-3">Create Unit</a>
+            <?php
+            if(Yii::$app->user->can('create-unit')) echo Html::a('<i class="fas fa-plus-square"></i> Create Functinal Unit', Url::to(['/unit/create']), ['class' => 'btn btn-primary mb-3']);
+            ?>
             <table class="table">
                 <thead class="thead-dark">
                     <tr>
@@ -43,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <td>
                             <!-- <button type="button" class="btn btn-success btn-sm" ng-click="view(unit.unit_id)"><i class="fa fa-eye"></i></button> -->
                             <button type="button" class="btn btn-primary btn-sm ml-1 mr-1" ng-click="goUpdate(unit.unit_id)"><i class="fa fa-edit"></i></button>
-                            <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                            <!-- <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button> -->
                         </td>
 
                     </tr>

@@ -15,7 +15,8 @@ class AppAsset extends AssetBundle
         'css/site.css',
         'css/font-awesome.min.css',
         'css/bootstrap-datepicker3.min.css',
-        'css/summernote-bs4.min.css'
+        'css/summernote-bs4.min.css',
+        'css/sbadmin/styles.css'
     ];
     public $js = [
         'js/angular.min.js',
@@ -32,7 +33,10 @@ class AppAsset extends AssetBundle
         'js/datepicker.js',
         'js/popper.min.js',
         'js/summernote-bs4.min.js',
-        'js/sweetalert.min.js'
+        'js/sweetalert.min.js',
+        'js/fontawsome-all.min.js',
+        'js/sbadmin/scripts.js',
+        'js/sbadmin/bootstrap.bundle.min.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',

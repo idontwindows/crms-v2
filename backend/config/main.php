@@ -12,6 +12,7 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
+    'layoutPath' => '@backend/views/layouts/sbadmin/',
     'modules' => [
         'admin' => [
             'class' => 'mdm\admin\Module',
