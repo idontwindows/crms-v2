@@ -91,7 +91,7 @@ use yii\helpers\Url;
             </div>
         </div>
         <div class="sb-sidenav-footer">
-            <?= Html::a('<i class="fas fa-power-off"></i> Logout (' . Yii::$app->user->identity->username . ')', Url::to(['site/logout']), ['data-method' => 'POST', 'class' => 'text-white']) ?>
+            <?= Html::a('<i class="fas fa-power-off"></i> Logout (' . Yii::$app->user->identity->username . ')', Url::to(['/site/logout']), ['data-method' => 'POST', 'class' => 'text-white']) ?>
         </div>
     </nav>
 </div>
