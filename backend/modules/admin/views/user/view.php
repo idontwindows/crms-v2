@@ -12,10 +12,9 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('rbac-admin', 'Users'), 'url
 $this->params['breadcrumbs'][] = $this->title;
 
 $controllerId = $this->context->uniqueId . '/';
+echo $this->context->route;
 ?>
 <div class="user-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
         <?php

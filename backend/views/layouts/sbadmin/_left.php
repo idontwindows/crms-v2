@@ -2,6 +2,15 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+
+$collapse = 'collapsed';
+$bool = 'false';
+$show = '';
+if($this->context->route == 'admin/user/index' || $this->context->route == 'admin/user/view'){
+    $show = 'show';
+    $collapse = '';
+    $bool = 'true';
+}
 ?>
 <div id="layoutSidenav_nav">
     <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
@@ -42,15 +51,15 @@ use yii\helpers\Url;
                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>',
                         Url::to(['#']),
                         [
-                            'class' => 'nav-link collapsed',
+                            'class' => 'nav-link ' . $collapse,
                             'data-toggle' => 'collapse',
                             'data-target' => '#collapseSettings',
-                            'aria-expanded' => 'false',
+                            'aria-expanded' => $bool,
                             'aria-controls' => 'collapseSettings'
                         ]
                     );
                     ?>
-                    <div class="collapse" id="collapseSettings" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                    <div class="collapse <?= $show; ?>"  id="collapseSettings" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
                             <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-users"></i></div> Users', Url::to(['/admin/user']), ['class' => 'nav-link']) ?>
                             <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-drum"></i></div> Assignment', Url::to(['/admin/assignment']), ['class' => 'nav-link']) ?>
