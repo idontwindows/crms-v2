@@ -236,4 +236,7 @@ class ReportsController extends \yii\web\Controller
         unlink($filename);
         exit($content);
     }
+    public function actionReport2(){
+        return $this->render('report2');
+    }
 }

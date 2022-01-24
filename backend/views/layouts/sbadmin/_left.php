@@ -6,10 +6,63 @@ use yii\helpers\Url;
 $collapse = 'collapsed';
 $bool = 'false';
 $show = '';
+$activeuser = '';
+$activeassignment = '';
+$activepermission = '';
+$activeroute = '';
+$activerole = '';
+
+$showcp = '';
+$collapsecp = 'collapsed';
+$boolcp = 'false';
+$activecp = '';
+
+$showreport1 = '';
+$collapsereport1 = 'collapsed';
+$boolreport1 = 'false';
+$activerolereport1 = '';
+
 if($this->context->route == 'admin/user/index' || $this->context->route == 'admin/user/view'){
     $show = 'show';
     $collapse = '';
     $bool = 'true';
+    $activeuser = 'active';
+}
+if($this->context->route == 'admin/assignment/index' || $this->context->route == 'admin/assignment/view'){
+    $show = 'show';
+    $collapse = '';
+    $bool = 'true';
+    $activeassignment = 'active';
+}
+if($this->context->route == 'admin/permission/index' || $this->context->route == 'admin/permission/view' || $this->context->route == 'admin/permission/create'){
+    $show = 'show';
+    $collapse = '';
+    $bool = 'true';
+    $activepermission = 'active';
+}
+if($this->context->route == 'admin/route/index'){
+    $show = 'show';
+    $collapse = '';
+    $bool = 'true';
+    $activeroute = 'active';
+}
+if($this->context->route == 'admin/role/index' || $this->context->route == 'admin/role/create'){
+    $show = 'show';
+    $collapse = '';
+    $bool = 'true';
+    $activerole = 'active';
+}
+if($this->context->route == 'admin/user/change-password'){
+    $showcp = 'show';
+    $collapsecp = '';
+    $boolcp = 'true';
+    $activecp = 'active';
+}
+if($this->context->route == 'reports/index'){
+    $showreport1 = 'show';
+    $collapsereport1 = '';
+    $boolreport1 = 'true';
+    $activerolereport1 = 'active';
 }
 ?>
 <div id="layoutSidenav_nav">
@@ -29,17 +82,17 @@ if($this->context->route == 'admin/user/index' || $this->context->route == 'admi
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>',
                     Url::to(['#']),
                     [
-                        'class' => 'nav-link collapsed',
+                        'class' => 'nav-link '.$collapsereport1,
                         'data-toggle' => 'collapse',
                         'data-target' => '#collapseReport',
-                        'aria-expanded' => 'false',
+                        'aria-expanded' => $boolreport1,
                         'aria-controls' => 'collapseReport'
                     ]
                 );
                 ?>
-                <div class="collapse" id="collapseReport" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                <div class="collapse <?= $showreport1; ?>" id="collapseReport" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
-                        <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-file-excel"></i></div> Report 1', Url::to(['/reports']), ['class' => 'nav-link']) ?>
+                        <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-file-excel"></i></div> Report 1', Url::to(['/reports']), ['class' => 'nav-link '.$activerolereport1]) ?>
                         <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-file-excel"></i></div> Report 2', Url::to(['#']), ['class' => 'nav-link']) ?>
                     </nav>
                 </div>
@@ -61,11 +114,11 @@ if($this->context->route == 'admin/user/index' || $this->context->route == 'admi
                     ?>
                     <div class="collapse <?= $show; ?>"  id="collapseSettings" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
-                            <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-users"></i></div> Users', Url::to(['/admin/user']), ['class' => 'nav-link']) ?>
-                            <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-drum"></i></div> Assignment', Url::to(['/admin/assignment']), ['class' => 'nav-link']) ?>
-                            <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-key"></i></div> Permission', Url::to(['/admin/permission']), ['class' => 'nav-link']) ?>
-                            <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-route"></i></div> Route', Url::to(['/admin/route']), ['class' => 'nav-link']) ?>
-                            <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-user-tag"></i></div> Role', Url::to(['/admin/role']), ['class' => 'nav-link']) ?>
+                            <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-users"></i></div> Users', Url::to(['/admin/user']), ['class' => 'nav-link '.$activeuser]) ?>
+                            <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-drum"></i></div> Assignment', Url::to(['/admin/assignment']), ['class' => 'nav-link '.$activeassignment]) ?>
+                            <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-key"></i></div> Permission', Url::to(['/admin/permission']), ['class' => 'nav-link '.$activepermission]) ?>
+                            <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-route"></i></div> Route', Url::to(['/admin/route']), ['class' => 'nav-link '.$activeroute]) ?>
+                            <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-user-tag"></i></div> Role', Url::to(['/admin/role']), ['class' => 'nav-link '.$activerole]) ?>
                             <!-- <a class="nav-link" href="layout-sidenav-light.html">Report 2</a> -->
                         </nav>
                     </div>
@@ -83,17 +136,17 @@ if($this->context->route == 'admin/user/index' || $this->context->route == 'admi
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>',
                     Url::to(['#']),
                     [
-                        'class' => 'nav-link collapsed',
+                        'class' => 'nav-link '.$collapsecp,
                         'data-toggle' => 'collapse',
                         'data-target' => '#collapseAccount',
-                        'aria-expanded' => 'false',
+                        'aria-expanded' => $boolcp,
                         'aria-controls' => 'collapseAccount'
                     ]
                 );
                 ?>
-                <div class="collapse" id="collapseAccount" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                <div class="collapse <?= $showcp; ?>" id="collapseAccount" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
-                        <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-key"></i></div> Change Password', Url::to(['/admin/user/change-password']), ['class' => 'nav-link']) ?>
+                        <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-key"></i></div> Change Password', Url::to(['/admin/user/change-password']), ['class' => 'nav-link '.$activecp]) ?>
                         <!-- <a class="nav-link" href="layout-sidenav-light.html">Report 2</a> -->
                     </nav>
                 </div>
