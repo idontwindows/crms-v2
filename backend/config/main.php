@@ -15,7 +15,7 @@ return [
     'layoutPath' => '@backend/views/layouts/sbadmin/',
     'modules' => [
         'admin' => [
-            'class' => 'mdm\admin\Module',
+            'class' => 'backend\modules\admin\Module',
         ]
     ],
     'components' => [

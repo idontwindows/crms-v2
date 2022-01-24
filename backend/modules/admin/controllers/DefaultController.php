@@ -2,19 +2,26 @@
 
 namespace backend\modules\admin\controllers;
 
-use yii\web\Controller;
+use Yii;
 
 /**
- * Default controller for the `admin` module
+ * DefaultController
+ *
+ * @author Misbahul D Munir <misbahuldmunir@gmail.com>
+ * @since 1.0
  */
-class DefaultController extends Controller
+class DefaultController extends \yii\web\Controller
 {
+
     /**
-     * Renders the index view for the module
-     * @return string
+     * Action index
      */
-    public function actionIndex()
+    public function actionIndex($page = 'README.md')
     {
-        return $this->render('index');
+        if (preg_match('/^docs\/images\/image\d+\.png$/',$page)) {
+            $file = Yii::getAlias("@mdm/admin/{$page}");
+            return Yii::$app->getResponse()->sendFile($file);
+        }
+        return $this->render('index', ['page' => $page]);
     }
 }
