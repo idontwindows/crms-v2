@@ -155,8 +155,10 @@ class ReportsController extends \yii\web\Controller
     }
     public function actionExport($unit_id,$datefrom,$dateto){
         $con = Yii::$app->db;
-        $sqlRatings = 'CALL sp_rating(:datefrom,:dateto,:unit_id)';
-        $ratings = $con->createCommand($sqlRatings,[':datefrom' => $datefrom, ':dateto' => $dateto, 'unit_id' => $unit_id])->queryAll();
+        $sqlRatings = 'CALL sp_rating(:datefrom,:dateto,:unit_id,0)';
+        $feedbacks = $con->createCommand($sqlRatings,[':datefrom' => $datefrom, ':dateto' => $dateto, 'unit_id' => $unit_id])->queryAll();
+        $sqlRatings2 = 'CALL sp_rating(:datefrom,:dateto,:unit_id,1)';
+        $importance = $con->createCommand($sqlRatings2,[':datefrom' => $datefrom, ':dateto' => $dateto, 'unit_id' => $unit_id])->queryAll();
         $sqlUnit = 'SELECT a.`unit_id`,a.`unit_name`,a.`region_id`,b.`region_name`,b.`region_code` FROM tbl_unit AS a INNER JOIN tbl_region AS b ON b.`region_id` = a.`region_id` WHERE unit_id = :unit_id';
         $Units = $con->createCommand($sqlUnit,['unit_id' => $unit_id])->queryOne();
         $sqlCustomers = 'SELECT DISTINCT a.customer_id FROM tbl_customer AS a INNER JOIN tbl_rating AS b ON b.customer_id = a.customer_id WHERE b.unit_id = :unit_id AND b.rating_date BETWEEN :datefrom AND :dateto';
@@ -185,13 +187,13 @@ class ReportsController extends \yii\web\Controller
         // $sheet->setCellValue('F5', 'Poor');
         // $sheet->mergeCells('A12:F12');
         // $sheet->setCellValue('A12', 'RESPONDENT: '.count($customers));
-        $count = count($ratings);
-        $count_devide = $count / 2;
+        //$count = count($ratings);
+        //$count_devide = $count / 2;
         $sheet->setCellValue('B5', 'FUNCTIONAL UNIT: '. $Units['unit_name']);
         $sheet->setCellValue('B6', 'FOR THE PERIOD: '. $datefrom . ' to ' . $dateto);
         $i = 11;
-        $item1 = array_slice($ratings,0,$count_devide + 1,true);
-        foreach($item1 as $rating){           
+        //$item1 = array_slice($ratings,0,$count_devide + 1,true);
+        foreach($feedbacks as $rating){           
             $sheet->setCellValue('B'. $i, $rating['question']);        
             $sheet->setCellValue('D'. $i, $rating['rating5']);
             $sheet->setCellValue('F'. $i, $rating['rating4']);
@@ -201,8 +203,8 @@ class ReportsController extends \yii\web\Controller
             $i++;
         }
         $j = 19;
-        $item2 = array_slice($ratings,$count_devide + 1,$count,true);
-        foreach($item2 as $rating){           
+        //$item2 = array_slice($ratings,$count_devide + 1,$count,true);
+        foreach($importance as $rating){           
             $sheet->setCellValue('B'. $j, $rating['question']);        
             $sheet->setCellValue('D'. $j, $rating['rating5']);
             $sheet->setCellValue('F'. $j, $rating['rating4']);
