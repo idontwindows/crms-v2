@@ -53,8 +53,10 @@ class ReportsController extends \yii\web\Controller
         //     return 0;
         // }
         $con = Yii::$app->db;
-        $sqlRatings = 'CALL sp_rating(:datefrom,:dateto,:unit_id)';
-        $ratings = $con->createCommand($sqlRatings,[':datefrom' => $datefrom, ':dateto' => $dateto, 'unit_id' => $unit_id])->queryAll();
+        $sqlRatings = 'CALL sp_rating(:datefrom,:dateto,:unit_id,0)';
+        $feedbacks = $con->createCommand($sqlRatings,[':datefrom' => $datefrom, ':dateto' => $dateto, 'unit_id' => $unit_id])->queryAll();
+        $sqlRatings2 = 'CALL sp_rating(:datefrom,:dateto,:unit_id,1)';
+        $importance = $con->createCommand($sqlRatings2,[':datefrom' => $datefrom, ':dateto' => $dateto, 'unit_id' => $unit_id])->queryAll();
         $sqlComments = 'SELECT DISTINCT a.`comment` AS `comments` FROM tbl_comment AS a INNER JOIN tbl_rating AS b ON b.customer_id = a.customer_id WHERE b.unit_id = :unit_id AND b.rating_date BETWEEN :datefrom AND :dateto';
         $comments = $con->createCommand($sqlComments,[':datefrom' => $datefrom, ':dateto' => $dateto, 'unit_id' => $unit_id])->queryAll();
         $sqlCustomers = 'SELECT DISTINCT a.customer_id FROM tbl_customer AS a INNER JOIN tbl_rating AS b ON b.customer_id = a.customer_id WHERE b.unit_id = :unit_id AND b.rating_date BETWEEN :datefrom AND :dateto';
@@ -63,10 +65,10 @@ class ReportsController extends \yii\web\Controller
         $Nps = $con->createCommand($sqlNps,[':datefrom' => $datefrom, ':dateto' => $dateto, ':client_type' => 0,':age' => 'All', ':unit_id' => $unit_id])->queryAll();
         //return $this->render('index',[]);
         $data = [];
-        $count = count($ratings);
-        $count_devide = $count / 2;
-        $feedbacks = array_slice($ratings,0,$count_devide + 1,false);
-        $importance = array_slice($ratings,$count_devide + 1,$count,false);
+        $count = count($feedbacks) + count($importance);
+        // $count_devide = $count / 2;
+        // $feedbacks = array_slice($ratings,0,$count_devide + 1,false);
+        // $importance = array_slice($ratings,$count_devide + 1,$count,false);
         $data['feedbacks'] = $feedbacks;
         $data['importance'] = $importance;
         $data['comments'] = $comments;
