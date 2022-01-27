@@ -207,7 +207,7 @@ $this->registerCss('.modal-confirm {
                     </div>
                     <div class="row">
                         <div class="form-group form-client-type col-md-4">
-                            <label for="select-gender"><b>Client type</b> (<span class="text-danger">Required</span>)</label>
+                            <label for="select-client-type"><b>Client type</b> (<span class="text-danger">Required</span>)</label>
                             <select name="customer_client_type" id="select-client-type" class="form-control">
                                 <option value="" disabled selected>Select Client type...</option>
                                 <option value="1">General Public</option>
@@ -217,7 +217,7 @@ $this->registerCss('.modal-confirm {
                             </select>
                         </div>
                         <div class="form-group form-gender col-md-4">
-                            <label for="select-gender"><b>Gender</b> (<span class="text-danger">Required</span>)</label>
+                            <label for="select-gender"><b>Sex</b> (<span class="text-danger">Required</span>)</label>
                             <select name="customer_gender" id="select-gender" class="form-control">
                                 <option value="" disabled selected>Select gender...</option>
                                 <option value="male">Male</option>
