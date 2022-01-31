@@ -81,7 +81,7 @@ class ReportsController extends \yii\web\Controller
     public function actionUnitApi(){
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $con = Yii::$app->db;
-        $sql = "SELECT a.unit_id, concat('DOST-',UPPER(b.region_code),' ',a.unit_name) as unit_name FROM tbl_unit as a INNER join tbl_region as b on b.region_id = a.region_id WHERE" . $this->getOrRegions() . ' ORDER BY b.order ASC';
+        $sql = "SELECT a.unit_id, concat('DOST-',UPPER(b.region_code),' ',a.unit_name) as unit_name FROM tbl_unit as a INNER join tbl_region as b on b.region_id = a.region_id WHERE" . $this->getOrRegions() . ' AND is_disabled = 0 ORDER BY b.order ASC';
         $unit = $con->createCommand($sql)->queryAll();
         return $unit;
     }
