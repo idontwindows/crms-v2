@@ -109,6 +109,7 @@ class SiteController extends Controller
         $id = base64_decode(base64_decode($id));
         //$sql1 = 'SELECT * FROM `tbl_unit` WHERE `unit_id` =' . $id . ' AND `is_disabled` = 0';
         $sql1 = 'SELECT a.unit_id,
+                        a.services_id,
                         a.unit_name, 
                         a.region_id, 
                         a.unit_url, 
@@ -228,13 +229,14 @@ class SiteController extends Controller
         $id = $_GET['id'];
         //$sql1 = 'SELECT * FROM `tbl_event` WHERE `unit_id` =' . base64_decode(base64_decode($id));
         $sql1 = 'SELECT a.`unit_id` AS `unit_id`,
-                                -- b.`services_name` AS `event_name`,
+                                b.`services_id` AS `services_id`,
+                                b.`services_name` AS `services_name`,
                                 a.`unit_name` AS `event_name`,
                                 a.`is_disabled` AS `is_disabled`,
                                 a.`date_created` AS `date_created`
                         FROM `tbl_unit` AS a 
-                        -- LEFT OUTER JOIN tbl_services AS b
-                        -- ON b.services_id = a.`services_id` 
+                        LEFT OUTER JOIN tbl_services AS b
+                        ON b.services_id = a.`services_id` 
                 WHERE a.`unit_id` =' . base64_decode(base64_decode($id));
 
         try {
@@ -256,6 +258,12 @@ class SiteController extends Controller
         }
         //$data = [];
         if(Yii::$app->request->isPost){
+            if($title['services_id'] == 12){
+                if(empty($_POST['drivers_name'])){
+                    $data['message'] = 'blank';
+                    return json_encode($data);
+                } 
+            }
             if (empty($_POST['customer_age']) || empty($_POST['customer_gender']) || empty($_POST['customer_client_type'])) {
                 $data['message'] = 'blank';
                 return json_encode($data);
@@ -289,6 +297,7 @@ class SiteController extends Controller
                         $rating->unit_id = base64_decode(base64_decode($id));
                         $rating->question_group_id = base64_decode(base64_decode($_POST['groupId'][$group['question_group_unit_id']][$j]));
                         $rating->question_id = base64_decode(base64_decode($_POST['questionId'][$group['question_group_unit_id']][$j]));
+                        if(isset($_POST['drivers_name'])) $rating->drivers_id = $_POST['drivers_name'];
                         $rating->rating_point = $_POST['rating'][$group['question_group_unit_id']][$j];
                         $rating->rating_date = date("Y-m-d H:i:s");
                         $rating->save(false);
