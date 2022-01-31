@@ -52,11 +52,11 @@ $this->params['breadcrumbs'][] = $this->title;
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Attribute</th>
-                <th scope="col" class="text-md-center"><img class="emoticons" src="/images/grinning.svg" alt="5"></th>
-                <th scope="col" class="text-md-center"><img class="emoticons" src="/images/smile.svg" alt="4"></th>
-                <th scope="col" class="text-md-center"><img class="emoticons" src="/images/neutral.svg" alt="3"></th>
-                <th scope="col" class="text-md-center"><img class="emoticons" src="/images/sad.svg" alt="2"></th>
-                <th scope="col" class="text-md-center"><img class="emoticons" src="/images/angry.svg" alt="1"></th>
+                <th scope="col" class="text-md-center">outstanding</th>
+                <th scope="col" class="text-md-center">Very Satisfactory</th>
+                <th scope="col" class="text-md-center">Satisfactory</th>
+                <th scope="col" class="text-md-center">Unsatisfactory</th>
+                <th scope="col" class="text-md-center">Poor</th>
             </tr>
         </thead>
         <tbody ng-init="Fetchdata()">
@@ -71,6 +71,88 @@ $this->params['breadcrumbs'][] = $this->title;
             </tr>
         </tbody>
     </table>
+    <div class="row">
+            <div class="col-lg-6" ng-show="reports.feedbacks.length >= 1">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-pie mr-1"></i>
+                        {{ reports.feedbacks[0].question }}
+                    </div>
+                    <div class="card-body"><canvas id="myPieChart-1" width="100%" height="50"></canvas></div>
+                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                </div>
+            </div>
+            <div class="col-lg-6" ng-show="reports.feedbacks.length >= 2">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-pie mr-1"></i>
+                        {{ reports.feedbacks[1].question }}
+                    </div>
+                    <div class="card-body"><canvas id="myPieChart-2" width="100%" height="50"></canvas></div>
+                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                </div>
+            </div>
+            <div class="col-lg-6" ng-show="reports.feedbacks.length >= 3">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-pie mr-1"></i>
+                        {{ reports.feedbacks[2].question }}
+                    </div>
+                    <div class="card-body"><canvas id="myPieChart-3" width="100%" height="50"></canvas></div>
+                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                </div>
+            </div>
+            <div class="col-lg-6" ng-show="reports.feedbacks.length >= 4">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-pie mr-1"></i>
+                        {{ reports.feedbacks[3].question }}
+                    </div>
+                    <div class="card-body"><canvas id="myPieChart-4" width="100%" height="50"></canvas></div>
+                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                </div>
+            </div>
+            <div class="col-lg-6" ng-show="reports.feedbacks.length >= 5">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-pie mr-1"></i>
+                        {{ reports.feedbacks[4].question }}
+                    </div>
+                    <div class="card-body"><canvas id="myPieChart-5" width="100%" height="50"></canvas></div>
+                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                </div>
+            </div>
+            <div class="col-lg-6" ng-show="reports.feedbacks.length >= 6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-pie mr-1"></i>
+                        {{ reports.feedbacks[5].question }}
+                    </div>
+                    <div class="card-body"><canvas id="myPieChart-6" width="100%" height="50"></canvas></div>
+                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                </div>
+            </div>
+            <div class="col-lg-6" ng-show="reports.feedbacks.length >= 7">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-pie mr-1"></i>
+                        {{ reports.feedbacks[6].question }}
+                    </div>
+                    <div class="card-body"><canvas id="myPieChart-7" width="100%" height="50"></canvas></div>
+                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                </div>
+            </div>
+            <div class="col-lg-6" ng-show="reports.feedbacks.length >= 8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-pie mr-1"></i>
+                        {{ reports.feedbacks[7].question }}
+                    </div>
+                    <div class="card-body"><canvas id="myPieChart-8" width="100%" height="50"></canvas></div>
+                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                </div>
+            </div>
+    </div>
 
     <table class="table mt-5">
         <thead class="thead-dark">
