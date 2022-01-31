@@ -36,7 +36,11 @@ class AppAsset extends AssetBundle
         'js/sweetalert.min.js',
         'js/fontawsome-all.min.js',
         'js/sbadmin/scripts.js',
-        'js/sbadmin/bootstrap.bundle.min.js'
+        'js/sbadmin/bootstrap.bundle.min.js',
+        'js/sbadmin/chart.min.js',
+        'js/sbadmin/chartjs-plugin-datalabels.js',
+        //'js/sbadmin/assets/chart-pie.js'
+
     ];
     public $depends = [
         'yii\web\YiiAsset',
