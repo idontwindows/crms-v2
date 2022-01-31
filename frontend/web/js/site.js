@@ -5,6 +5,8 @@ const $resultEmail = $(".invalid-feedback-email");
 const $gender = $("#select-gender");
 const $age = $("#select-age");
 const $client = $("#select-client-type");
+const $driverschecked = $('input[name="drivers_name"]:checked');
+const $drivers = $('input[name="drivers_name"]');
 
 function showLoader() {
     $(".spanner").fadeIn("fast");
@@ -132,6 +134,9 @@ $("#submit-rating").submit(function(e) {
                             }else{
                                 $client.removeClass('is-invalid');
                                 $client.addClass('is-valid');
+                            }
+                            if ($driverschecked.length === 0) {
+                                $drivers.focus();
                             }
                             swal("Warning", "Please fill out all required fields...", "warning");
                         }
