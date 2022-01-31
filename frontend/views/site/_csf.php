@@ -247,7 +247,32 @@ $this->registerCss('.modal-confirm {
                                 <option value="3">Senior Citizen</option>
                             </select>
                         </div> -->
+                        <?php
+                        $con = Yii::$app->db;
+                        $sqlDriver = 'SELECT * FROM tbl_drivers WHERE region_id = :region_id';
+                        $drivers = $con->createCommand($sqlDriver, [':region_id' => $title['region_id']])->queryAll();
+                        ?>
+
                         <div class="form-group form-age col-md-12">
+                            <?php if ($title['services_id'] == 12) { ?>
+                                <div class="card mb-3 border-1">
+                                    <div class="card-header">
+                                        <b>Driver</b> (<span class="text-danger">Required</span>)
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <?php $i = 1 ?>
+                                            <?php foreach ($drivers as $driver) { ?>
+                                                <div class="form-check form-check-inline" id="drivers-name-check">
+                                                    <input class="form-check-input" type="radio" name="drivers_name" id="check-driver-<?= $i; ?>" value="<?= $driver['drivers_id'] ?>">
+                                                    <label class="form-check-label font-weight-bold" for="check-driver-<?= $i; ?>"><?= $driver['drivers_name']; ?></label>
+                                                </div>
+                                                <?php $i++ ?>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php } ?>
                             <div class="card mb-3 border-1">
                                 <div class="card-header">
                                     <b>Other Information</b> (<span class="text-info">Optional</span>)
@@ -393,42 +418,34 @@ $this->registerCss('.modal-confirm {
                                     ?> -->
                             <div class="d-flex align-items-center justify-content-center" id="nps">
                                 <div class="checkbox-nps checkboxgroup">
-                                    <input type="radio" name="nps" value="1" class="number1" id="nps-radio1" required>
-
+                                    <input type="radio" name="nps" value="10" class="number10" id="nps-radio10" required>
                                 </div>
                                 <div class="checkbox-nps checkboxgroup">
-                                    <input type="radio" name="nps" value="2" class="number2" id="nps-radio2" required>
-
+                                    <input type="radio" name="nps" value="9" class="number9" id="nps-radio9" required>
                                 </div>
                                 <div class="checkbox-nps checkboxgroup">
-                                    <input type="radio" name="nps" value="3" class="number3" id="nps-radio3" required>
-
+                                    <input type="radio" name="nps" value="8" class="number8" id="nps-radio8" required>
                                 </div>
                                 <div class="checkbox-nps checkboxgroup">
-                                    <input type="radio" name="nps" value="4" class="number4" id="nps-radio4" required>
-
+                                    <input type="radio" name="nps" value="7" class="number7" id="nps-radio7" required>
+                                </div>
+                                <div class="checkbox-nps checkboxgroup">
+                                    <input type="radio" name="nps" value="6" class="number6" id="nps-radio6" required>
                                 </div>
                                 <div class="checkbox-nps checkboxgroup">
                                     <input type="radio" name="nps" value="5" class="number5" id="nps-radio5" required>
                                 </div>
                                 <div class="checkbox-nps checkboxgroup">
-                                    <input type="radio" name="nps" value="6" class="number6" id="nps-radio6" required>
-
+                                    <input type="radio" name="nps" value="4" class="number4" id="nps-radio4" required>
                                 </div>
                                 <div class="checkbox-nps checkboxgroup">
-                                    <input type="radio" name="nps" value="7" class="number7" id="nps-radio7" required>
-
+                                    <input type="radio" name="nps" value="3" class="number3" id="nps-radio3" required>
                                 </div>
                                 <div class="checkbox-nps checkboxgroup">
-                                    <input type="radio" name="nps" value="8" class="number8" id="nps-radio8" required>
-
+                                    <input type="radio" name="nps" value="2" class="number2" id="nps-radio2" required>
                                 </div>
                                 <div class="checkbox-nps checkboxgroup">
-                                    <input type="radio" name="nps" value="9" class="number9" id="nps-radio9" required>
-
-                                </div>
-                                <div class="checkbox-nps checkboxgroup">
-                                    <input type="radio" name="nps" value="10" class="number10" id="nps-radio10" required>
+                                    <input type="radio" name="nps" value="1" class="number1" id="nps-radio1" required>
                                 </div>
                             </div>
                         </div>
