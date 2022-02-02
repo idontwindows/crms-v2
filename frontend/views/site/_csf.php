@@ -253,7 +253,7 @@ $this->registerCss('.modal-confirm {
                         $drivers = $con->createCommand($sqlDriver, [':region_id' => $title['region_id']])->queryAll();
                         ?>
 
-                        <div class="form-group form-age col-md-12">
+                        <div class="form-group form-driver col-md-12">
                             <?php if ($title['services_id'] == 12) { ?>
                                 <div class="card mb-3 border-1">
                                     <div class="card-header">
