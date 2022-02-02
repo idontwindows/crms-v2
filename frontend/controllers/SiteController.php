@@ -275,6 +275,7 @@ class SiteController extends Controller
                 $customer->client_type = $_POST['customer_client_type'];
                 $customer->age_group = $_POST['customer_age'];
                 $customer->gender = $_POST['customer_gender'];
+                $customer->signature = $_POST['sigText'];
                 //if(!empty($_POST['customer_other_info'])) $customer->other_info = $_POST['customer_other_info'];
                 if(!empty($_POST['digital-literate'])) $customer->digital_literacy = 1;
                 if(!empty($_POST['pwd'])) $customer->pwd = 1;
