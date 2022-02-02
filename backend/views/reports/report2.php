@@ -11,7 +11,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row mb-2">
         <div class="form-group col-md-4">
             <div class="input-group">
-                <select id="select-region" ng-model="unit_id" ng-change="OnChange()" class="form-control" ng-init="Fetchunit()">
+                <select id="select-region" ng-model="unit_id" ng-change="OnChange()" class="form-control"  ng-init="Fetchunit()">
                     <option value="" disabled selected>Select unit...</option>
                     <option ng-repeat="unit in units" value="{{ unit.unit_id }}">{{ unit.unit_name }}</option>
                 </select>
@@ -33,6 +33,21 @@ $this->params['breadcrumbs'][] = $this->title;
                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                 </div>
                 <!-- <div class="invalid-feedback">{{errormessagedate}}</div> -->
+            </div>
+        </div>
+        <div class="form-group form-driver col-md-12" ng-if="showDrivers">
+            <div class="card mb-3 border-1">
+                <div class="card-header">
+                    <b>Select Driver</b>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                            <div class="form-check form-check-inline" ng-repeat="driver in drivers" id="drivers-name" >
+                                <input class="form-check-input" type="radio" name="drivers_name" id="check-driver-{{ $index }}" ng-model="drivers_id" ng-value="driver.drivers_id" ng-click="OnClick(driver.drivers_id)">
+                                <label class="form-check-label font-weight-bold" for="check-driver-{{ $index }}">{{ driver.drivers_name }}</label>
+                            </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -72,86 +87,86 @@ $this->params['breadcrumbs'][] = $this->title;
         </tbody>
     </table>
     <div class="row">
-            <div class="col-lg-6" ng-show="reports.feedbacks.length >= 1">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-chart-pie mr-1"></i>
-                        {{ reports.feedbacks[0].question }}
-                    </div>
-                    <div class="card-body"><canvas id="myPieChart-1" width="100%" height="50"></canvas></div>
-                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+        <div class="col-lg-4" ng-show="reports.feedbacks.length >= 1">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-pie mr-1"></i>
+                    {{ reports.feedbacks[0].question }}
                 </div>
+                <div class="card-body"><canvas id="myPieChart-1" width="100%" height="50"></canvas></div>
+                <div class="card-footer small text-muted"></div>
             </div>
-            <div class="col-lg-6" ng-show="reports.feedbacks.length >= 2">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-chart-pie mr-1"></i>
-                        {{ reports.feedbacks[1].question }}
-                    </div>
-                    <div class="card-body"><canvas id="myPieChart-2" width="100%" height="50"></canvas></div>
-                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+        </div>
+        <div class="col-lg-4" ng-show="reports.feedbacks.length >= 2">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-pie mr-1"></i>
+                    {{ reports.feedbacks[1].question }}
                 </div>
+                <div class="card-body"><canvas id="myPieChart-2" width="100%" height="50"></canvas></div>
+                <div class="card-footer small text-muted"></div>
             </div>
-            <div class="col-lg-6" ng-show="reports.feedbacks.length >= 3">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-chart-pie mr-1"></i>
-                        {{ reports.feedbacks[2].question }}
-                    </div>
-                    <div class="card-body"><canvas id="myPieChart-3" width="100%" height="50"></canvas></div>
-                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+        </div>
+        <div class="col-lg-4" ng-show="reports.feedbacks.length >= 3">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-pie mr-1"></i>
+                    {{ reports.feedbacks[2].question }}
                 </div>
+                <div class="card-body"><canvas id="myPieChart-3" width="100%" height="50"></canvas></div>
+                <div class="card-footer small text-muted"></div>
             </div>
-            <div class="col-lg-6" ng-show="reports.feedbacks.length >= 4">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-chart-pie mr-1"></i>
-                        {{ reports.feedbacks[3].question }}
-                    </div>
-                    <div class="card-body"><canvas id="myPieChart-4" width="100%" height="50"></canvas></div>
-                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+        </div>
+        <div class="col-lg-4" ng-show="reports.feedbacks.length >= 4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-pie mr-1"></i>
+                    {{ reports.feedbacks[3].question }}
                 </div>
+                <div class="card-body"><canvas id="myPieChart-4" width="100%" height="50"></canvas></div>
+                <div class="card-footer small text-muted"></div>
             </div>
-            <div class="col-lg-6" ng-show="reports.feedbacks.length >= 5">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-chart-pie mr-1"></i>
-                        {{ reports.feedbacks[4].question }}
-                    </div>
-                    <div class="card-body"><canvas id="myPieChart-5" width="100%" height="50"></canvas></div>
-                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+        </div>
+        <div class="col-lg-4" ng-show="reports.feedbacks.length >= 5">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-pie mr-1"></i>
+                    {{ reports.feedbacks[4].question }}
                 </div>
+                <div class="card-body"><canvas id="myPieChart-5" width="100%" height="50"></canvas></div>
+                <div class="card-footer small text-muted"></div>
             </div>
-            <div class="col-lg-6" ng-show="reports.feedbacks.length >= 6">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-chart-pie mr-1"></i>
-                        {{ reports.feedbacks[5].question }}
-                    </div>
-                    <div class="card-body"><canvas id="myPieChart-6" width="100%" height="50"></canvas></div>
-                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+        </div>
+        <div class="col-lg-4" ng-show="reports.feedbacks.length >= 6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-pie mr-1"></i>
+                    {{ reports.feedbacks[5].question }}
                 </div>
+                <div class="card-body"><canvas id="myPieChart-6" width="100%" height="50"></canvas></div>
+                <div class="card-footer small text-muted"></div>
             </div>
-            <div class="col-lg-6" ng-show="reports.feedbacks.length >= 7">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-chart-pie mr-1"></i>
-                        {{ reports.feedbacks[6].question }}
-                    </div>
-                    <div class="card-body"><canvas id="myPieChart-7" width="100%" height="50"></canvas></div>
-                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+        </div>
+        <div class="col-lg-4" ng-show="reports.feedbacks.length >= 7">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-pie mr-1"></i>
+                    {{ reports.feedbacks[6].question }}
                 </div>
+                <div class="card-body"><canvas id="myPieChart-7" width="100%" height="50"></canvas></div>
+                <div class="card-footer small text-muted"></div>
             </div>
-            <div class="col-lg-6" ng-show="reports.feedbacks.length >= 8">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-chart-pie mr-1"></i>
-                        {{ reports.feedbacks[7].question }}
-                    </div>
-                    <div class="card-body"><canvas id="myPieChart-8" width="100%" height="50"></canvas></div>
-                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+        </div>
+        <div class="col-lg-4" ng-show="reports.feedbacks.length >= 8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-pie mr-1"></i>
+                    {{ reports.feedbacks[7].question }}
                 </div>
+                <div class="card-body"><canvas id="myPieChart-8" width="100%" height="50"></canvas></div>
+                <div class="card-footer small text-muted"></div>
             </div>
+        </div>
     </div>
 
     <table class="table mt-5">
