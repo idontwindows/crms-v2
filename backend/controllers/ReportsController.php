@@ -53,14 +53,25 @@ class ReportsController extends \yii\web\Controller
         //     return 0;
         // }
         $con = Yii::$app->db;
-        $sqlRatings = 'CALL sp_rating(:datefrom,:dateto,:unit_id,0)';
-        $feedbacks = $con->createCommand($sqlRatings,[':datefrom' => $datefrom, ':dateto' => $dateto, 'unit_id' => $unit_id])->queryAll();
-        $sqlRatings2 = 'CALL sp_rating(:datefrom,:dateto,:unit_id,1)';
-        $importance = $con->createCommand($sqlRatings2,[':datefrom' => $datefrom, ':dateto' => $dateto, 'unit_id' => $unit_id])->queryAll();
-        $sqlComments = 'SELECT DISTINCT a.`comment` AS `comments` FROM tbl_comment AS a INNER JOIN tbl_rating AS b ON b.customer_id = a.customer_id WHERE b.unit_id = :unit_id AND b.rating_date BETWEEN :datefrom AND :dateto';
-        $comments = $con->createCommand($sqlComments,[':datefrom' => $datefrom, ':dateto' => $dateto, 'unit_id' => $unit_id])->queryAll();
+        if(isset($_GET['drivers_id'])){
+            $sqlRatings = 'CALL sp_rating_for_drivers(:datefrom,:dateto,:unit_id,0,:drivers_id)';
+            $feedbacks = $con->createCommand($sqlRatings,[':datefrom' => $datefrom, ':dateto' => $dateto, 'unit_id' => $unit_id, ':drivers_id' => $_GET['drivers_id']])->queryAll();
+            $sqlRatings2 = 'CALL sp_rating(:datefrom,:dateto,:unit_id,1)';
+            $importance = $con->createCommand($sqlRatings2,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id])->queryAll();
+            $sqlComments = 'SELECT DISTINCT a.`comment` AS `comments` FROM tbl_comment AS a INNER JOIN tbl_rating AS b ON b.customer_id = a.customer_id WHERE b.unit_id = :unit_id AND b.rating_date BETWEEN :datefrom AND :dateto AND b.drivers_id = :drivers_id';
+            $comments = $con->createCommand($sqlComments,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id, ':drivers_id' => $_GET['drivers_id']])->queryAll();
+        }else{
+            $sqlRatings = 'CALL sp_rating(:datefrom,:dateto,:unit_id,0)';
+            $feedbacks = $con->createCommand($sqlRatings,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id])->queryAll();
+            $sqlRatings2 = 'CALL sp_rating(:datefrom,:dateto,:unit_id,1)';
+            $importance = $con->createCommand($sqlRatings2,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id])->queryAll();
+            $sqlComments = 'SELECT DISTINCT a.`comment` AS `comments` FROM tbl_comment AS a INNER JOIN tbl_rating AS b ON b.customer_id = a.customer_id WHERE b.unit_id = :unit_id AND b.rating_date BETWEEN :datefrom AND :dateto';
+            $comments = $con->createCommand($sqlComments,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id])->queryAll();
+        }
         $sqlCustomers = 'SELECT DISTINCT a.customer_id FROM tbl_customer AS a INNER JOIN tbl_rating AS b ON b.customer_id = a.customer_id WHERE b.unit_id = :unit_id AND b.rating_date BETWEEN :datefrom AND :dateto';
-        $customers = $con->createCommand($sqlCustomers,[':datefrom' => $datefrom, ':dateto' => $dateto, 'unit_id' => $unit_id])->queryAll();
+        $customers = $con->createCommand($sqlCustomers,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id])->queryAll();
+        $sqlUnits = 'SELECT * FROM tbl_unit WHERE unit_id = :unit_id';
+        $units = $con->createCommand($sqlUnits,[':unit_id' => $unit_id])->queryAll();
         $sqlNps = 'CALL sp_nps_ratings(:datefrom,:dateto,:client_type,:age,:unit_id)';
         $Nps = $con->createCommand($sqlNps,[':datefrom' => $datefrom, ':dateto' => $dateto, ':client_type' => 0,':age' => 'All', ':unit_id' => $unit_id])->queryAll();
         //return $this->render('index',[]);
@@ -69,6 +80,7 @@ class ReportsController extends \yii\web\Controller
         // $count_devide = $count / 2;
         // $feedbacks = array_slice($ratings,0,$count_devide + 1,false);
         // $importance = array_slice($ratings,$count_devide + 1,$count,false);
+        $data['unit'] = $units;
         $data['feedbacks'] = $feedbacks;
         $data['importance'] = $importance;
         $data['comments'] = $comments;
@@ -81,7 +93,7 @@ class ReportsController extends \yii\web\Controller
     public function actionUnitApi(){
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $con = Yii::$app->db;
-        $sql = "SELECT a.unit_id, concat('DOST-',UPPER(b.region_code),' ',a.unit_name) as unit_name FROM tbl_unit as a INNER join tbl_region as b on b.region_id = a.region_id WHERE" . $this->getOrRegions() . ' AND is_disabled = 0 ORDER BY b.order ASC';
+        $sql = "SELECT a.unit_id,a.services_id,concat('DOST-',UPPER(b.region_code),' ',a.unit_name) as unit_name FROM tbl_unit as a INNER join tbl_region as b on b.region_id = a.region_id WHERE" . $this->getOrRegions() . ' AND is_disabled = 0 ORDER BY b.order ASC';
         $unit = $con->createCommand($sql)->queryAll();
         return $unit;
     }
@@ -240,7 +252,14 @@ class ReportsController extends \yii\web\Controller
         unlink($filename);
         exit($content);
     }
-    public function actionReport2(){
+    public function actionReport1(){
         return $this->render('report2');
+    }
+    public function actionGetDriver($region_id){
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $con = Yii::$app->db;
+        $sql = 'SELECT * FROM tbl_drivers WHERE region_id = :region_id';
+        $drivers = $con->createCommand($sql,[':region_id' => $region_id])->queryAll();
+        return $drivers;
     }
 }
