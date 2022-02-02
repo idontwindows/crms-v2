@@ -17,10 +17,11 @@ $collapsecp = 'collapsed';
 $boolcp = 'false';
 $activecp = '';
 
-$showreport1 = '';
-$collapsereport1 = 'collapsed';
-$boolreport1 = 'false';
+$showreport = '';
+$collapsereport = 'collapsed';
+$boolreport = 'false';
 $activerolereport1 = '';
+$activerolereport2 = '';
 
 if($this->context->route == 'admin/user/index' || $this->context->route == 'admin/user/view'){
     $show = 'show';
@@ -59,9 +60,15 @@ if($this->context->route == 'admin/user/change-password'){
     $activecp = 'active';
 }
 if($this->context->route == 'reports/index'){
-    $showreport1 = 'show';
-    $collapsereport1 = '';
-    $boolreport1 = 'true';
+    $showreport = 'show';
+    $collapsereport = '';
+    $boolreport = 'true';
+    $activerolereport2 = 'active';
+}
+if($this->context->route == 'reports/report1'){
+    $showreport = 'show';
+    $collapsereport = '';
+    $boolreport = 'true';
     $activerolereport1 = 'active';
 }
 ?>
@@ -82,18 +89,18 @@ if($this->context->route == 'reports/index'){
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>',
                     Url::to(['#']),
                     [
-                        'class' => 'nav-link '.$collapsereport1,
+                        'class' => 'nav-link '.$collapsereport,
                         'data-toggle' => 'collapse',
                         'data-target' => '#collapseReport',
-                        'aria-expanded' => $boolreport1,
+                        'aria-expanded' => $boolreport,
                         'aria-controls' => 'collapseReport'
                     ]
                 );
                 ?>
-                <div class="collapse <?= $showreport1; ?>" id="collapseReport" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                <div class="collapse <?= $showreport; ?>" id="collapseReport" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
-                        <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-file-excel"></i></div> Report 1', Url::to(['/reports']), ['class' => 'nav-link '.$activerolereport1]) ?>
-                        <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-file-excel"></i></div> Report 2', Url::to(['#']), ['class' => 'nav-link']) ?>
+                        <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-file-excel"></i></div> Report 1', Url::to(['/reports/report1']), ['class' => 'nav-link '.$activerolereport1]) ?>
+                        <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-file-excel"></i></div> Report 2', Url::to(['/reports']), ['class' => 'nav-link '.$activerolereport2]) ?>
                     </nav>
                 </div>
                 <?php if (Yii::$app->user->identity->username == 'admin') { ?>
