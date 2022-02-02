@@ -5,28 +5,67 @@ app.controller('reportsCtrl', ['$scope', '$element', '$http', '$window', functio
     $scope.datefrom = '';
     $scope.dateto = '';
     $scope.unit_id = '';
-    $scope.Fetchdata = function () {
-        $http({
-            method: 'GET',
-            url: backendURI + '/administrator/reports/reports-api?unit_id=' + $scope.unit_id + '&datefrom=' + $scope.datefrom + '&dateto=' + $scope.dateto,
-        })
-            .then(function (response) {
-                $scope.reports = response.data;
-                respondent = response.data.customer;
-                $scope.respondent = respondent;
-                //$scope.PieChart(1);
-                
-                for(let i=0;i<response.data.feedbacks.length;i++){
-                    let rating5 = response.data.feedbacks[i].rating5
-                    let rating4 = response.data.feedbacks[i].rating4
-                    let rating3 = response.data.feedbacks[i].rating3
-                    let rating2 = response.data.feedbacks[i].rating2
-                    let rating1 = response.data.feedbacks[i].rating1
-                    $scope.PieChart(i+1,rating5,rating4,rating3,rating2,rating1);
-                }
-            }, function (response) {
-                $scope.message = response.message;
-            });
+    $scope.services_id = '';
+    $scope.showDrivers = false;
+    $scope.drivers_id = '';
+    $scope.Fetchdata = function (drivers_id = 0) {
+        if(drivers_id == 0){
+            $http({
+                method: 'GET',
+                url: backendURI + '/administrator/reports/reports-api?unit_id=' + $scope.unit_id + '&datefrom=' + $scope.datefrom + '&dateto=' + $scope.dateto,
+            })
+                .then(function (response) {
+                    $scope.reports = response.data;
+                    respondent = response.data.customer;
+                    $scope.respondent = respondent;
+                    //$scope.PieChart(1);
+
+                    console.log(drivers_id);
+                    $scope.services_id = response.data.unit[0].services_id;
+                    if (response.data.unit[0].services_id == 12) {
+                        $scope.showDrivers = true;
+                    } else {
+                        $scope.showDrivers = false;
+                    }
+                    for (let i = 0; i < response.data.feedbacks.length; i++) {
+                        let rating5 = response.data.feedbacks[i].rating5
+                        let rating4 = response.data.feedbacks[i].rating4
+                        let rating3 = response.data.feedbacks[i].rating3
+                        let rating2 = response.data.feedbacks[i].rating2
+                        let rating1 = response.data.feedbacks[i].rating1
+                        $scope.PieChart(i + 1, rating5, rating4, rating3, rating2, rating1);
+                    }
+                }, function (response) {
+                    $scope.message = response.message;
+                });
+        }else{
+            $http({
+                method: 'GET',
+                url: backendURI + '/administrator/reports/reports-api?unit_id=' + $scope.unit_id + '&datefrom=' + $scope.datefrom + '&dateto=' + $scope.dateto + '&drivers_id=' + drivers_id,
+            })
+                .then(function (response) {
+                    $scope.reports = response.data;
+                    respondent = response.data.customer;
+                    $scope.respondent = respondent;
+                    //$scope.PieChart(1);
+                    $scope.services_id = response.data.unit[0].services_id;
+                    if (response.data.unit[0].services_id == 12) {
+                        $scope.showDrivers = true;
+                    } else {
+                        $scope.showDrivers = false;
+                    }
+                    for (let i = 0; i < response.data.feedbacks.length; i++) {
+                        let rating5 = response.data.feedbacks[i].rating5
+                        let rating4 = response.data.feedbacks[i].rating4
+                        let rating3 = response.data.feedbacks[i].rating3
+                        let rating2 = response.data.feedbacks[i].rating2
+                        let rating1 = response.data.feedbacks[i].rating1
+                        $scope.PieChart(i + 1, rating5, rating4, rating3, rating2, rating1);
+                    }
+                }, function (response) {
+                    $scope.message = response.message;
+                });
+        }
     };
     $scope.Fetchunit = function () {
         $http({
@@ -39,21 +78,38 @@ app.controller('reportsCtrl', ['$scope', '$element', '$http', '$window', functio
                 $scope.message = response.message;
             });
     };
+
+    $http({
+        method: 'GET',
+        url: backendURI + '/administrator/reports/get-driver?region_id=' + region_id,
+    })
+        .then(function (response) {
+            $scope.drivers = response.data;
+        }, function (response) {
+            $scope.message = response.message;
+        });
+
     $scope.OnChange = function () {
         $scope.Fetchdata();
     };
+    $scope.OnClick = function(drivers_id){
+        //$scope.Fetchdata()
+        console.log(drivers_id);
+        $scope.Fetchdata(drivers_id);
+
+    }
     $scope.OnExport = function (unit_id, from, to) {
         var win = window.open('/administrator/reports/export?unit_id=' + unit_id + '&datefrom=' + from + '&dateto=' + to, '_blank');
         win.focus()
     };
-    $scope.PieChart = function (index,rating5,rating4,rating3,rating2,rating1) {
+    $scope.PieChart = function (index, rating5, rating4, rating3, rating2, rating1) {
         var ctx = document.getElementById("myPieChart-" + index).getContext('2d');
         var myPieChart1 = new Chart(ctx, {
             type: 'pie',
             data: {
                 labels: ["Outstanding", "Very Satisfactory", "Satisfactory", "Unsatisfactory", "Poor"],
                 datasets: [{
-                    data: [rating5,rating4,rating3,rating2,rating1],
+                    data: [rating5, rating4, rating3, rating2, rating1],
                     backgroundColor: ['#007bff', '#FFA500', '#808080', '#FFFF00', '#FF0000'],
                 }],
             },
@@ -76,6 +132,7 @@ app.controller('reportsCtrl', ['$scope', '$element', '$http', '$window', functio
                 }
             }
         });
+
 
     };
 }]);
