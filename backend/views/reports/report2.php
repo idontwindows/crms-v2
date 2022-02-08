@@ -9,7 +9,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div ng-controller="reportsCtrl">
     <div class="row mb-2">
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-6">
             <div class="input-group">
                 <select id="select-region" ng-model="unit_id" ng-change="OnChange()" class="form-control" ng-init="Fetchunit()">
                     <option value="" disabled selected>Select unit...</option>
@@ -17,7 +17,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 </select>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="form-group form-client-type col-md-6">
+            <!-- <label for="select-client-type"><b>Client type</b> (<span class="text-danger">Required</span>)</label> -->
+            <select name="customer_client_type" ng-model="clienttype" id="select-client-type" class="form-control" ng-change="OnChange()">
+                <option value="" disabled selected>Select Client type...</option>
+                <option value="2">Internal</option>
+                <option value="5">External</option>
+                <option value="6">All</option>
+            </select>
+        </div>
+        <div class="col-md-6">
             <div class="datepicker date input-group" data-date="{{ datefrom }}">
                 <input type="text" placeholder="From" name="datefrom" ng-change="OnChange()" ng-model='datefrom' class="form-control" id="txtDateFrom">
                 <div class="input-group-append">
@@ -26,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <!-- <div class="invalid-feedback">{{errormessagedate}}</div> -->
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="datepicker date input-group" data-date="{{ dateto }}">
                 <input type="text" placeholder="To" name="dateto" ng-model="dateto" ng-change="OnChange()" class="form-control" id="txtDateTo">
                 <div class="input-group-append">
@@ -141,7 +150,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="d-inline-block font-weight-bold">
                         {{ satisfactionRating | number:2 }} %
                     </div>
-                    
+
                 </div>
                 <!-- <div class="card-footer d-flex align-items-center justify-content-between">
                     <a class="small text-white stretched-link" href="#">View Details</a>

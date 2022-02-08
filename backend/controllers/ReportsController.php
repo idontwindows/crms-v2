@@ -52,6 +52,9 @@ class ReportsController extends \yii\web\Controller
         // if($unit_id == null && $datefrom == '' && $dateto == ''){
         //     return 0;
         // }
+
+        if(isset($_GET['clienttype'])) $client_type = $_GET['clienttype'];
+
         $emptydata = [];
         $emptydata['unit'] = [];
         $emptydata['feedbacks'] = [];
@@ -66,42 +69,43 @@ class ReportsController extends \yii\web\Controller
         $con = Yii::$app->db;
         if(isset($_GET['drivers_id'])){
             try{
-                $sqlRatings = 'CALL sp_rating_for_drivers(:datefrom,:dateto,:unit_id,0,:drivers_id)';
-                $feedbacks = $con->createCommand($sqlRatings,[':datefrom' => $datefrom, ':dateto' => $dateto, 'unit_id' => $unit_id, ':drivers_id' => $_GET['drivers_id']])->queryAll();
-                $sqlRatings2 = 'CALL sp_rating(:datefrom,:dateto,:unit_id,1)';
-                $importance = $con->createCommand($sqlRatings2,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id])->queryAll();
+                $sqlRatings = 'CALL sp_rating_for_drivers(:datefrom,:dateto,:unit_id,0,:drivers_id,:clienttype)';
+                $feedbacks = $con->createCommand($sqlRatings,[':datefrom' => $datefrom, ':dateto' => $dateto, 'unit_id' => $unit_id, ':drivers_id' => $_GET['drivers_id'], ':clienttype' => $client_type])->queryAll();
+                $sqlRatings2 = 'CALL sp_rating(:datefrom,:dateto,:unit_id,1,:clienttype)';
+                $importance = $con->createCommand($sqlRatings2,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id,':clienttype' => $client_type])->queryAll();
                 $sqlComments = 'SELECT DISTINCT a.`comment` AS `comments` FROM tbl_comment AS a INNER JOIN tbl_rating AS b ON b.customer_id = a.customer_id WHERE b.unit_id = :unit_id AND b.rating_date BETWEEN :datefrom AND :dateto AND b.drivers_id = :drivers_id';
                 $comments = $con->createCommand($sqlComments,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id, ':drivers_id' => $_GET['drivers_id']])->queryAll();
                 $sqlCustomers = 'SELECT DISTINCT a.customer_id FROM tbl_customer AS a INNER JOIN tbl_rating AS b ON b.customer_id = a.customer_id WHERE b.unit_id = :unit_id AND b.rating_date BETWEEN :datefrom AND :dateto AND b.drivers_id = :drivers_id';
                 $customers = $con->createCommand($sqlCustomers,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id, ':drivers_id' => $_GET['drivers_id']])->queryAll();
-                $sqlTotalUnsatisfactory = 'SELECT DISTINCT a.`customer_id` FROM tbl_rating AS a INNER JOIN tbl_customer AS b ON b.`customer_id` = a.`customer_id` WHERE a.`rating_point` BETWEEN 1 AND 3 AND a.unit_id = :unit_id AND a.`rating_date` BETWEEN :datefrom AND :dateto AND a.`drivers_id` = :drivers_id';
-                $TotalUnsatisfactory = $con->createCommand($sqlTotalUnsatisfactory,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id, ':drivers_id' => $_GET['drivers_id']])->queryAll();
-                $sqlVSscore = 'SELECT COUNT(rating_point) AS vs_score FROM tbl_rating AS a INNER JOIN tbl_customer AS b ON b.`customer_id` = a.`customer_id` INNER JOIN `tbl_question_group_unit` AS c ON c.`question_group_unit_id` = a.`question_group_id` WHERE  a.rating_point = 5 AND a.unit_id = :unit_id AND a.rating_date BETWEEN :datefrom AND :dateto AND a.drivers_id = :drivers_id AND c.`importance` = 0';
-                $TotalVSscore  = $con->createCommand($sqlVSscore,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id, ':drivers_id' => $_GET['drivers_id']])->queryOne();
-                $sqlOutstadingscore = 'SELECT COUNT(rating_point) AS outstanding_score FROM tbl_rating AS a INNER JOIN tbl_customer AS b ON b.`customer_id` = a.`customer_id` INNER JOIN `tbl_question_group_unit` AS c ON c.`question_group_unit_id` = a.`question_group_id` WHERE  a.rating_point = 4 AND a.unit_id = :unit_id AND a.rating_date BETWEEN :datefrom AND :dateto AND a.drivers_id = :drivers_id AND c.`importance` = 0';
-                $TotalOutstadingscore  = $con->createCommand($sqlOutstadingscore,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id, ':drivers_id' => $_GET['drivers_id']])->queryOne();
+                $sqlTotalUnsatisfactory = "SELECT DISTINCT a.`customer_id` FROM tbl_rating AS a INNER JOIN tbl_customer AS b ON b.`customer_id` = a.`customer_id` INNER JOIN `tbl_question_group_unit` AS c ON c.`question_group_unit_id` = a.`question_group_id` WHERE a.`rating_point` BETWEEN 1 AND 3 AND a.unit_id = :unit_id AND a.`rating_date` BETWEEN :datefrom AND :dateto AND a.`drivers_id` = :drivers_id AND c.`importance` = 0 AND IF(2 = :clienttype ,b.`client_type` = 2, IF(5 = :clienttype,b.`client_type` <> 2, b.`client_type` LIKE '%'))";
+                $TotalUnsatisfactory = $con->createCommand($sqlTotalUnsatisfactory,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id, ':drivers_id' => $_GET['drivers_id'], ':clienttype' => $client_type])->queryAll();
+                $sqlVSscore = "SELECT COUNT(rating_point) AS vs_score FROM tbl_rating AS a INNER JOIN tbl_customer AS b ON b.`customer_id` = a.`customer_id` INNER JOIN `tbl_question_group_unit` AS c ON c.`question_group_unit_id` = a.`question_group_id` WHERE  a.rating_point = 5 AND a.unit_id = :unit_id AND a.rating_date BETWEEN :datefrom AND :dateto AND a.drivers_id = :drivers_id AND c.`importance` = 0 AND IF(2 = :clienttype ,b.`client_type` = 2, IF(5 = :clienttype,b.`client_type` <> 2, b.`client_type` LIKE '%'))";
+                $TotalVSscore  = $con->createCommand($sqlVSscore,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id, ':drivers_id' => $_GET['drivers_id'], ':clienttype' => $client_type])->queryOne();
+                $sqlOutstadingscore = "SELECT COUNT(rating_point) AS outstanding_score FROM tbl_rating AS a INNER JOIN tbl_customer AS b ON b.`customer_id` = a.`customer_id` INNER JOIN `tbl_question_group_unit` AS c ON c.`question_group_unit_id` = a.`question_group_id` WHERE  a.rating_point = 4 AND a.unit_id = :unit_id AND a.rating_date BETWEEN :datefrom AND :dateto AND a.drivers_id = :drivers_id AND c.`importance` = 0 AND IF(2 = :clienttype ,b.`client_type` = 2, IF(5 = :clienttype,b.`client_type` <> 2, b.`client_type` LIKE '%'))";
+                $TotalOutstadingscore  = $con->createCommand($sqlOutstadingscore,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id, ':drivers_id' => $_GET['drivers_id'], ':clienttype' => $client_type])->queryOne();
             }catch(Yii\db\Exception $e){
                 return $emptydata;
                 //return $e;
             }
         }else{
             try{
-                $sqlRatings = 'CALL sp_rating(:datefrom,:dateto,:unit_id,0)';
-                $feedbacks = $con->createCommand($sqlRatings,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id])->queryAll();
-                $sqlRatings2 = 'CALL sp_rating(:datefrom,:dateto,:unit_id,1)';
-                $importance = $con->createCommand($sqlRatings2,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id])->queryAll();
-                $sqlComments = 'SELECT DISTINCT a.`comment` AS `comments` FROM tbl_comment AS a INNER JOIN tbl_rating AS b ON b.customer_id = a.customer_id WHERE b.unit_id = :unit_id AND b.rating_date BETWEEN :datefrom AND :dateto';
-                $comments = $con->createCommand($sqlComments,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id])->queryAll();
-                $sqlCustomers = 'SELECT DISTINCT a.customer_id FROM tbl_customer AS a INNER JOIN tbl_rating AS b ON b.customer_id = a.customer_id WHERE b.unit_id = :unit_id AND b.rating_date BETWEEN :datefrom AND :dateto';
-                $customers = $con->createCommand($sqlCustomers,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id])->queryAll();
-                $sqlTotalUnsatisfactory = 'SELECT DISTINCT a.`customer_id` FROM tbl_rating AS a INNER JOIN tbl_customer AS b ON b.`customer_id` = a.`customer_id` WHERE a.`rating_point` BETWEEN 1 AND 3 AND a.unit_id = :unit_id AND a.`rating_date` BETWEEN :datefrom AND :dateto';
-                $TotalUnsatisfactory = $con->createCommand($sqlTotalUnsatisfactory,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id])->queryAll();
-                $sqlVSscore = 'SELECT COUNT(rating_point) AS vs_score FROM tbl_rating AS a INNER JOIN tbl_customer AS b ON b.`customer_id` = a.`customer_id` INNER JOIN `tbl_question_group_unit` AS c ON c.`question_group_unit_id` = a.`question_group_id` WHERE  a.rating_point = 5 AND a.unit_id = :unit_id AND a.rating_date BETWEEN :datefrom AND :dateto  AND c.`importance` = 0';
-                $TotalVSscore  = $con->createCommand($sqlVSscore,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id])->queryOne();
-                $sqlOutstadingscore = 'SELECT COUNT(rating_point) AS outstanding_score FROM tbl_rating AS a INNER JOIN tbl_customer AS b ON b.`customer_id` = a.`customer_id` INNER JOIN `tbl_question_group_unit` AS c ON c.`question_group_unit_id` = a.`question_group_id` WHERE  a.rating_point = 4 AND a.unit_id = :unit_id AND a.rating_date BETWEEN :datefrom AND :dateto  AND c.`importance` = 0';
-                $TotalOutstadingscore  = $con->createCommand($sqlOutstadingscore,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id])->queryOne();
+                $sqlRatings = 'CALL sp_rating(:datefrom,:dateto,:unit_id,0,:clienttype)';
+                $feedbacks = $con->createCommand($sqlRatings,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id,':clienttype' => $client_type])->queryAll();
+                $sqlRatings2 = 'CALL sp_rating(:datefrom,:dateto,:unit_id,1,:clienttype)';
+                $importance = $con->createCommand($sqlRatings2,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id,':clienttype' => $client_type])->queryAll();
+                $sqlComments = "SELECT DISTINCT a.`comment` AS `comments` FROM tbl_comment AS a INNER JOIN tbl_rating AS b ON b.customer_id = a.customer_id INNER JOIN tbl_customer AS c ON a.customer_id = c.customer_id WHERE b.unit_id = :unit_id AND b.rating_date BETWEEN :datefrom AND :dateto AND IF(2 = :clienttype ,c.`client_type` = 2, IF(5 = :clienttype,c.`client_type` <> 2, c.`client_type` LIKE '%'))";
+                $comments = $con->createCommand($sqlComments,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id, ':clienttype' => $client_type])->queryAll();
+                $sqlCustomers = "SELECT DISTINCT a.customer_id FROM tbl_customer AS a INNER JOIN tbl_rating AS b ON b.customer_id = a.customer_id WHERE b.unit_id = :unit_id AND b.rating_date BETWEEN :datefrom AND :dateto AND IF(2 = :clienttype ,a.`client_type` = 2, IF(5 = :clienttype,a.`client_type` <> 2, a.`client_type` LIKE '%'))";
+                $customers = $con->createCommand($sqlCustomers,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id, ':clienttype' => $client_type])->queryAll();
+                $sqlTotalUnsatisfactory = "SELECT DISTINCT a.`customer_id` FROM tbl_rating AS a INNER JOIN tbl_customer AS b ON b.`customer_id` = a.`customer_id` INNER JOIN `tbl_question_group_unit` AS c ON c.`question_group_unit_id` = a.`question_group_id` WHERE a.`rating_point` BETWEEN 1 AND 3 AND a.unit_id = :unit_id AND a.`rating_date` BETWEEN :datefrom AND :dateto AND c.`importance` = 0 AND IF(2 = :clienttype ,b.`client_type` = 2, IF(5 = :clienttype,b.`client_type` <> 2, b.`client_type` LIKE '%'))";
+                $TotalUnsatisfactory = $con->createCommand($sqlTotalUnsatisfactory,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id, ':clienttype' => $client_type])->queryAll();
+                $sqlVSscore = "SELECT COUNT(rating_point) AS vs_score FROM tbl_rating AS a INNER JOIN tbl_customer AS b ON b.`customer_id` = a.`customer_id` INNER JOIN `tbl_question_group_unit` AS c ON c.`question_group_unit_id` = a.`question_group_id` WHERE  a.rating_point = 5 AND a.unit_id = :unit_id AND a.rating_date BETWEEN :datefrom AND :dateto  AND c.`importance` = 0 AND IF(2 = :clienttype ,b.`client_type` = 2, IF(5 = :clienttype,b.`client_type` <> 2, b.`client_type` LIKE '%'))";
+                $TotalVSscore  = $con->createCommand($sqlVSscore,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id, ':clienttype' => $client_type])->queryOne();
+                $sqlOutstadingscore = "SELECT COUNT(rating_point) AS outstanding_score FROM tbl_rating AS a INNER JOIN tbl_customer AS b ON b.`customer_id` = a.`customer_id` INNER JOIN `tbl_question_group_unit` AS c ON c.`question_group_unit_id` = a.`question_group_id` WHERE  a.rating_point = 4 AND a.unit_id = :unit_id AND a.rating_date BETWEEN :datefrom AND :dateto  AND c.`importance` = 0 AND IF(2 = :clienttype ,b.`client_type` = 2, IF(5 = :clienttype,b.`client_type` <> 2, b.`client_type` LIKE '%'))";
+                $TotalOutstadingscore  = $con->createCommand($sqlOutstadingscore,[':datefrom' => $datefrom, ':dateto' => $dateto, ':unit_id' => $unit_id, ':clienttype' => $client_type])->queryOne();
             }catch(Yii\db\Exception $e){
                 return $emptydata;
+                //return $e;
             }
         }
       

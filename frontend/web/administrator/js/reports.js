@@ -13,6 +13,7 @@ app.controller('reportsCtrl', ['$scope', '$element', '$http', '$window', functio
     $scope.respondent = 0;
     $scope.datefrom = from;
     $scope.dateto = to;
+    $scope.clienttype = '';
     $scope.unit_id = 0;
     $scope.services_id = '';
     $scope.showDrivers = false;
@@ -21,12 +22,17 @@ app.controller('reportsCtrl', ['$scope', '$element', '$http', '$window', functio
     $scope.percentOutstanding = 0;
     $scope.satisfactionRating = 0;
 
-
+ 
     $scope.Fetchdata = function (drivers_id = 0) {
+        // if($scope.clienttype.length == 0){
+        //     clienttype = 0;
+        // }else{
+        //     clienttype = $scope.clienttype;
+        // }
         if(drivers_id == 0){
             $http({
                 method: 'GET',
-                url: backendURI + '/administrator/reports/reports-api?unit_id=' + $scope.unit_id + '&datefrom=' + $scope.datefrom + '&dateto=' + $scope.dateto,
+                url: backendURI + '/administrator/reports/reports-api?unit_id=' + $scope.unit_id + '&datefrom=' + $scope.datefrom + '&dateto=' + $scope.dateto + '&clienttype=' + $scope.clienttype,
             })
                 .then(function (response) {
                     $scope.reports = response.data;
@@ -65,9 +71,14 @@ app.controller('reportsCtrl', ['$scope', '$element', '$http', '$window', functio
                     $scope.message = response.message;
                 });
         }else{
+            // if($scope.clienttype.length == 0){
+            //     clienttype = 0;
+            // }else{
+            //     clienttype = $scope.clienttype;
+            // }
             $http({
                 method: 'GET',
-                url: backendURI + '/administrator/reports/reports-api?unit_id=' + $scope.unit_id + '&datefrom=' + $scope.datefrom + '&dateto=' + $scope.dateto + '&drivers_id=' + drivers_id,
+                url: backendURI + '/administrator/reports/reports-api?unit_id=' + $scope.unit_id + '&datefrom=' + $scope.datefrom + '&dateto=' + $scope.dateto + '&drivers_id=' + drivers_id + '&clienttype=' + $scope.clienttype,
             })
                 .then(function (response) {
                     $scope.reports = response.data;
