@@ -23,6 +23,11 @@ $boolreport = 'false';
 $activerolereport1 = '';
 $activerolereport2 = '';
 
+$collapselibrary = 'collapsed';
+$boollibrary = 'false';
+$activelibrary = '';
+$showlibrary = '';
+
 if($this->context->route == 'admin/user/index' || $this->context->route == 'admin/user/view'){
     $show = 'show';
     $collapse = '';
@@ -70,6 +75,12 @@ if($this->context->route == 'reports/report1'){
     $collapsereport = '';
     $boolreport = 'true';
     $activerolereport1 = 'active';
+}
+if($this->context->route == 'drivers/index' || $this->context->route == 'drivers/create' || $this->context->route == 'drivers/update' || $this->context->route == 'drivers/view'){
+    $showlibrary = 'show';
+    $collapselibrary = '';
+    $boollibrary = 'true';
+    $activelibrary = 'active';
 }
 ?>
 <div id="layoutSidenav_nav">
@@ -136,6 +147,31 @@ if($this->context->route == 'reports/report1'){
                     Account Settings
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a> -->
+
+
+
+                <?php
+                echo Html::a(
+                    '<div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
+                    Library
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>',
+                    Url::to(['#']),
+                    [
+                        'class' => 'nav-link '.$collapselibrary,
+                        'data-toggle' => 'collapse',
+                        'data-target' => '#collapseLibrary',
+                        'aria-expanded' => $boollibrary,
+                        'aria-controls' => 'collapseLibrary'
+                    ]
+                );
+                ?>
+                <div class="collapse <?= $showlibrary; ?>" id="collapseLibrary" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-car"></i></div> Drivers', Url::to(['/drivers']), ['class' => 'nav-link '.$activelibrary]) ?>
+                        <!-- <a class="nav-link" href="layout-sidenav-light.html">Report 2</a> -->
+                    </nav>
+                </div>
+
                 <?php
                 echo Html::a(
                     '<div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>

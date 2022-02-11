@@ -27,6 +27,7 @@ class AppAsset extends AssetBundle
         'js/createEvent.js',
         'js/createUnit.js',
         'js/updateUnit.js',
+        'js/updateUnit2.js',
         'js/customer.js',
         'js/reports.js',
         'js/bootstrap-datepicker.min.js',

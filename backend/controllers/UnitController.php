@@ -46,7 +46,10 @@ class UnitController extends \yii\web\Controller
                             'functional-unit',
                             'add-update',
                             'remove-update',
-                            'pstc'
+                            'pstc',
+                            'create2',
+                            'update2',
+                            'dimension-api'
                         ],
                         'allow' => true,
                         'roles' => ['@'],
@@ -148,6 +151,60 @@ class UnitController extends \yii\web\Controller
         }
         return $this->render('_create');
     }
+    public function actionCreate2()
+    {
+        if (Yii::$app->request->isPost) {
+            $postdata = file_get_contents("php://input");
+            $request = json_decode($postdata);
+            $message = 'success';
+            if (empty($request->region)) $message = 'empty';
+            //if (empty($request->unitname)) $message = 'empty';
+            //if(empty($request->mailText)) $message = 'empty';
+            if(empty($request->services_id)) $message = 'empty';
+            foreach ($request->question as $question) {
+                if (empty($question->parentAttrib)) {
+                    $message = 'empty';
+                }
+                foreach ($question->items as $item) {
+                    if (empty($item->childAttrib)) {
+                        $message = 'empty';
+                    }
+                }
+            }
+            if ($message == 'success') {
+                $unit_id = $this->getLastUnitId();
+                $unit_id = $unit_id[0]['unit_id'] + 1;
+                $unit = new Unit();
+                $unit->unit_id = $unit_id;
+                $unit->unit_name = $request->unit_name;
+                $unit->services_id =  $request->services_id;
+                $unit->pstc_id = $request->pstc_id;
+                $unit->hrdc_id = $request->hrdc_id;
+                $unit->region_id = $request->region;
+                $unit->unit_url = '/csf/' . base64_encode(base64_encode($unit_id));
+                $unit->save(false);
+
+                foreach ($request->question as $question) {
+                    $question_group_id = $this->getLastQuestionGroupId();
+                    $question_group_id = $question_group_id[0]['question_group_unit_id'] + 1;
+                    $parent = new QuestionGroupUnit();
+                    $parent->question_group_unit_id = $question_group_id;
+                    $parent->question_group_unit_name = $question->parentAttrib;
+                    $parent->unit_id = $unit_id;
+                    $parent->save(false);
+                    foreach ($question->items as $item) {
+                        $child = new QuestionUnit();
+                        $child->question = $item->childAttrib;
+                        $child->question_group_unit_id = $question_group_id;
+                        $child->save(false);
+                    }
+                }
+                return $message;
+            }
+            return $postdata;
+        }
+        return $this->render('_create2');
+    }
     public function actionUpdate($unit_id)
     {
         //$question_group_unit_id = 6;
@@ -195,6 +252,54 @@ class UnitController extends \yii\web\Controller
         };
         return $this->render('_update');
     }
+    public function actionUpdate2($unit_id)
+    {
+        //$question_group_unit_id = 6;
+        $postdata = file_get_contents("php://input");
+        $request = json_decode($postdata);
+        // $request_array = (array) $request;
+        if(Yii::$app->request->isPost){
+            $message = 'success';
+            if (empty($request->region)) $message = 'empty';
+            if (empty($request->unitname)) $message = 'empty';
+            //if(empty($request->mailText)) $message = 'empty';
+            foreach ($request->question as $question) {
+                if (empty($question->parentAttrib)) {
+                    $message = 'empty';
+                }
+                foreach ($question->items as $item) {
+                    if (empty($item->childAttrib)) {
+                        $message = 'empty';
+                    }
+                }
+            }
+            if ($message == 'success') {
+                
+                // $unit = Unit::find()->where(['unit_id' => $unit_id])->one();
+                //$unit->unit_name =  $request->unitname;
+                //$unit->region_id = $request->region;
+                // $unit->unit_url = '/csf/' . base64_encode(base64_encode($unit_id));
+                // $unit->save(false);
+
+                foreach ($request->question as $question) {
+                    $parent = QuestionGroupUnit::find()->where(['question_group_unit_id' => $question->question_group_unit_id])->one();
+                    $parent->question_group_unit_name = $question->parentAttrib;
+                    $parent->unit_id = $unit_id;
+                    $parent->save(false);
+                    foreach ($question->items as $item) {
+                        $child = QuestionUnit::find()->where(['question_unit_id' => $item->question_unit_id])->one();
+                        $child->question = $item->childAttrib;
+                        $child->question_group_unit_id = $question->question_group_unit_id;
+                        $child->dimension_id = $item->dimension_id;
+                        $child->save(false);
+                    }
+                }
+                return $message;
+            }
+            return $postdata;
+        };
+        return $this->render('_update2');
+    }
     public function actionAddUpdate($unit_id){
         $postdata = file_get_contents("php://input");
         $request = json_decode($postdata);
@@ -214,10 +319,11 @@ class UnitController extends \yii\web\Controller
         return true;
     }
     public function actionQuestionsApi($unit_id){
+        // Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $con = Yii::$app->db;
-        $sql_question_grp = "SELECT  question_group_unit_id,question_group_unit_name as `parentAttrib` FROM tbl_question_group_unit WHERE unit_id = :unit_id";
+        $sql_question_grp = "SELECT  question_group_unit_id,question_group_unit_name as `parentAttrib`, importance FROM tbl_question_group_unit WHERE unit_id = :unit_id";
         $data_question_grp = $con->createCommand($sql_question_grp, [':unit_id' => $unit_id])->queryAll();
-        $sql_question = "SELECT a.`question_unit_id`, a.`question` AS `childAttrib`
+        $sql_question = "SELECT a.`question_unit_id`, a.`question` AS `childAttrib`, a.`dimension_id`
                        FROM tbl_question_unit AS a 
                        WHERE a.`question_group_unit_id` = :question_group_unit_id";
         $sql_unit = 'SELECT a.unit_name AS unitname, a.region_id AS region, b.`services_name` FROM tbl_unit  AS a LEFT OUTER JOIN `tbl_services` AS b ON a.`services_id` = b.`services_id` WHERE a.unit_id =  :unit_id';
@@ -410,5 +516,12 @@ class UnitController extends \yii\web\Controller
       
         return $services;
 
+    }
+    public function actionDimensionApi(){
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $con = Yii::$app->db;
+        $sql = 'SELECT * FROM tbl_dimension';
+        $dimensions = $con->createCommand($sql)->queryAll();
+        return $dimensions;
     }
 }

@@ -1,17 +1,107 @@
 <?php
 /* @var $this yii\web\View */
+
+use function Matrix\identity;
+
 $this->title = 'Reports';
 //$this->registerJsFile('/js/createEvent.js', ['position' => \yii\web\View::POS_END]);
 //$this->params['breadcrumbs'][] = ['label' => 'Unit', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
+// echo yii::$app->user->identity->region_id != null ? yii::$app->user->identity->region_id : 'waley';
+
 ?>
 
 <div ng-controller="reportsCtrl">
     <div class="row mb-2">
+        <?php if(yii::$app->user->identity->region_id == null){?>
+        <div class="form-group form-regions col-md-12">
+            <div class="card mb-3 border-1">
+                <div class="card-header">
+                    <b>Regions</b>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="radio-region" ng-model="regionid" ng-value="1" id="check-region-1" ng-click="OnClickRegion(1)">
+                            <label class="form-check-label font-weight-bold" for="check-region-1">RO I</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="radio-region" ng-model="regionid" ng-value="2" id="check-region-2" ng-click="OnClickRegion(2)">
+                            <label class="form-check-label font-weight-bold" for="check-region-2">RO II</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="radio-region" ng-model="regionid" ng-value="3" id="check-region-3" ng-click="OnClickRegion(3)">
+                            <label class="form-check-label font-weight-bold" for="check-region-3">RO III</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="radio-region" ng-model="regionid" ng-value="4" id="check-region-4" ng-click="OnClickRegion(4)">
+                            <label class="form-check-label font-weight-bold" for="check-region-4">RO IV-A</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="radio-region" ng-model="regionid" ng-value="13" id="check-region-13" ng-click="OnClickRegion(13)">
+                            <label class="form-check-label font-weight-bold" for="check-region-13">RO IV-B</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="radio-region" ng-model="regionid" ng-value="5" id="check-region-5" ng-click="OnClickRegion(5)">
+                            <label class="form-check-label font-weight-bold" for="check-region-5">RO V</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="radio-region" ng-model="regionid" ng-value="6" id="check-region-6" ng-click="OnClickRegion(6)">
+                            <label class="form-check-label font-weight-bold" for="check-region-6">RO VI</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="radio-region" ng-model="regionid" ng-value="7" id="check-region-7" ng-click="OnClickRegion(7)">
+                            <label class="form-check-label font-weight-bold" for="check-region-7">RO VII</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="radio-region" ng-model="regionid" ng-value="8" id="check-region-8" ng-click="OnClickRegion(8)">
+                            <label class="form-check-label font-weight-bold" for="check-region-8">RO VIII</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="radio-region" ng-model="regionid" ng-value="9" id="check-region-9"ng-click="OnClickRegion(9)">
+                            <label class="form-check-label font-weight-bold" for="check-region-9">RO IX</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="radio-region" ng-model="regionid" ng-value="10"  id="check-region-10" ng-click="OnClickRegion(10)">
+                            <label class="form-check-label font-weight-bold" for="check-region-10">RO X</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="radio-region" ng-model="region_id" ng-value="11" id="check-region-11" ng-click="OnClickRegion(11)">
+                            <label class="form-check-label font-weight-bold" for="check-region-11">RO XI</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="radio-region" ng-model="regionid" ng-value="12" id="check-region-12" ng-click="OnClickRegion(12)">
+                            <label class="form-check-label font-weight-bold" for="check-region-12">RO XII</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="radio-region" ng-model="regionid" ng-value="14" id="check-region-14" ng-click="OnClickRegion(14)">
+                            <label class="form-check-label font-weight-bold" for="check-region-14">CARAGA</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="radio-region" ng-model="regionid" ng-value="15" id="check-region-15" ng-click="OnClickRegion(15)">
+                            <label class="form-check-label font-weight-bold" for="check-region-15">CAR</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="radio-region" ng-model="region_id" ng-value="16" id="check-region-16" ng-click="OnClickRegion(16)">
+                            <label class="form-check-label font-weight-bold" for="check-region-16">NCR</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="radio-region" ng-model="region_id" ng-value="17" id="check-region-17" ng-click="OnClickRegion(17)">
+                            <label class="form-check-label font-weight-bold" for="check-region-17">ARMM</label>
+                        </div>
+
+                        <!-- <input class="form-check-input" type="radio" name="radio-region" id="check-region-18" ng-model="drivers_id" ng-value="driver.drivers_id" ng-click="OnClick(driver.drivers_id)">
+                            <label class="form-check-label font-weight-bold" for="check-region-18">ROS</label> -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php } ?>
         <div class="form-group col-md-6">
             <div class="input-group">
-                <select id="select-region" ng-model="unit_id" ng-change="OnChange()" class="form-control" ng-init="Fetchunit()">
+                <select id="select-region" ng-model="unit_id" ng-change="OnChange()" class="form-control" ng-init="Fetchunit(regionid)">
                     <option value="" disabled selected>Select unit...</option>
                     <option ng-repeat="unit in units" value="{{ unit.unit_id }}">{{ unit.unit_name }}</option>
                 </select>
@@ -44,14 +134,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 <!-- <div class="invalid-feedback">{{errormessagedate}}</div> -->
             </div>
         </div>
-        <div class="form-group form-driver col-md-12" ng-if="showDrivers">
+        <div class="form-group form-driver col-md-12 mt-3" ng-if="showDrivers">
             <div class="card mb-3 border-1">
                 <div class="card-header">
                     <b>Select Driver</b>
                 </div>
                 <div class="card-body">
-                    <div class="form-group">
-                        <div class="form-check form-check-inline" ng-repeat="driver in drivers" id="drivers-name">
+                    <div class="form-group"  ng-init="Fetchdrivers(regionid)">
+                        <div class="form-check form-check-inline" ng-repeat="driver in drivers">
                             <input class="form-check-input" type="radio" name="drivers_name" id="check-driver-{{ $index }}" ng-model="drivers_id" ng-value="driver.drivers_id" ng-click="OnClick(driver.drivers_id)">
                             <label class="form-check-label font-weight-bold" for="check-driver-{{ $index }}">{{ driver.drivers_name }}</label>
                         </div>

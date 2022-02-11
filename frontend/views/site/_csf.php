@@ -210,8 +210,8 @@ $this->registerCss('.modal-confirm {
                             <label for="select-client-type"><b>Client type</b> (<span class="text-danger">Required</span>)</label>
                             <select name="customer_client_type" id="select-client-type" class="form-control">
                                 <option value="" disabled selected>Select Client type...</option>
-                                <option value="1">General Public</option>
                                 <option value="2">Internal Employees</option>
+                                <option value="1">General Public</option>
                                 <option value="3">Governement Employees</option>
                                 <option value="4">Businesses/Organization</option>
                             </select>

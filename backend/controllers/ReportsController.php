@@ -132,10 +132,11 @@ class ReportsController extends \yii\web\Controller
 
        return $data;
     }
-    public function actionUnitApi(){
+    public function actionUnitApi($region_id){
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $con = Yii::$app->db;
-        $sql = "SELECT a.unit_id,a.services_id,concat('DOST-',UPPER(b.region_code),' ',a.unit_name) as unit_name FROM tbl_unit as a INNER join tbl_region as b on b.region_id = a.region_id WHERE" . $this->getOrRegions() . ' AND is_disabled = 0 ORDER BY b.order ASC';
+        //$sql = "SELECT a.unit_id,a.services_id,concat('DOST-',UPPER(b.region_code),' ',a.unit_name) as unit_name FROM tbl_unit as a INNER join tbl_region as b on b.region_id = a.region_id WHERE a.`region_id` IN (" . $this->getOrRegions() . ') AND is_disabled = 0 ORDER BY b.order ASC';
+        $sql = "SELECT a.unit_id,a.services_id,concat('DOST-',UPPER(b.region_code),' ',a.unit_name) as unit_name FROM tbl_unit as a INNER join tbl_region as b on b.region_id = a.region_id WHERE a.`region_id` IN (" . $region_id . ') AND is_disabled = 0 ORDER BY b.order ASC';
         $unit = $con->createCommand($sql)->queryAll();
         return $unit;
     }
@@ -145,13 +146,13 @@ class ReportsController extends \yii\web\Controller
         $string = "";
         foreach($regions as $region){
             if(count($regions) > 1){
-                $string.= ' OR a.`region_id` = '. $region->region_id;
+                $string.= ','. $region->region_id;
             }
-            $string.= ' OR a.`region_id` = '. $region->region_id;
+            $string.= ','. $region->region_id;
         }
         //$result = str_replace('*','OR',$string);
 
-        return substr($string,3);
+        return substr($string,1);
     }
     public function actionExporttoexcel($unit_id,$datefrom,$dateto){
         $con = Yii::$app->db;

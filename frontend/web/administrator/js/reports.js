@@ -21,7 +21,13 @@ app.controller('reportsCtrl', ['$scope', '$element', '$http', '$window', functio
     $scope.totalOutstanding = 0;
     $scope.percentOutstanding = 0;
     $scope.satisfactionRating = 0;
+    $scope.regionid = region_id;
 
+    // if(region_id != '' ){
+    //     $scope.showRegions = ;
+    // }else{
+    //     console.log('waley');
+    // }
  
     $scope.Fetchdata = function (drivers_id = 0) {
         // if($scope.clienttype.length == 0){
@@ -76,6 +82,7 @@ app.controller('reportsCtrl', ['$scope', '$element', '$http', '$window', functio
             // }else{
             //     clienttype = $scope.clienttype;
             // }
+           
             $http({
                 method: 'GET',
                 url: backendURI + '/administrator/reports/reports-api?unit_id=' + $scope.unit_id + '&datefrom=' + $scope.datefrom + '&dateto=' + $scope.dateto + '&drivers_id=' + drivers_id + '&clienttype=' + $scope.clienttype,
@@ -109,15 +116,17 @@ app.controller('reportsCtrl', ['$scope', '$element', '$http', '$window', functio
                         let rating1 = response.data.feedbacks[i].rating1
                         $scope.PieChart(i + 1, rating5, rating4, rating3, rating2, rating1);
                     }
+                    
                 }, function (response) {
                     $scope.message = response.message;
                 });
         }
     };
-    $scope.Fetchunit = function () {
+    $scope.Fetchunit = function (regionId) {
         $http({
             method: 'GET',
-            url: backendURI + '/administrator/reports/unit-api',
+            url: backendURI + '/administrator/reports/unit-api?region_id=' + regionId,
+            //url: backendURI + '/administrator/reports/unit-api',
         })
             .then(function (response) {
                 $scope.units = response.data;
@@ -126,15 +135,17 @@ app.controller('reportsCtrl', ['$scope', '$element', '$http', '$window', functio
             });
     };
 
-    $http({
-        method: 'GET',
-        url: backendURI + '/administrator/reports/get-driver?region_id=' + region_id,
-    })
-        .then(function (response) {
-            $scope.drivers = response.data;
-        }, function (response) {
-            $scope.message = response.message;
-        });
+    $scope.Fetchdrivers = function(regionId){
+        $http({
+            method: 'GET',
+            url: backendURI + '/administrator/reports/get-driver?region_id=' + regionId,
+        })
+            .then(function (response) {
+                $scope.drivers = response.data;
+            }, function (response) {
+                $scope.message = response.message;
+            });
+    }
 
     $scope.OnChange = function () {
         $scope.Fetchdata();
@@ -144,7 +155,11 @@ app.controller('reportsCtrl', ['$scope', '$element', '$http', '$window', functio
         //console.log(drivers_id);
         $scope.Fetchdata(drivers_id);
 
-    }
+    };
+    $scope.OnClickRegion = function(regionid){
+        $scope.Fetchunit(regionid);
+        $scope.Fetchdrivers(regionid);
+    };
     $scope.OnExport = function (unit_id, from, to) {
         var win = window.open('/administrator/reports/export?unit_id=' + unit_id + '&datefrom=' + from + '&dateto=' + to, '_blank');
         win.focus()

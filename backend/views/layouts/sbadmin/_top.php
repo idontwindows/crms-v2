@@ -3,7 +3,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 ?>
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-    <a class="navbar-brand" href="/administrator">DOST CRMS</a>
+ <a class="navbar-brand" href="/administrator"><img src="/../images/dostlogo.png" alt="" style="width:19px; height:19px;"> DOST CRMS</a>
     <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
     <!-- Navbar Search-->
     <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
@@ -19,7 +19,7 @@ use yii\helpers\Url;
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                <?= Html::a('Logout', Url::to(['/site/logout']), ['data-method' => 'POST','class' => 'dropdown-item']) ?>
+                <?= Html::a('Logout (' . Yii::$app->user->identity->username . ')', Url::to(['/site/logout']), ['data-method' => 'POST','class' => 'dropdown-item']) ?>
             </div>
         </li>
     </ul>
