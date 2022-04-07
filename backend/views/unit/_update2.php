@@ -25,12 +25,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div> -->
                     <div class="form-group col-md-6">
                         <label for="txtEmail"><b>Services</b></label>
-                        <input type="text" class="form-control" ng-model="formData.servicename" id="txtUnit" name="unit" placeholder="Type unit name here..." autofocus="" aria-required="true" aria-invalid="" disabled>
+                        <input type="text" class="form-control" ng-model="formData.servicename" id="txtUnit" name="unit" placeholder="Type unit name here..." autofocus="" aria-required="true" aria-invalid="" ng-disabled="true">
                         <!-- <div class="invalid-feedback">{{errormessageevent}}</div> -->
                     </div>
                     <div class="form-group col-md-6">
                         <label for="txtEmail"><b>Functional Unit</b></label>
-                        <input type="text" class="form-control" ng-model="formData.unitname" id="txtUnit" name="unit" placeholder="Type unit name here..." autofocus="" aria-required="true" aria-invalid="" disabled>
+                        <input type="text" class="form-control" ng-model="formData.unitname" id="txtUnit" name="unit" placeholder="Type unit name here..." autofocus="" aria-required="true" aria-invalid="" ng-disabled="true">
                         <!-- <div class="invalid-feedback">{{errormessageevent}}</div> -->
                     </div>
 
@@ -74,7 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div class="card-body">
                             <div class="input-group mb-3">
                                 <input type="hidden" class="form-control" id="txtParenthidden-{{$index}}" ng-model="formData.question_group_unit_id">
-                                <input type="text" class="form-control txtParent" id="txtParent-{{$index}}" ng-model="formData.parentAttrib" placeholder="Enter parent attribute...">
+                                <input type="text" class="form-control txtParent" id="txtParent-{{$index}}" ng-model="formData.parentAttrib" placeholder="Enter parent attribute..." ng-disabled="formData.importance == 1"> 
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-outline-secondary btn-primary text-white" type="button" ng-click="addItem($index,<?= $_GET['unit_id'] ?>)"><i class="fa fa-plus"></i></button>
                                 </div>

@@ -5,7 +5,6 @@ use yii\bootstrap4\Modal;
 //use kartik\rating\StarRating;
 /* @var $this yii\web\View */
 
-
 if (
     isset($_SERVER['HTTPS']) &&
     ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
@@ -33,33 +32,14 @@ $this->registerJs($script1, yii\web\View::POS_END, '');
 // }';
 
 //@var string $script3 for button back
-$isPstc = false;
-if($title['with_pstc_hrdc'] == 1) $isPstc = true;
-if(isset($_GET['pstc_id'])) $pstc_id = $_GET['pstc_id'];
-
-if($isPstc){
-    $script3 = "$(document).ready(function() {
-        $('#btn-back').click(function() {
-            window.location.replace('" . $serveruri . '/site/pstc?region_id=' . $title["region_id"] . '&unit_id='.$title["unit_id"] ."');
-        });
-    });";
-}else{
-    $script3 = "$(document).ready(function() {
-        $('#btn-back').click(function() {
-            window.location.replace('" . $serveruri . '/site/units?region_id=' . $title["region_id"] . "');
-        });
-    });";
-}
-
-$script4 = 'isPsct = '. $isPstc .'
-            $(document).ready(function() {
-            swal("Disclaimer", "The DOST is committed to protect and respect your personal data privacy. All information collected will only be used for documentation purposes and will not be published in any platform.", "warning");
-                });';
-
+$script3 = "$(document).ready(function() {
+                $('#btn-back').click(function() {
+                    window.location.replace('" . $serveruri . '/region/' . $title["region_code"] . "');
+                });
+            });";
 $this->registerJs($script3, yii\web\View::POS_END, '');
-$this->registerJs($script4, yii\web\View::POS_END, '');
 $this->registerJsFile('/js/signature_pad.min.js', ['position' => \yii\web\View::POS_END]);
-$this->registerJsFile('/js/site2.js', ['position' => \yii\web\View::POS_END]);
+$this->registerJsFile('/js/site.js', ['position' => \yii\web\View::POS_END]);
 $this->registerJsFile('/js/sweetalert.min.js', ['position' => \yii\web\View::POS_END]);
 $this->registerCss(".modal {background-color: rgba(0, 0, 0,0.5);} .show {display: block;}");
 $this->registerCss('.modal-confirm {		
@@ -169,10 +149,6 @@ $this->registerCss('.modal-confirm {
 //                         }
 //                     }');
 
-$unit_id = base64_decode(base64_decode($_GET['id']));
-
-$con = Yii::$app->db;
-
 ?>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
@@ -180,10 +156,8 @@ $con = Yii::$app->db;
     <?php $form = ActiveForm::begin([
         //'id' => 'smileys',
         'id' => 'submit-rating',
-        //'action' => false,
-        'action' => ['post-rating2', 'id' => $_GET['id'], 'pstc_id' => isset($_GET['pstc_id']) ? $_GET['pstc_id'] : '']
-
-            
+        'action' => false,
+        'action' => ['post-rating', 'id' => $_GET['id']],
         //'options' => ['onsubmit' => 'return validate()'],
     ]); ?>
     <!-- <form id="smileys" ng-submit="submit()">
@@ -191,7 +165,7 @@ $con = Yii::$app->db;
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10">
-            <div class="card mb-3 mt-0 border rounded shadow-lg">
+            <div class="card mb-3 mt-0 border-0">
                 <div class="card-body">
                     <div class="d-flex align-items-center justify-content-center">
                         <img src="/images/dostlogo.png" class="rounded float-left w-25" alt="...">
@@ -205,25 +179,9 @@ $con = Yii::$app->db;
                     <h2 class="d-flex align-items-center justify-content-center csf-title">CUSTOMER SATISFACTION FEEDBACK</h2>
                 </div>
             </div>
-            <div class="card mb-3 mt-0 border rounded shadow-lg">
+            <div class="card mb-3 mt-0 border-0">
                 <div class="card-body">
-                    <h4 class="card-title">
-                        <?php
-                        if($isPstc){
-                            $sql = 'SELECT * FROM tbl_pstc WHERE pstc_id = :pstc_id AND region_id = :region_id';
-                            $pstcModel = $con->createCommand($sql,[':pstc_id' => isset($_GET['pstc_id']) ? $_GET['pstc_id'] : '',':region_id' => $title['region_id']])->queryOne();
-                            if($pstcModel){
-                                echo $title['services_name']. ' ' .$pstcModel['pstc_name'];
-                            }else{
-                                throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
-                            }
-                            
-                        }else{
-                            echo $title['services_name'];
-                        }
-                           
-                        ?>
-                    </h4>
+                    <h4 class="card-title"><?= $title['unit_name'] ?></h4>
                     <p class="card-text">This questionaire aims to solicit your honest assessment of our <?= strtolower($title['unit_name']) ?> services.
                         Please take a minute in filling out this form and help us serve you better. </p>
                     <div class="form-group form-email">
@@ -233,7 +191,7 @@ $con = Yii::$app->db;
                     </div>
                     <!--                     
                     <div class="form-group">
-                        <label for="txtDate"><b>Date</b> <span class="text-danger">*</span></label>
+                        <label for="txtDate"><b>Date</b> (<span class="text-danger">Required</span>)</label>
                         <div class="datepicker date input-group">
                             <input type="text" placeholder="Choose Date" class="form-control" id="txtDate" required>
                             <div class="input-group-append">
@@ -249,18 +207,17 @@ $con = Yii::$app->db;
                     </div>
                     <div class="row">
                         <div class="form-group form-client-type col-md-4">
-                            <label for="select-client-type"><b>Client type</b> <span class="text-danger">*</span></label>
+                            <label for="select-client-type"><b>Client type</b> (<span class="text-danger">Required</span>)</label>
                             <select name="customer_client_type" id="select-client-type" class="form-control">
                                 <option value="" disabled selected>Select Client type...</option>
                                 <option value="2">Internal Employees</option>
-                                <!-- <option value="5">Student</option> -->
                                 <option value="1">General Public</option>
                                 <option value="3">Governement Employees</option>
                                 <option value="4">Businesses/Organization</option>
                             </select>
                         </div>
                         <div class="form-group form-gender col-md-4">
-                            <label for="select-gender"><b>Sex</b> <span class="text-danger">*</span></label>
+                            <label for="select-gender"><b>Sex</b> (<span class="text-danger">Required</span>)</label>
                             <select name="customer_gender" id="select-gender" class="form-control">
                                 <option value="" disabled selected>Select gender...</option>
                                 <option value="male">Male</option>
@@ -268,7 +225,7 @@ $con = Yii::$app->db;
                             </select>
                         </div>
                         <div class="form-group form-age col-md-4">
-                            <label for="select-age"><b>Age Group</b> <span class="text-danger">*</span></label>
+                            <label for="select-age"><b>Age Group</b> (<span class="text-danger">Required</span>)</label>
                             <select name="customer_age" id="select-age" class="form-control">
                                 <option value="" disabled selected>Select age group...</option>
                                 <option value="15-19">15-19</option>
@@ -300,7 +257,7 @@ $con = Yii::$app->db;
                             <?php if ($title['services_id'] == 12) { ?>
                                 <div class="card mb-3 border-1">
                                     <div class="card-header">
-                                        <b>Driver</b> <span class="text-danger">*</span>
+                                        <b>Driver</b> (<span class="text-danger">Required</span>)
                                     </div>
                                     <div class="card-body">
                                         <div class="form-group">
@@ -316,7 +273,7 @@ $con = Yii::$app->db;
                                     </div>
                                 </div>
                             <?php } ?>
-                            <div class="card mb-3 border-1 rounded">
+                            <div class="card mb-3 border-1">
                                 <div class="card-header">
                                     <b>Other Information</b> (<span class="text-info">Optional</span>)
                                 </div>
@@ -345,130 +302,104 @@ $con = Yii::$app->db;
                     </div>
                 </div>
             </div>
-            <?php
-            $con = Yii::$app->db;
-            // $sql1 = 'SELECT a.`unit_id`,
-            //                     a.`unit_name`,
-            //                     a.`date_created`,
-            //                     b.`question_group_unit_id`,
-            //                     b.`question_group_unit_name`,
-            //                     c.`attribute_id`,
-            //                     c.`question`
-            //                 FROM tbl_unit AS a 
-            //                 INNER JOIN tbl_question_group_unit AS b ON b.`unit_id` = a.`unit_id` 
-            //                 INNER JOIN tbl_question_unit AS c ON c.`question_group_unit_id` = b.`question_group_unit_id`
-            //                 WHERE a.`unit_id` =' . base64_decode(base64_decode($_GET['id'])) . ' AND c.`dimension_id` IN (1,2,3,4,5,6,7,8)
-            //                 ORDER BY c.`dimension_id` ASC';
-            $sql1 = 'SELECT * from tbl_attributes WHERE unit_id = :unit_id AND dimension_id IN (1,2,3,4,5,6,7,8) ORDER BY dimension_id  ASC';
-            try {
-                $questions = $con->createCommand($sql1,[':unit_id' => $unit_id])->queryAll();
-            } catch (\yii\db\Exception $exception) {
-                //throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
-                return $exception;
-            }
-            $sql2 = 'SELECT * from tbl_attributes WHERE unit_id = :unit_id AND dimension_id IN (1,2,3,4,5,6,7) ORDER BY dimension_id  ASC';
-            try {
-                $importance = $con->createCommand($sql2,[':unit_id' => $unit_id])->queryAll();
-            } catch (\yii\db\Exception $exception) {
-                //throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
-                return $exception;
-            }
+            <?php $g = 0; ?>
+            <?php foreach ($groups as $group) { ?>
+                <?php
+                $con = Yii::$app->db;
+                $sql1 = 'SELECT a.`unit_id`,
+                                a.`unit_name`,
+                                a.`date_created`,
+                                b.`question_group_unit_id`,
+                                b.`question_group_unit_name`,
+                                c.`question_unit_id`,
+                                c.`question`
+                            FROM tbl_unit AS a 
+                            INNER JOIN tbl_question_group_unit AS b ON b.`unit_id` = a.`unit_id` 
+                            INNER JOIN tbl_question_unit AS c ON c.`question_group_unit_id` = b.`question_group_unit_id`
+                            WHERE a.`unit_id` =' . base64_decode(base64_decode($_GET['id'])) . ' AND c.`question_group_unit_id`=' . $group['question_group_unit_id'];
+                try {
+                    $questions = $con->createCommand($sql1)->queryAll();
+                } catch (\yii\db\Exception $exception) {
+                    //throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
+                    return $exception;
+                }
 
-            ?>
-            <div class="card mb-3 border-0 rounded shadow-lg">
-                <div class="card-header bg-blue text-white">
-                    <b>HOW WOULD YOU RATE OUR <?= $title['unit_name'] ?> SERVICES?</b> <span class="text-danger"><b>*</b></span>
+                ?>
+                <div class="card mb-3 border-0">
+                    <div class="card-header">
+                        <b><?= $group['question_group_unit_name'] ?></b> (<span class="text-danger">Required</span>)
+                    </div>
+                    <ul class="list-group list-group-flush">
+
+                        <?php
+                        $count = count($questions);
+                        $count_devide = intval($count / 2);
+                        $q = 0;
+                        ?>
+                        <?php foreach ($questions as $question) { ?>
+                            <li class="list-group-item">
+                                <div class="form-group">
+                                    <div class="d-flex align-items-center justify-content-center question-description">
+                                        <b><?= $question['question'] ?></b>
+                                        <input type="hidden" id="custId" name="questionId[<?= $group['question_group_unit_id'] ?>][<?= $q ?>]" value="<?= base64_encode(base64_encode($question['question_unit_id'])) ?>">
+                                        <input type="hidden" id="groupId" name="groupId[<?= $group['question_group_unit_id'] ?>][<?= $q ?>]" value="<?= base64_encode(base64_encode($group['question_group_unit_id'])) ?>">
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-center" id="smileys">
+                                        <?php if ($group['importance'] == 0) { ?>
+                                            <div class="checkboxgroup">
+                                                <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="5" class="smiley5" id="radio1" required>
+                                                <label for="radio1"><b>Outstanding</b></label>
+                                            </div>
+                                            <div class="checkboxgroup">
+                                                <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="4" class="smiley4" id="radio2" required>
+                                                <label for="radio2"><b>Very Satisfactory</b></label>
+                                            </div>
+                                            <div class="checkboxgroup">
+                                                <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="3" class="smiley3" id="radio3" required>
+                                                <label for="radio3"><b>Satisfactory</b></label>
+                                            </div>
+                                            <div class="checkboxgroup">
+                                                <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="2" class="smiley2" id="radio4" required>
+                                                <label for="radio4"><b>Unsatisfactory</b></label>
+                                            </div>
+                                            <div class="checkboxgroup">
+                                                <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="1" class="smiley1" id="radio5" required>
+                                                <label for="radio5"><b>Poor</b></label>
+                                            </div>
+                                        <?php } else { ?>
+                                            <div class="checkboxgroup">
+                                                <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="5" class="numero5" id="radio1" required>
+                                                <label for="radio1"><b>Very Important</b></label>
+                                            </div>
+                                            <div class="checkboxgroup">
+                                                <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="4" class="numero4" id="radio2" required>
+                                                <label for="radio2"><b>Important</b></label>
+                                            </div>
+                                            <div class="checkboxgroup">
+                                                <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="3" class="numero3" id="radio3" required>
+                                                <label for="radio3"><b>Moderately Important</b></label>
+                                            </div>
+                                            <div class="checkboxgroup">
+                                                <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="2" class="numero2" id="radio4" required>
+                                                <label for="radio4"><b>Slightly Important</b></label>
+                                            </div>
+                                            <div class="checkboxgroup">
+                                                <input type="radio" name="<?= 'rating[' . $group['question_group_unit_id'] . '][' . $q . ']' ?>" value="1" class="numero1" id="radio5" required>
+                                                <label for="radio5"><b>Not at all Important</b></label>
+                                            </div>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </li>
+                            <?php $q++; ?>
+                        <?php } ?>
+                    </ul>
                 </div>
-                <ul class="list-group list-group-flush">
-
-                    <?php $q = 0; ?>
-                    <?php foreach ($questions as $question) { ?>
-                        <li class="list-group-item">
-                            <div class="form-group">
-                                <div class="d-flex align-items-center justify-content-center question-description">
-                                    <b><?= $question['question'] ?></b>
-                                    <input type="hidden" id="custId" name="questionId[<?= $question['unit_id'] ?>][<?= $q ?>]" value="<?= $question['attribute_id'] ?>">
-                                </div>
-                                <div class="d-flex align-items-center justify-content-center" id="smileys">
-
-                                    <div class="checkboxgroup">
-                                        <input type="radio" name="<?= 'rating[' . $question['unit_id'] . '][' . $q . ']' ?>" value="5" class="smiley5" id="radio1" required>
-                                        <label for="radio1"><b>Very satisfied</b></label>
-                                    </div>
-                                    <div class="checkboxgroup">
-                                        <input type="radio" name="<?= 'rating[' . $question['unit_id'] . '][' . $q . ']' ?>" value="4" class="smiley4" id="radio2" required>
-                                        <label for="radio2"><b>Satisfied</b></label>
-                                    </div>
-                                    <div class="checkboxgroup">
-                                        <input type="radio" name="<?= 'rating[' . $question['unit_id'] . '][' . $q . ']' ?>" value="3" class="smiley3" id="radio3" required>
-                                        <label for="radio3"><b>Neither</b></label>
-                                    </div>
-                                    <div class="checkboxgroup">
-                                        <input type="radio" name="<?= 'rating[' . $question['unit_id'] . '][' . $q . ']' ?>" value="2" class="smiley2" id="radio4" required>
-                                        <label for="radio4"><b>Dissatisfied</b></label>
-                                    </div>
-                                    <div class="checkboxgroup">
-                                        <input type="radio" name="<?= 'rating[' . $question['unit_id'] . '][' . $q . ']' ?>" value="1" class="smiley1" id="radio5" required>
-                                        <label for="radio5"><b>Very dissatisfied</b></label>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </li>
-                        <?php $q++; ?>
-                    <?php } ?>
-                </ul>
-            </div>
-            <?
-
-
-            ?>
-            <div class="card mb-3 border-0 rounded shadow-lg">
-                <div class="card-header bg-blue text-white">
-                    <b>IMPORTANCE OF THE ATTRIBUTES</b> <span class="text-danger"><b>*</b></span>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <?php $q = 0; ?>
-                    <?php foreach ($importance as $important) { ?>
-                        <li class="list-group-item">
-                            <div class="form-group">
-                                <div class="d-flex align-items-center justify-content-center question-description">
-                                    <b><?= $important['question'] ?></b>
-                                    <input type="hidden" id="custId" name="questionimportance[<?= $important['unit_id'] ?>][<?= $q ?>]" value="<?= $important['attribute_id'] ?>">
-                                </div>
-                                <div class="d-flex align-items-center justify-content-center" id="smileys">
-
-                                    <div class="checkboxgroup">
-                                        <input type="radio" name="<?= 'importance[' . $important['unit_id'] . '][' . $q . ']' ?>" value="5" class="numero5" id="radio1" required>
-                                        <label for="radio1"><b>Very Important</b></label>
-                                    </div>
-                                    <div class="checkboxgroup">
-                                        <input type="radio" name="<?= 'importance[' . $important['unit_id'] . '][' . $q . ']' ?>" value="4" class="numero4" id="radio2" required>
-                                        <label for="radio2"><b>Important</b></label>
-                                    </div>
-                                    <div class="checkboxgroup">
-                                        <input type="radio" name="<?= 'importance[' . $important['unit_id'] . '][' . $q . ']' ?>" value="3" class="numero3" id="radio3" required>
-                                        <label for="radio3"><b>Moderately</b></label>
-                                    </div>
-                                    <div class="checkboxgroup">
-                                        <input type="radio" name="<?= 'importance[' . $important['unit_id'] . '][' . $q . ']' ?>" value="2" class="numero2" id="radio4" required>
-                                        <label for="radio4"><b>Slightly</b></label>
-                                    </div>
-                                    <div class="checkboxgroup">
-                                        <input type="radio" name="<?= 'importance[' . $important['unit_id'] . '][' . $q . ']' ?>" value="1" class="numero1" id="radio5" required>
-                                        <label for="radio5"><b>Not at all</b></label>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </li>
-                        <?php $q++; ?>
-                    <?php } ?>
-                </ul>
-            </div>
-            <div class="card mb-3 mt-0 border col col-lg-12 rounded shadow-lg">
+                <?php $g++; ?>
+            <?php } ?>
+            <div class="card mb-3 mt-0 border-0 col col-lg-12">
                 <div class="card-body">
-                    <p class="card-text"><b>Considering your complete experience with our agency, how likely would you recommend our services to others?</b> <span class="text-danger">*</span></p>
+                    <p class="card-text"><b>Considering your complete experience with our agency, how likely would you recommend our services to others?</b> (<span class="text-danger">Required</span>)</p>
                     <div class="d-flex align-items-center justify-content-center">
                         <div class="form-group">
                             <!-- <?php
@@ -522,7 +453,7 @@ $con = Yii::$app->db;
                 </div>
             </div>
 
-            <div class="card mb-3 mt-0 border rounded shadow-lg">
+            <div class="card mb-3 mt-0 border-0">
                 <div class="card-body">
                     <p class="card-text"><b>Please indicate other important attribute/s which you think is important to your needs.</b> (<span class="text-info">Optional</span>)</p>
                     <div class="form-group">
@@ -530,18 +461,18 @@ $con = Yii::$app->db;
                     </div>
                 </div>
             </div>
-            <div class="card mb-3 mt-0 border-0 rounded shadow-lg">
+            <div class="card mb-3 mt-0 border-0">
                 <div class="card-body">
-                    <p class="card-text" id="comments-complaint"><b>Please write your comment/suggestions below.</b> (<span class="text-info">Optional</span>)</p>
+                    <p class="card-text"><b>Please write your comment/suggestions below.</b> (<span class="text-info">Optional</span>)</p>
                     <div class="form-group">
                         <textarea class="form-control" name="comments" id="Textarea2" rows="3"></textarea>
                     </div>
                 </div>
             </div>
 
-            <div class="card mb-3 mt-0 border rounded shadow-lg">
+            <div class="card mb-3 mt-0 border-0">
                 <div class="card-body">
-                    <p class="card-text"><b>Signature</b> (<span class="text-info">Optional</span>)</p>
+                    <p class="card-text"><b>Signature</b> (<span class="text-danger">Required</span>)</p>
                     <div class="form-group">
                         <div class="text-center">
                             <canvas id="signature" width="286" height="150" style="border: 1px solid #ddd;"></canvas>
@@ -552,6 +483,7 @@ $con = Yii::$app->db;
                     </div>
                 </div>
             </div>
+
             <button type="submit" class="btn btn-blue btn-lg"><i class="fa fa-paper-plane" aria-hidden="true"></i> Submit</button>
         </div>
         <div class="col-md-1"></div>
@@ -577,9 +509,14 @@ $con = Yii::$app->db;
             <div class="modal-body text-center">
                 <h4>Great!</h4>
                 <p>Your response has been recorded.</p>
-                <a href="<?= $serveruri . '/csf/' . $_GET['id'] ?>" class="btn btn-primary btn-lg"><i class="fa fa-circle-check" aria-hidden="true"></i> Go Back</a>
+                <a href="<?= $serveruri . '/csf/' . $_GET['id'] ?>" class="btn btn-primary btn-lg"><i class="fa fa-circle-check" aria-hidden="true"></i> OK</a>
             </div>
         </div>
     </div>
 </div>
 
+<script>
+    $(document).ready(function() {
+        swal("Disclaimer", "The DOST is committed to protect and respect your personal data privacy. All information collected will only be used for documentation purposes and will not be published in any platform.", "warning");
+    });
+</script>

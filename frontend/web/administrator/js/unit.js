@@ -14,6 +14,6 @@ app.controller('unitCtrl', ['$scope', '$element', '$http', '$window', function($
         $window.location.href = backendURI + '/administrator/unit/view?unit_id=' + unit_id;
     };
     $scope.goUpdate = function(unit_id){
-        $window.location.href = backendURI + '/administrator/unit/update?unit_id=' + unit_id;
+        $window.location.href = backendURI + '/administrator/unit/update2?unit_id=' + unit_id;
     }
 }]);

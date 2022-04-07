@@ -9,6 +9,7 @@ use yii\bootstrap4\Breadcrumbs;
 use yii\bootstrap4\Html;
 use yii\bootstrap4\Nav;
 use yii\bootstrap4\NavBar;
+use common\models\Region;
 
 AppAsset::register($this);
 
@@ -48,6 +49,11 @@ if (isset($_GET['id'])) {
 if(isset($_GET['region_code'])){
     $region_code = $_GET['region_code'];
 }
+if(isset($_GET['region_id'])){
+    $region_id = $_GET['region_id'];
+    $region = Region::find()->where(['region_id' => $region_id])->one();
+    $region_code = $region->region_code;
+}
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -57,7 +63,7 @@ if(isset($_GET['region_code'])){
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <style>
-        @media (max-width:1600px) {
+        @media (max-width:3840px) {
             a.brand-lg {
                 display: block !important;
             }
@@ -83,12 +89,12 @@ if(isset($_GET['region_code'])){
     <?php $this->head() ?>
     <script type="text/javascript">
         var frontendURI = "<?= $serveruri ?>";
-        var event_id = "<?= !empty($_GET['id']) ? $_GET['id'] : '' ?>";
+        var unit_id = "<?= !empty($_GET['id']) ? $_GET['id'] : '' ?>";
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
     </script>
 </head>
 
-<body class="d-flex flex-column h-100 bg-info">
+<body class="d-flex flex-column h-100">
     <?php $this->beginBody() ?>
     <header>
         <nav id="w0" class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
@@ -108,9 +114,12 @@ if(isset($_GET['region_code'])){
                     echo '';
                 } else 
                 if($this->context->route == 'site/csf'){
-                    echo '<button type="button" class="btn btn-yellow text-dark rounded-pill font-weight-bold" id="btn-back">Return to Main Menu</button>';
+                    echo '<button type="button" class="btn btn-yellow text-dark rounded-pill font-weight-bold" id="btn-back">Go Back</button>';
                 } else
                 if($this->context->route == 'site/sub-menu'){
+                    echo '<button type="button" class="btn btn-yellow text-dark rounded-pill font-weight-bold" id="btn-back">Go Back</button>';
+                } else
+                if($this->context->route == 'site/pstc'){
                     echo '<button type="button" class="btn btn-yellow text-dark rounded-pill font-weight-bold" id="btn-back">Go Back</button>';
                 }
                 ?>

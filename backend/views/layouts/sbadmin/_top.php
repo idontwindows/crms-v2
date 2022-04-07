@@ -3,7 +3,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 ?>
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
- <a class="navbar-brand" href="/administrator"><img src="/../images/dostlogo.png" alt="" style="width:19px; height:19px;"> DOST CRMS</a>
+ <a class="navbar-brand" href="/administrator"><img src="/../images/dostlogo.png" alt="" style="width:21px; height:21px;"> DOST CRMS</a>
     <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
     <!-- Navbar Search-->
     <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">

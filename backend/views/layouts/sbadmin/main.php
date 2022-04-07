@@ -46,37 +46,41 @@ $serveruri = $protocol . "$_SERVER[HTTP_HOST]";
         var region_id = "<?= Yii::$app->user->identity->region_id ?>";
         var event_id = "<?= !empty($_GET['id']) ? $_GET['id'] : '' ?>";
     </script>
-    <style>
+    <!-- <style>
         .breadcrumb-item+.breadcrumb-item::before {
             color: black;
             content: ">>";
         }
-    </style>
+    </style> -->
 </head>
 
 <body class="sb-nav-fixed">
     <?php $this->beginBody() ?>
     <?= $this->render('_top'); ?>
     <div id="layoutSidenav">
-    <?= $this->render('_left'); ?>
+        <?= $this->render('_left'); ?>
         <div id="layoutSidenav_content">
             <main>
+                <?= Breadcrumbs::widget([
+                    'homeLink' => [
+                        'label' => Yii::t('yii', 'Dashboard'),
+                        'url' => Yii::$app->homeUrl,
+                    ],
+                    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                    'options' => [
+                        'class' => 'breadcrumb-arrow'
+                        ]
+                ]) ?>
+                <?= Alert::widget() ?>
                 <div class="container-fluid">
-                    <h1 class="mt-4"><?= Html::encode($this->title) ?></h1>
-                    <?= Breadcrumbs::widget([
-                        'homeLink' => [
-                            'label' => Yii::t('yii', 'Dashboard'),
-                            'url' => Yii::$app->homeUrl,
-                        ],
-                        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-                    ]) ?>
-                    <?= Alert::widget() ?>
+                    <h1><?= Html::encode($this->title) ?></h1>
+                    <hr>
                     <div class="mb-5">
                         <?= $content ?>
-                    </div> 
+                    </div>
                 </div>
             </main>
-        <?= $this->render('_footer'); ?>
+            <?= $this->render('_footer'); ?>
         </div>
     </div>
     <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>

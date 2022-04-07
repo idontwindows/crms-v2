@@ -31,11 +31,17 @@ $this->registerJs($script1, yii\web\View::POS_END, '');
 // }';
 
 //@var string $script3 for button back
+// $script3 = "$(document).ready(function() {
+//                 $('#btn-back').click(function() {
+//                     window.location.replace('".$serveruri.'/region/'.$title["region_code"]."');
+//                 });
+//             });";
 $script3 = "$(document).ready(function() {
-                $('#btn-back').click(function() {
-                    window.location.replace('".$serveruri.'/region/'.$title["region_code"]."');
-                });
-            });";
+    $('#btn-back').click(function() {
+        window.location.replace('".$serveruri.'/units/region_id/'.$title["region_id"]."');
+    });
+});";
+
 //$this->registerJs($script2, yii\web\View::POS_END, '');
 $this->registerJs($script3, yii\web\View::POS_END, '');
 $this->registerJsFile('/js/signature_pad.min.js', ['position' => \yii\web\View::POS_END]);

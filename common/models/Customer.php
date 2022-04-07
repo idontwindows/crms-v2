@@ -16,6 +16,7 @@ use Yii;
  */
 class Customer extends \yii\db\ActiveRecord
 {
+    public $verifyCaptcha;
     /**
      * {@inheritdoc}
      */
@@ -30,8 +31,7 @@ class Customer extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['date_created'], 'safe'],
-            [['customer_name', 'customer_email'], 'required'],
+            [['date_created','customer_name', 'customer_email'], 'safe'],
             [['customer_name', 'customer_email'], 'string', 'max' => 255],
         ];
     }

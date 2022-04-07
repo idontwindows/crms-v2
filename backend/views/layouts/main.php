@@ -42,12 +42,12 @@ $serveruri = $protocol . "$_SERVER[HTTP_HOST]";
         var region_id  = "<?= Yii::$app->user->identity->region_id ?>";
         var event_id = "<?= !empty($_GET['id']) ? $_GET['id'] : '' ?>";
     </script>
-    <style>
+    <!-- <style>
         .breadcrumb-item+.breadcrumb-item::before {
             color: black;
             content: ">>";
         }
-    </style>
+    </style> -->
 </head>
 
 <body class="d-flex flex-column h-100">
