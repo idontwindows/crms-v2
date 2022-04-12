@@ -27,6 +27,7 @@ class AppAsset extends AssetBundle
         'js/angular.min.js',
         'js/ui-bootstrap-custom-tpls-2.5.0.min.js',
         'js/app.js',
+        'js/jquery.validate.min.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
