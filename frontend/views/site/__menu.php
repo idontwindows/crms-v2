@@ -1,6 +1,7 @@
 <?php
 use common\models\Unit;
 use yii\helpers\Html;
+use common\models\Hrdc;
 ?>
 <link rel="stylesheet" type="text/css" href="/css/bootstrap-extended.min.css">
 <div class="site-menu container-fluid mt-xl-5">
@@ -17,7 +18,8 @@ use yii\helpers\Html;
                                         <i class="fa fa-check-circle text-info font-large-2 float-right"></i>
                                     </div>
                                     <div class="media-body text-right">
-                                        <h5 class="font-weight-bold unit-title"><?= $service->services_name ?></h5>
+                                        <?php $hrdc = Hrdc::find()->where(['region_id' => $region_id])->one(); ?>
+                                        <h5 class="font-weight-bold unit-title"><?= $service->with_pstc_hrdc != 2 ? $service->services_name : $hrdc->short_name ?></h5>
                                         <?php $unit = Unit::find()->where(['region_id' => $region_id, 'services_id' => $service->services_id])->one(); ?>
                                         <?php if ($service->with_pstc_hrdc != 1) { ?>
                                             <span><?= Html::a('Click Here', $unit['unit_url'], ['class' => 'profile-link font-weight-bold']) ?></span>
