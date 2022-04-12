@@ -6,7 +6,7 @@ use kartik\grid\ActionColumn;
 use kartik\grid\GridView;
 use common\models\Functionalunit;
 use Da\QrCode\QrCode;
-use common\models\Services;
+use common\models\UnitServices;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\Functionalunit\FunctionalunitSearch */
@@ -66,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'Url',
                 'format'=>'html',
                 'value'=>function ($model, $key, $index, $widget) use ($serveruri) {
-                    $services = Services::find()->where(['services_id' => $model->services_id])->one();
+                    $services = UnitServices::find()->where(['services_id' => $model->services_id])->one();
                     if($services->with_pstc_hrdc == 1){
                         return '<a href="' . $serveruri . '/site/pstc?region_id='.$model->region_id.'&unit_id='.$model->unit_id.'" target="_blank">'. $serveruri . '/site/pstc?region_id='.$model->region_id.'&unit_id='.$model->unit_id.'</a>';
                     }
@@ -88,7 +88,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     //'style' => 'text-align:center; vertical-align: middle;'
                 ],
                 'value' => function ($model) use ($serveruri){
-                    $services = Services::find()->where(['services_id' => $model->services_id])->one();
+                    $services = UnitServices::find()->where(['services_id' => $model->services_id])->one();
                     if($services->with_pstc_hrdc == 1){
                         $qrCode = (new QrCode($serveruri . '/site/pstc?region_id='.$model->region_id.'&unit_id='.$model->unit_id));
                     }else{
