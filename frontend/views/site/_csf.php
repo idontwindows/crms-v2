@@ -2,6 +2,7 @@
 
 use yii\widgets\ActiveForm;
 use yii\bootstrap4\Modal;
+use common\models\Hrdc;
 //use kartik\rating\StarRating;
 /* @var $this yii\web\View */
 
@@ -33,11 +34,11 @@ $this->registerJs($script1, yii\web\View::POS_END, '');
 // }';
 
 //@var string $script3 for button back
-$isPstc = false;
-if($title['with_pstc_hrdc'] == 1) $isPstc = true;
+//$isPstc = false;
+//if($title['with_pstc_hrdc'] == 1) $isPstc = true;
 if(isset($_GET['pstc_id'])) $pstc_id = $_GET['pstc_id'];
 
-if($isPstc){
+if($title['with_pstc_hrdc'] == 1){
     $script3 = "$(document).ready(function() {
         $('#btn-back').click(function() {
             window.location.replace('" . $serveruri . '/site/pstc?region_id=' . $title["region_id"] . '&unit_id='.$title["unit_id"] ."');
@@ -51,7 +52,7 @@ if($isPstc){
     });";
 }
 
-$script4 = 'isPsct = '. $isPstc .'
+$script4 = 'isPsct = '. $title['with_pstc_hrdc'] == 1 .'
             $(document).ready(function() {
             swal("Disclaimer", "The DOST is committed to protect and respect your personal data privacy. All information collected will only be used for documentation purposes and will not be published in any platform.", "warning");
                 });';
@@ -179,7 +180,7 @@ $con = Yii::$app->db;
 <div class="site-csf">
     <?php $form = ActiveForm::begin([
         //'id' => 'smileys',
-        'id' => 'submit-rating',
+        'id' => 'form-rating',
         //'action' => false,
         'action' => ['post-rating2', 'id' => $_GET['id'], 'pstc_id' => isset($_GET['pstc_id']) ? $_GET['pstc_id'] : '']
 
@@ -209,15 +210,19 @@ $con = Yii::$app->db;
                 <div class="card-body">
                     <h4 class="card-title">
                         <?php
-                        if($isPstc){
+                        if($title['with_pstc_hrdc'] == 1){
                             $sql = 'SELECT * FROM tbl_pstc WHERE pstc_id = :pstc_id AND region_id = :region_id';
                             $pstcModel = $con->createCommand($sql,[':pstc_id' => isset($_GET['pstc_id']) ? $_GET['pstc_id'] : '',':region_id' => $title['region_id']])->queryOne();
+                            
                             if($pstcModel){
                                 echo $title['services_name']. ' ' .$pstcModel['pstc_name'];
                             }else{
                                 throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
                             }
-                            
+                        }else
+                        if($title['with_pstc_hrdc'] == 2){
+                            $hrdc = Hrdc::find()->where(['region_id' =>  $title['region_id']])->one();
+                            echo $hrdc->short_name;
                         }else{
                             echo $title['services_name'];
                         }
@@ -304,6 +309,7 @@ $con = Yii::$app->db;
                                     </div>
                                     <div class="card-body">
                                         <div class="form-group">
+                                            <input type="hidden" id="services" name="services" value="<?= $title['services_id']?>">
                                             <?php $i = 1 ?>
                                             <?php foreach ($drivers as $driver) { ?>
                                                 <div class="form-check form-check-inline" id="drivers-name-check">
@@ -541,7 +547,7 @@ $con = Yii::$app->db;
 
             <div class="card mb-3 mt-0 border rounded shadow-lg">
                 <div class="card-body">
-                    <p class="card-text"><b>Signature</b> (<span class="text-info">Optional</span>)</p>
+                    <p class="card-text"><b>Please write your <span class='text-info'>signature</span> on the box.</b> (<span class="text-info">Optional</span>)</p>
                     <div class="form-group">
                         <div class="text-center">
                             <canvas id="signature" width="286" height="150" style="border: 1px solid #ddd;"></canvas>
