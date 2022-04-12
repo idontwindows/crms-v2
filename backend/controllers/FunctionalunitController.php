@@ -4,7 +4,7 @@ namespace backend\controllers;
 
 use Attribute;
 use common\models\Functionalunit;
-use common\models\Services;
+use common\models\UnitServices;
 use backend\models\Functionalunit\FunctionalunitSearch;
 use common\models\QuestionGroupUnit as AttributeGroup;
 use common\models\QuestionUnit;
@@ -86,7 +86,7 @@ class FunctionalunitController extends Controller
     public function actionCreate()
     {
         $model = new Functionalunit();
-        $servicesDataArray = Services::find()->all();
+        $servicesDataArray = UnitServices::find()->all();
 
         $attributesGroupId = $this->getAttributeId();
         $UnitId = $this->getUnitId();
@@ -94,7 +94,7 @@ class FunctionalunitController extends Controller
         if ($this->request->isPost) {
 
             $services_id = $_POST['Functionalunit']['services_id'];
-            $services = Services::find()->where(['services_id' => $services_id])->one();
+            $services = UnitServices::find()->where(['services_id' => $services_id])->one();
 
             $model->unit_id = $UnitId;
             $model->services_id = $services_id;
@@ -240,7 +240,7 @@ class FunctionalunitController extends Controller
                         ->where(['dimension_id' => 8,'unit_id' => $_GET['functional_unit_id']])
                         ->one();
 
-        $servicesDataArray = Services::find()->all();
+        $servicesDataArray = UnitServices::find()->all();
 
         // if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
         if ($this->request->isPost) {
@@ -265,6 +265,7 @@ class FunctionalunitController extends Controller
                 if(!empty($_POST['attrib1'])){
                     $attributeQuestion1 = new Attributes();
                     $attributeQuestion1->question = $_POST['attrib1'];
+                    $attributeQuestion1->unit_id = $functional_unit_id;
                     $attributeQuestion1->dimension_id = 1;
                     if (!isset($_POST['check-1'])) $attributeQuestion1->no_dimension = false;
                     if (isset($_POST['check-1'])) $attributeQuestion1->no_dimension = true;
@@ -284,6 +285,7 @@ class FunctionalunitController extends Controller
                 if(!empty($_POST['attrib2'])){
                     $attributeQuestion2 = new Attributes();
                     $attributeQuestion2->question = $_POST['attrib2'];
+                    $attributeQuestion2->unit_id = $functional_unit_id;
                     $attributeQuestion2->dimension_id = 2;
                     if (!isset($_POST['check-2'])) $attributeQuestion2->no_dimension = false;
                     if (isset($_POST['check-2'])) $attributeQuestion2->no_dimension = true;
@@ -303,6 +305,7 @@ class FunctionalunitController extends Controller
                 if(!empty($_POST['attrib3'])){
                     $attributeQuestion3 = new Attributes();
                     $attributeQuestion3->question = $_POST['attrib3'];
+                    $attributeQuestion3->unit_id = $functional_unit_id;
                     $attributeQuestion3->dimension_id = 3;
                     if (!isset($_POST['check-3'])) $attributeQuestion3->no_dimension = false;
                     if (isset($_POST['check-3'])) $attributeQuestion3->no_dimension = true;
@@ -322,6 +325,7 @@ class FunctionalunitController extends Controller
                 if(!empty($_POST['attrib4'])){
                     $attributeQuestion4 = new Attributes();
                     $attributeQuestion4->question = $_POST['attrib4'];
+                    $attributeQuestion4->unit_id = $functional_unit_id;
                     $attributeQuestion4->dimension_id = 4;
                     if (!isset($_POST['check-4'])) $attributeQuestion4->no_dimension = false;
                     if (isset($_POST['check-4'])) $attributeQuestion4->no_dimension = true;
@@ -341,6 +345,7 @@ class FunctionalunitController extends Controller
                 if(!empty($_POST['attrib5'])){
                     $attributeQuestion5 = new Attributes();
                     $attributeQuestion5->question = $_POST['attrib5'];
+                    $attributeQuestion5->unit_id = $functional_unit_id;
                     $attributeQuestion5->dimension_id = 5;
                     if (!isset($_POST['check-5'])) $attributeQuestion5->no_dimension = false;
                     if (isset($_POST['check-5'])) $attributeQuestion5->no_dimension = true;
@@ -360,6 +365,7 @@ class FunctionalunitController extends Controller
                 if(!empty($_POST['attrib6'])){
                     $attributeQuestion6 = new Attributes();
                     $attributeQuestion6->question = $_POST['attrib6'];
+                    $attributeQuestion6->unit_id = $functional_unit_id;
                     $attributeQuestion6->dimension_id = 6;
                     if (!isset($_POST['check-6'])) $attributeQuestion6->no_dimension = false;
                     if (isset($_POST['check-6'])) $attributeQuestion6->no_dimension = true;
@@ -379,6 +385,7 @@ class FunctionalunitController extends Controller
                 if(!empty($_POST['attrib7'])){
                     $attributeQuestion7 = new Attributes();
                     $attributeQuestion7->question = $_POST['attrib7'];
+                    $attributeQuestion7->unit_id = $functional_unit_id;
                     $attributeQuestion7->dimension_id = 7;
                     if (!isset($_POST['check-7'])) $attributeQuestion7->no_dimension = false;
                     if (isset($_POST['check-7'])) $attributeQuestion7->no_dimension = true;
@@ -398,6 +405,7 @@ class FunctionalunitController extends Controller
                 if(!empty($_POST['attrib8'])){
                     $attributeQuestion8 = new Attributes();
                     $attributeQuestion8->question = $_POST['attrib8'];
+                    $attributeQuestion8->unit_id = $functional_unit_id;
                     $attributeQuestion8->dimension_id = 8;
                     if (!isset($_POST['check-8'])) $attributeQuestion8->no_dimension = false;
                     if (isset($_POST['check-8'])) $attributeQuestion8->no_dimension = true;
