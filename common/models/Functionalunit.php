@@ -33,6 +33,7 @@ class Functionalunit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            // [['unit_name'], 'required'],
             [['services_id', 'region_id', 'is_disabled', 'pstc_id', 'hrdc_id'], 'integer'],
             [['date_created'], 'safe'],
             [['unit_name', 'unit_url'], 'string', 'max' => 255],
