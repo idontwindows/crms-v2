@@ -16,7 +16,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\Rating;
 use common\models\RatingV2;
-use common\models\Services;
+use common\models\UnitServices;
 use common\models\Message;
 use common\models\Pstc;
 use common\models\Region;
@@ -130,7 +130,7 @@ class SiteController extends Controller
                 FROM tbl_unit AS a 
                 INNER JOIN tbl_region AS b 
                 ON b.`region_id` = a.`region_id`
-                INNER JOIN  tbl_services AS c
+                INNER JOIN  tbl_unit_services AS c
                 ON c.`services_id` = a.`services_id`
                 WHERE a.`unit_id` = :unit_id AND a.`is_disabled` = 0'; 
         try {
@@ -166,7 +166,7 @@ class SiteController extends Controller
                                 a.`is_disabled` AS `is_disabled`,
                                 a.`date_created` AS `date_created`
                         FROM `tbl_unit` AS a 
-                        LEFT OUTER JOIN tbl_services AS b
+                        LEFT OUTER JOIN tbl_unit_services AS b
                         ON b.services_id = a.`services_id` 
                 WHERE a.`unit_id` =' . base64_decode(base64_decode($id));
 
@@ -268,7 +268,7 @@ class SiteController extends Controller
                 a.`is_disabled` AS `is_disabled`,
                 a.`date_created` AS `date_created`
         FROM `tbl_unit` AS a 
-        LEFT OUTER JOIN tbl_services AS b
+        LEFT OUTER JOIN tbl_unit_services AS b
         ON b.services_id = a.`services_id` 
         WHERE a.`unit_id` =' . $unit_id;
 
@@ -284,7 +284,7 @@ class SiteController extends Controller
                 FROM tbl_unit AS a 
                 INNER JOIN tbl_region AS b 
                 ON b.`region_id` = a.`region_id`
-                INNER JOIN  tbl_services AS c
+                INNER JOIN  tbl_unit_services AS c
                 ON c.`services_id` = a.`services_id`
                 WHERE a.`unit_id` = :unit_id AND a.`is_disabled` = 0';
         $unit = $con->createCommand($sql2,[':unit_id' => $unit_id])->queryOne();
@@ -537,7 +537,8 @@ class SiteController extends Controller
 
     }
     public function actionUnits($region_id){
-        $model = Services::find()->select(['services_id' => 'services_id','services_name' => 'services_name', 'with_pstc_hrdc'])->all();
+        $model = UnitServices::find()->select(['services_id' => 'services_id','services_name' => 'services_name', 'with_pstc_hrdc'])->all();
+         
         $region = Region::find()->where(['region_id' => $region_id])->one();
         
         if($region){
@@ -558,12 +559,12 @@ class SiteController extends Controller
     public function actionPstc($unit_id,$region_id){
         // $model = Pstc::find()->where(['region_id' => $region_id])->all();
         // $unit = Unit::find()->where(['unit_id' => $unit_id])->one();
-        // $services = Services::find()->where(['services_id' => $unit->services_id])->one();
+        // $services = UnitUnitServices::find()->where(['services_id' => $unit->services_id])->one();
         // $region = Region::find()->where(['region_id' => $region_id])->one();
         $con = Yii::$app->db;
         $sql = "SELECT a.`pstc_id`, a.`pstc_name`, c.`services_name`, b.`unit_url`  FROM tbl_pstc AS a 
                 LEFT JOIN tbl_unit AS b ON b.`region_id` = a.`region_id` 
-                LEFT JOIN tbl_services AS c ON c.`services_id` = b.`services_id` 
+                LEFT JOIN tbl_unit_services AS c ON c.`services_id` = b.`services_id` 
                 WHERE a.`region_id` = :region_id AND b.`unit_id` = :unit_id AND c.`with_pstc_hrdc` = 1";
         $model = $con->createCommand($sql,[':region_id' => $region_id, ':unit_id' => $unit_id])->queryAll();
         if($model){
