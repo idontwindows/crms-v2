@@ -412,7 +412,7 @@ class FunctionalunitController extends Controller
                     $attributeQuestion8->save(false);
                 }
             }
-
+            Yii::$app->session->setFlash('success', 'This is the message');
             return $this->redirect(['view', 'unit_id' => $model->unit_id]);
         }
 

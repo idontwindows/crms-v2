@@ -386,7 +386,6 @@ $con = Yii::$app->db;
                     <b>HOW WOULD YOU RATE OUR <?= $title['unit_name'] ?> SERVICES?</b> <span class="text-danger"><b>*</b></span>
                 </div>
                 <ul class="list-group list-group-flush">
-
                     <?php $q = 0; ?>
                     <?php foreach ($questions as $question) { ?>
                         <li class="list-group-item">
@@ -396,7 +395,6 @@ $con = Yii::$app->db;
                                     <input type="hidden" id="custId" name="questionId[<?= $question['unit_id'] ?>][<?= $q ?>]" value="<?= $question['attribute_id'] ?>">
                                 </div>
                                 <div class="d-flex align-items-center justify-content-center" id="smileys">
-
                                     <div class="checkboxgroup">
                                         <input type="radio" name="<?= 'rating[' . $question['unit_id'] . '][' . $q . ']' ?>" value="5" class="smiley5" id="radio1" required>
                                         <label for="radio1"><b>Very satisfied</b></label>
@@ -417,19 +415,46 @@ $con = Yii::$app->db;
                                         <input type="radio" name="<?= 'rating[' . $question['unit_id'] . '][' . $q . ']' ?>" value="1" class="smiley1" id="radio5" required>
                                         <label for="radio5"><b>Very dissatisfied</b></label>
                                     </div>
-
                                 </div>
                             </div>
+                            <?php if($question['dimension_id'] != 8 ){ ?>
+                            <div class="form-group">
+                                <div class="d-flex align-items-center justify-content-center question-description">
+                                    <!-- <b><?= $question['question'] ?></b>-->
+                                    <b>How important is this attribute?</b>
+                                    <input type="hidden" id="importance" name="questionimportance[<?= $question['unit_id'] ?>][<?= $q ?>]" value="<?= $question['attribute_id'] ?>">
+                                </div>
+                                <div class="d-flex align-items-center justify-content-center" id="smileys">
+
+                                    <div class="checkboxgroup">
+                                        <input type="radio" name="<?= 'importance[' . $question['unit_id'] . '][' . $q . ']' ?>" value="5" class="numero5" id="radio1" required>
+                                        <label for="radio1"><b>Very Important</b></label>
+                                    </div>
+                                    <div class="checkboxgroup">
+                                        <input type="radio" name="<?= 'importance[' . $question['unit_id'] . '][' . $q . ']' ?>" value="4" class="numero4" id="radio2" required>
+                                        <label for="radio2"><b>Important</b></label>
+                                    </div>
+                                    <div class="checkboxgroup">
+                                        <input type="radio" name="<?= 'importance[' . $question['unit_id'] . '][' . $q . ']' ?>" value="3" class="numero3" id="radio3" required>
+                                        <label for="radio3"><b>Moderately</b></label>
+                                    </div>
+                                    <div class="checkboxgroup">
+                                        <input type="radio" name="<?= 'importance[' . $question['unit_id'] . '][' . $q . ']' ?>" value="2" class="numero2" id="radio4" required>
+                                        <label for="radio4"><b>Slightly</b></label>
+                                    </div>
+                                    <div class="checkboxgroup">
+                                        <input type="radio" name="<?= 'importance[' . $question['unit_id'] . '][' . $q . ']' ?>" value="1" class="numero1" id="radio5" required>
+                                        <label for="radio5"><b>Not at all</b></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php } ?>
                         </li>
                         <?php $q++; ?>
                     <?php } ?>
                 </ul>
             </div>
-            <?
-
-
-            ?>
-            <div class="card mb-3 border-0 rounded shadow-lg">
+            <!-- <div class="card mb-3 border-0 rounded shadow-lg">
                 <div class="card-header bg-blue text-white">
                     <b>IMPORTANCE OF THE ATTRIBUTES</b> <span class="text-danger"><b>*</b></span>
                 </div>
@@ -471,26 +496,12 @@ $con = Yii::$app->db;
                         <?php $q++; ?>
                     <?php } ?>
                 </ul>
-            </div>
+            </div> -->
             <div class="card mb-3 mt-0 border col col-lg-12 rounded shadow-lg">
                 <div class="card-body">
                     <p class="card-text"><b>Considering your complete experience with our agency, how likely would you recommend our services to others?</b> <span class="text-danger">*</span></p>
                     <div class="d-flex align-items-center justify-content-center">
                         <div class="form-group">
-                            <!-- <?php
-                                    // echo StarRating::widget([
-                                    //     'name' => 'rating_20',
-                                    //     'id' => 'rating',
-                                    //     'pluginOptions' => [
-                                    //         'size' => 'md',
-                                    //         'stars' => 10,
-                                    //         'step' => 1,
-                                    //         'min' => 0,
-                                    //         'max' => 10,
-                                    //         'displayOnly' => false
-                                    //     ],
-                                    // ]);
-                                    ?> -->
                             <div class="d-flex align-items-center justify-content-center" id="nps">
                                 <div class="checkbox-nps checkboxgroup">
                                     <input type="radio" name="nps" value="10" class="number10" id="nps-radio10" required>

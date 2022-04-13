@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use kartik\grid\GridView;
+use yii2mod\alert\Alert;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Functionalunit */
@@ -11,6 +12,8 @@ $this->title = $model->unit_name;
 $this->params['breadcrumbs'][] = ['label' => 'Functionalunits', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
+echo Alert::widget();
 ?>
 <div class="functionalunit-view">
 
