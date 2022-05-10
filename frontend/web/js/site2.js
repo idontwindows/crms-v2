@@ -231,6 +231,178 @@ $("#form-rating").submit(function (e) {
     }
 });
 
+$("#form-csf").submit(function (e) {
+    e.preventDefault(); // avoid to execute the actual submit of the form.
+    e.stopImmediatePropagation();
+    var form = $(this);
+    var url = form.attr('action');
+    validationkey = randomchar(5);
+
+    if($("#services").val() == 12){
+        if (isEmptyOrSpaces($gender.val()) || isEmptyOrSpaces($age.val()) || isEmptyOrSpaces($client.val()) || !$drivers.is(':checked')) {
+            if ($drivers.is(':checked')) {
+                //console.log('trulala');
+                $drivers.removeClass('is-invalid');
+                $drivers.addClass('is-valid');
+            }else{
+                $drivers.removeClass('is-valid');
+                $drivers.addClass('is-invalid');
+                $drivers.focus();
+            }
+            if (isEmptyOrSpaces($gender.val())) {
+                $gender.removeClass('is-valid');
+                $gender.addClass('is-invalid');
+                $gender.focus();
+            } else {
+                $gender.removeClass('is-invalid');
+                $gender.addClass('is-valid');
+            }
+            if (isEmptyOrSpaces($age.val())) {
+                $age.removeClass('is-valid');
+                $age.addClass('is-invalid');
+                $age.focus();
+            } else {
+                $age.removeClass('is-invalid');
+                $age.addClass('is-valid');
+            }
+            if (isEmptyOrSpaces($client.val())) {
+                $client.removeClass('is-valid');
+                $client.addClass('is-invalid');
+                $client.focus();
+            } else {
+                $client.removeClass('is-invalid');
+                $client.addClass('is-valid');
+            }
+            swal("Warning", "Please fill out all required fields and submit again...", "warning");
+        }else{
+            swal({
+                title: validationkey,
+                text: "Please enter the 5 characters shown above, and type exactly what you see in the screen.",
+                content: "input",
+            })
+                .then((value) => {
+                    if (validationkey == value) {
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: form.serialize(), // serializes the form's elements.
+                            dataType: 'JSON',
+                            success: function (data) {
+                                if (data.complaint == true) {
+                                    $('#comments-complaint').html('<b>Please write your <span class="text-danger">complaint</span> below.</b> <span class="text-danger">*</span>');
+                                    if (isEmptyOrSpaces($textarea2.val())) {
+                                        $textarea2.removeClass('is-valid');
+                                        $textarea2.addClass('is-invalid');
+                                        $textarea2.focus();
+                                    } else {
+                                        $textarea2.removeClass('is-invalid');
+                                        $textarea2.addClass('is-valid');
+                                    }
+                                    swal("Warning", "You have rated below satisfied. Please write your complaint on the box provided and submit again...", "warning");
+                                }
+                                if (data.message == 'success') {
+                                    swal("Good job!", "Your response has been recorded.", "success", {
+                                        button: "Go Back",
+                                    })
+                                        .then((value) => {
+                                            // window.location.replace( frontendURI + '/csf/' + unit_id);
+                                            if (data.isPstc == true) {
+                                                window.location.replace(frontendURI + '/csf/' + unit_id + '?pstc_id=' + data.pstc_id);
+                                            } else {
+                                                window.location.replace(frontendURI + '/csf/' + unit_id);
+                                            }
+    
+                                        });
+                                }
+    
+                            }
+                        });
+                    } else {
+                        swal("Warning", "You have entered invalid charaters, Please try again...", "warning");
+                    }
+                    // swal(`You typed: ${value}`);
+                });
+        }
+    }else{
+        if (isEmptyOrSpaces($gender.val()) || isEmptyOrSpaces($age.val()) || isEmptyOrSpaces($client.val())) {
+            if (isEmptyOrSpaces($gender.val())) {
+                $gender.removeClass('is-valid');
+                $gender.addClass('is-invalid');
+                $gender.focus();
+            } else {
+                $gender.removeClass('is-invalid');
+                $gender.addClass('is-valid');
+            }
+            if (isEmptyOrSpaces($age.val())) {
+                $age.removeClass('is-valid');
+                $age.addClass('is-invalid');
+                $age.focus();
+            } else {
+                $age.removeClass('is-invalid');
+                $age.addClass('is-valid');
+            }
+            if (isEmptyOrSpaces($client.val())) {
+                $client.removeClass('is-valid');
+                $client.addClass('is-invalid');
+                $client.focus();
+            } else {
+                $client.removeClass('is-invalid');
+                $client.addClass('is-valid');
+            }
+    
+            swal("Warning", "Please fill out all required fields and submit again...", "warning");
+        } else {
+            swal({
+                title: validationkey,
+                text: "Please enter the 5 characters shown above, and type exactly what you see in the screen.",
+                content: "input",
+            })
+                .then((value) => {
+                    if (validationkey == value) {
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: form.serialize(), // serializes the form's elements.
+                            dataType: 'JSON',
+                            success: function (data) {
+                                if (data.complaint == true) {
+                                    $('#comments-complaint').html('<b>Please write your <span class="text-danger">complaint</span> below.</b> <span class="text-danger">*</span>');
+                                    if (isEmptyOrSpaces($textarea2.val())) {
+                                        $textarea2.removeClass('is-valid');
+                                        $textarea2.addClass('is-invalid');
+                                        $textarea2.focus();
+                                    } else {
+                                        $textarea2.removeClass('is-invalid');
+                                        $textarea2.addClass('is-valid');
+                                    }
+                                    swal("Warning", "You have rated below satisfied. Please write your complaint on the box provided and submit again...", "warning");
+                                }
+                                if (data.message == 'success') {
+                                    swal("Good job!", "Your response has been recorded.", "success", {
+                                        button: "Go Back",
+                                    })
+                                        .then((value) => {
+                                            // window.location.replace( frontendURI + '/csf/' + unit_id);
+                                            if (data.isPstc == true) {
+                                                window.location.replace(frontendURI + '/csf/' + unit_id + '?pstc_id=' + data.pstc_id);
+                                            } else {
+                                                window.location.replace(frontendURI + '/csf/' + unit_id);
+                                            }
+    
+                                        });
+                                }
+    
+                            }
+                        });
+                    } else {
+                        swal("Warning", "You have entered invalid charaters, Please try again...", "warning");
+                    }
+                    // swal(`You typed: ${value}`);
+                });
+        }
+    }
+});
+
 $("#select-gender").change(function () {
     if ($(this).val() == 'female') {
         $("#check-preggy").removeAttr("disabled");

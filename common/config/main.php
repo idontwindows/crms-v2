@@ -10,4 +10,12 @@ return [
             'class' => 'yii\caching\FileCache',
         ],
     ],
+    'modules' => [
+        'services' => [
+            'class' => 'frontend\modules\services\Services',       
+        ],
+        'csf' =>[
+            'class' => 'frontend\modules\csf\Csf',
+        ]
+    ],
 ];
