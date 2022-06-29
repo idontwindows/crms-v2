@@ -4,6 +4,9 @@ function updateItems(r) {
     _opts.items.assigned = r.assigned;
     search('available');
     search('assigned');
+    if(_admin != true){
+        removeOpt();
+    }
 }
 
 $('.btn-assign').click(function () {
@@ -40,13 +43,19 @@ function search(target) {
             $('<option>').text(name).val(name).appendTo(groups[group][0]);
             groups[group][1] = true;
         }
+        
     });
     $.each(groups, function () {
         if (this[1]) {
             $list.append(this[0]);
         }
     });
+    if(_admin != true){
+        removeOpt();
+    }
+    
 }
+
 
 // initial
 search('available');

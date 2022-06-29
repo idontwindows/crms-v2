@@ -72,6 +72,24 @@ $mod = $count % 2;
                     </div>
                 <?php } ?>
             <?php } else { ?>
+                <div class="col-xl-6 col-sm-12 col-12">
+                        <div class="card rounded-pill shadow p-2 mb-3 border">
+                            <div class="card-content">
+                                <div class="card-body">
+                                    <div class="media d-flex">
+                                        <div class="align-self-center">
+                                            <!-- <i class="icon-pie-chart warning font-large-2 float-right"></i> -->
+                                            <i class="fa fa-check-circle text-primary font-large-2 float-right"></i>
+                                        </div>
+                                        <div class="media-body text-right">
+                                            <h6 class="font-weight-bold unit-title"><?= $serviceunit->service_unit_name ?></h6>
+                                            <span><a class="font-weight-bold" href="<?= $link ?>">Click Here</a></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
             <?php } ?>
             <?php $index++ ?>
         <?php } ?>

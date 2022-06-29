@@ -27,7 +27,6 @@ $('.btn-assign').click(function () {
     var $this = $(this);
     var target = $this.data('target');
     var items = $('select.list[data-target="' + target + '"]').val();
-
     if (items && items.length) {
         $this.children('i.glyphicon-refresh-animate').show();
         $.post($this.attr('href'), {items: items}, function (r) {
@@ -36,7 +35,7 @@ $('.btn-assign').click(function () {
             $this.children('i.glyphicon-refresh-animate').hide();
         });
     }
-    return false;
+    return false; 
 });
 
 $('.search[data-target]').keyup(function () {
@@ -85,3 +84,6 @@ function listUsers() {
 search('available');
 search('assigned');
 listUsers();
+
+
+

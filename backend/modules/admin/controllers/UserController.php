@@ -52,7 +52,7 @@ class UserController extends Controller
             if (Yii::$app->has('mailer') && ($mailer = Yii::$app->getMailer()) instanceof BaseMailer) {
                 /* @var $mailer BaseMailer */
                 $this->_oldMailPath = $mailer->getViewPath();
-                $mailer->setViewPath('@mdm/admin/mail');
+                $mailer->setViewPath('@backend/modules/admin/mail');
             }
             return true;
         }
@@ -68,6 +68,13 @@ class UserController extends Controller
             Yii::$app->getMailer()->setViewPath($this->_oldMailPath);
         }
         return parent::afterAction($action, $result);
+    }
+    public function labels()
+    {
+        return[
+            'Item' => 'User',
+            'Items' => 'Users',
+        ];
     }
 
     /**
@@ -252,10 +259,20 @@ class UserController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = User::findOne($id)) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+        $region_id = Yii::$app->user->identity->region_id; 
+        if($region_id !== null){
+            if (($model = User::find()->where(['id' => $id, 'region_id' => $region_id])->one()) !== null) {
+                return $model;
+            } else {
+                throw new NotFoundHttpException('The requested page does not exist.');
+            }
+        }else{
+            if (($model = User::findOne($id)) !== null) {
+                return $model;
+            } else {
+                throw new NotFoundHttpException('The requested page does not exist.');
+            } 
         }
+  
     }
 }

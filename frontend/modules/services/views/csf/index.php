@@ -24,6 +24,8 @@ $this->title = 'My Yii Application';
 
 
 
+
+
 $this->registerJsFile('/js/signature_pad.min.js', ['position' => \yii\web\View::POS_END]);
 $this->registerJsFile('/js/site2.js', ['position' => \yii\web\View::POS_END]);
 $this->registerJsFile('/js/sweetalert.min.js', ['position' => \yii\web\View::POS_END]);
@@ -132,7 +134,9 @@ $this->registerCss('.modal-confirm {
         //'id' => 'smileys',
         'id' => 'form-csf',
         //'action' => false,
-        'action' => ['post-rating']
+        'action' => null !== $request->get('pstc_id') ? 
+                                ['post-rating','region_id' => $region_id, 'pstc_id' => $request->get('pstc_id'),'service_unit_id' => $request->get('service_unit_id')] : 
+                                ['post-rating','region_id' => $region_id,'service_unit_id' => $request->get('service_unit_id')]
 
             
         //'options' => ['onsubmit' => 'return validate()'],
@@ -159,15 +163,16 @@ $this->registerCss('.modal-confirm {
             <div class="card mb-3 mt-0 border rounded shadow-lg">
                 <div class="card-body">
                     <h4 class="card-title">
+                        <?= null !== $request->get('pstc_id') ? $serviceunit->service_unit_name . ' ' . $pstc->pstc_name : $serviceunit->service_unit_name ?>
                     </h4>
                     <p class="card-text">This questionaire aims to solicit your honest assessment of our services.
                         Please take a minute in filling out this form and help us serve you better. </p>
                     <div class="form-group form-email">
-                        <label for="txtEmail"><b>Email</b> (<span class="text-info">Optional</span>)</label>
+                        <label for="txtEmail" id="lblEmail"><b>Email</b> (<span class="text-info">Optional</span>)</label>
                         <input type="text" class="form-control" id="txtEmail" name="customer_email" placeholder="Type your email here..." autofocus="" aria-required="true" aria-invalid="">
                         <div class="invalid-feedback invalid-feedback-email"></div>
                     </div>
-                    <!--                     
+                    <!--                       
                     <div class="form-group">
                         <label for="txtDate"><b>Date</b> <span class="text-danger">*</span></label>
                         <div class="datepicker date input-group">
@@ -235,12 +240,14 @@ $this->registerCss('.modal-confirm {
                                     </div>
                                     <div class="card-body">
                                         <div class="form-group">
+                                            <?php $l = 0;?>
                                             <?php foreach($drivers as $driver){?>
-                                            <!-- <input type="hidden" id="services" name="services" value="">  -->
+                                            <input type="hidden" id="services" name="services" value="<?= $service_unit_id ?>"> 
                                                 <div class="form-check form-check-inline" id="drivers-name-check">
-                                                    <input class="form-check-input" type="radio" name="drivers_name" id="check-driver-1" value="<?= $driver->drivers_id ?>">
-                                                    <label class="form-check-label font-weight-bold" for="check-driver-1"><?= $driver->drivers_name ?></label>
+                                                    <input class="form-check-input" type="radio" name="drivers_name" id="check-driver-<?= $l ?>" value="<?= $driver->drivers_id ?>">
+                                                    <label class="form-check-label font-weight-bold" for="check-driver-<?= $l ?>"><?= $driver->drivers_name ?></label>
                                                 </div>
+                                                <?php $l++; ?>
                                             <?php } ?>
                                         </div>
                                     </div>
@@ -278,7 +285,7 @@ $this->registerCss('.modal-confirm {
 
             <div class="card mb-3 border-0 rounded shadow-lg">
                 <div class="card-header bg-blue text-white">
-                    <b>HOW WOULD YOU RATE OUR SERVICES?</b> <span class="text-danger"><b>*</b></span>
+                    <b>HOW WOULD YOU RATE OUR <?= strtoupper($serviceunit->service_unit_name) ?> SERVICES?</b> <span class="text-danger"><b>*</b></span>
                 </div>
                 <ul class="list-group list-group-flush">
                     <?php $q = 0; ?>
@@ -287,27 +294,27 @@ $this->registerCss('.modal-confirm {
                             <div class="form-group">
                                 <div class="d-flex align-items-center justify-content-center question-description">
                                     <b><?= $attribute->question ?></b>
-                                    <input type="hidden" id="custId" name="questionId[<?= $attribute->attribute_id ?>][<?= $q ?>]" value="<?= $attribute->attribute_id ?>">
+                                    <input type="hidden" id="custId" name="questionId[<?= $service_unit_id ?>][<?= $q ?>]" value="<?= $attribute->attribute_id ?>">
                                 </div>
                                 <div class="d-flex align-items-center justify-content-center" id="smileys">
                                     <div class="checkboxgroup">
-                                        <input type="radio" name="<?= 'rating[' . $attribute->attribute_id . '][' . $q . ']' ?>" value="5" class="smiley5" id="radio1" required>
+                                        <input type="radio" name="<?= 'rating[' . $service_unit_id . '][' . $q . ']' ?>" value="5" class="smiley5" id="radio1" required>
                                         <label for="radio1"><b>Very satisfied</b></label>
                                     </div>
                                     <div class="checkboxgroup">
-                                        <input type="radio" name="<?= 'rating[' . $attribute->attribute_id . '][' . $q . ']' ?>" value="4" class="smiley4" id="radio2" required>
+                                        <input type="radio" name="<?= 'rating[' . $service_unit_id . '][' . $q . ']' ?>" value="4" class="smiley4" id="radio2" required>
                                         <label for="radio2"><b>Satisfied</b></label>
                                     </div>
                                     <div class="checkboxgroup">
-                                        <input type="radio" name="<?= 'rating[' . $attribute->attribute_id . '][' . $q . ']' ?>" value="3" class="smiley3" id="radio3" required>
+                                        <input type="radio" name="<?= 'rating[' . $service_unit_id . '][' . $q . ']' ?>" value="3" class="smiley3" id="radio3" required>
                                         <label for="radio3"><b>Neither</b></label>
                                     </div>
                                     <div class="checkboxgroup">
-                                        <input type="radio" name="<?= 'rating[' . $attribute->attribute_id . '][' . $q . ']' ?>" value="2" class="smiley2" id="radio4" required>
+                                        <input type="radio" name="<?= 'rating[' . $service_unit_id . '][' . $q . ']' ?>" value="2" class="smiley2" id="radio4" required>
                                         <label for="radio4"><b>Dissatisfied</b></label>
                                     </div>
                                     <div class="checkboxgroup">
-                                        <input type="radio" name="<?= 'rating[' . $attribute->attribute_id . '][' . $q . ']' ?>" value="1" class="smiley1" id="radio5" required>
+                                        <input type="radio" name="<?= 'rating[' . $service_unit_id . '][' . $q . ']' ?>" value="1" class="smiley1" id="radio5" required>
                                         <label for="radio5"><b>Very dissatisfied</b></label>
                                     </div>
                                 </div>
@@ -317,36 +324,35 @@ $this->registerCss('.modal-confirm {
                                 <div class="d-flex align-items-center justify-content-center question-description">
                               
                                     <b>How important is this attribute?</b>
-                                    <input type="hidden" id="importance" name="questionimportance[<?= $attribute->attribute_id ?>][<?= $q ?>]" value="<?= $attribute->attribute_id ?>">
+                                    <input type="hidden" id="importance" name="questionimportance[<?= $service_unit_id ?>][<?= $q ?>]" value="<?= $attribute->attribute_id ?>">
                                 </div>
                                 <div class="d-flex align-items-center justify-content-center" id="smileys">
 
                                     <div class="checkboxgroup">
-                                        <input type="radio" name="<?= 'importance[' . $attribute->attribute_id . '][' . $q . ']' ?>" value="5" class="numero5" id="radio1" required>
+                                        <input type="radio" name="<?= 'importance[' . $service_unit_id . '][' . $q . ']' ?>" value="5" class="numero5" id="radio1" required>
                                         <label for="radio1"><b>Very Important</b></label>
                                     </div>
                                     <div class="checkboxgroup">
-                                        <input type="radio" name="<?= 'importance[' . $attribute->attribute_id . '][' . $q . ']' ?>" value="4" class="numero4" id="radio2" required>
+                                        <input type="radio" name="<?= 'importance[' . $service_unit_id . '][' . $q . ']' ?>" value="4" class="numero4" id="radio2" required>
                                         <label for="radio2"><b>Important</b></label>
                                     </div>
                                     <div class="checkboxgroup">
-                                        <input type="radio" name="<?= 'importance[' . $attribute->attribute_id . '][' . $q . ']' ?>" value="3" class="numero3" id="radio3" required>
+                                        <input type="radio" name="<?= 'importance[' . $service_unit_id . '][' . $q . ']' ?>" value="3" class="numero3" id="radio3" required>
                                         <label for="radio3"><b>Moderately</b></label>
                                     </div>
                                     <div class="checkboxgroup">
-                                        <input type="radio" name="<?= 'importance[' . $attribute->attribute_id . '][' . $q . ']' ?>" value="2" class="numero2" id="radio4" required>
+                                        <input type="radio" name="<?= 'importance[' . $service_unit_id . '][' . $q . ']' ?>" value="2" class="numero2" id="radio4" required>
                                         <label for="radio4"><b>Slightly</b></label>
                                     </div>
                                     <div class="checkboxgroup">
-                                        <input type="radio" name="<?= 'importance[' . $attribute->attribute_id . '][' . $q . ']' ?>" value="1" class="numero1" id="radio5" required>
+                                        <input type="radio" name="<?= 'importance[' . $service_unit_id . '][' . $q . ']' ?>" value="1" class="numero1" id="radio5" required>
                                         <label for="radio5"><b>Not at all</b></label>
                                     </div>
                                 </div>
                             </div>
+                            <?php $q++; ?>
                             <?php } ?>
                         </li>
-                        <?php $q++; ?>
-                 
                 </ul>
             </div>
             <div class="card mb-3 mt-0 border col col-lg-12 rounded shadow-lg">
@@ -390,15 +396,7 @@ $this->registerCss('.modal-confirm {
                     </div>
                 </div>
             </div>
-
-            <div class="card mb-3 mt-0 border rounded shadow-lg">
-                <div class="card-body">
-                    <p class="card-text"><b>Please indicate other important attribute/s which you think is important to your needs.</b> (<span class="text-info">Optional</span>)</p>
-                    <div class="form-group">
-                        <textarea class="form-control" name="other_important_attrib" id="Textarea1" rows="3"></textarea>
-                    </div>
-                </div>
-            </div>
+            
             <div class="card mb-3 mt-0 border-0 rounded shadow-lg">
                 <div class="card-body">
                     <p class="card-text" id="comments-complaint"><b>Please write your comment/suggestions below.</b> (<span class="text-info">Optional</span>)</p>
@@ -407,6 +405,16 @@ $this->registerCss('.modal-confirm {
                     </div>
                 </div>
             </div>
+            
+            <div class="card mb-3 mt-0 border rounded shadow-lg">
+                <div class="card-body">
+                    <p class="card-text"><b>Please indicate other important attribute/s which you think is important to your needs.</b> (<span class="text-info">Optional</span>)</p>
+                    <div class="form-group">
+                        <textarea class="form-control" name="other_important_attrib" id="Textarea1" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+
 
             <div class="card mb-3 mt-0 border rounded shadow-lg">
                 <div class="card-body">

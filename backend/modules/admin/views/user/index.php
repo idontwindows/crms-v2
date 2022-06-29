@@ -8,12 +8,16 @@ use backend\modules\admin\components\Helper;
 /* @var $searchModel backend\modules\admin\models\searchs\User */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
+$context = $this->context;
+$labels = $context->labels();
 $this->title = Yii::t('rbac-admin', 'Users');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
 
-
+    <p>
+        <?= Html::a(Yii::t('rbac-admin', 'Create ' . $labels['Item']), ['signup'], ['class' => 'btn btn-success']) ?>
+    </p>
     <?=
     GridView::widget([
         'dataProvider' => $dataProvider,

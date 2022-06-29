@@ -49,14 +49,14 @@ class Assignment extends Model
     public function search($params, $class, $usernameField)
     {
         $query = $class::find();
+        $query->where(['region_id' => null === Yii::$app->user->identity->region_id ? [null,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18] : Yii::$app->user->identity->region_id,]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
-
+   
         $query->andFilterWhere(['like', $usernameField, $this->username]);
 
         return $dataProvider;

@@ -27,15 +27,29 @@ $opts = Json::htmlEncode([
     'items' => $model->getItems(),
 ]);
 $this->registerJs("var _opts = {$opts};");
+$this->registerJs("var _admin = false;");
+if(Yii::$app->user->can('admin')){
+    $this->registerJs("var _admin = true;");
+}
 $this->registerJs($this->render('_script.js'));
+$this->registerJs('
+    function removeOpt(){
+        $("option[value=\'admin\']").remove();
+        $("option[value=\'top-management\']").remove();
+    }
+    if(_admin != true){
+        removeOpt();
+    }');
+
 $animateIcon = ' <i class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></i>';
+
 ?>
 <div class="assignment-index">
 
 
     <div class="row">
         <div class="col-sm-5">
-            <input class="form-control search" data-target="available"
+            <input class="form-control search" data-target="available" id="select-available"
                    placeholder="<?=Yii::t('rbac-admin', 'Search for available');?>">
             <select multiple size="20" class="form-control list" data-target="available">
             </select>
@@ -61,3 +75,4 @@ $animateIcon = ' <i class="glyphicon glyphicon-refresh glyphicon-refresh-animate
         </div>
     </div>
 </div>
+

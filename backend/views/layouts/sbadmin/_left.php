@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use backend\modules\admin\components\Helper;
 
 $collapse = 'collapsed';
 $bool = 'false';
@@ -28,7 +29,7 @@ $boollibrary = 'false';
 $activelibrary = '';
 $showlibrary = '';
 
-if($this->context->route == 'admin/user/index' || $this->context->route == 'admin/user/view'){
+if($this->context->route == 'admin/user/index' || $this->context->route == 'admin/user/view' || $this->context->route == 'admin/user/signup'){
     $show = 'show';
     $collapse = '';
     $bool = 'true';
@@ -52,7 +53,7 @@ if($this->context->route == 'admin/route/index'){
     $bool = 'true';
     $activeroute = 'active';
 }
-if($this->context->route == 'admin/role/index' || $this->context->route == 'admin/role/create'){
+if($this->context->route == 'admin/role/index' || $this->context->route == 'admin/role/create' || $this->context->route == 'admin/role/view'){
     $show = 'show';
     $collapse = '';
     $bool = 'true';
@@ -82,6 +83,7 @@ if($this->context->route == 'drivers/index' || $this->context->route == 'drivers
     $boollibrary = 'true';
     $activelibrary = 'active';
 }
+
 ?>
 <div id="layoutSidenav_nav">
     <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
@@ -92,7 +94,7 @@ if($this->context->route == 'drivers/index' || $this->context->route == 'drivers
                     <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                     Dashboard
                 </a>
-                <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div> Functional Units', Url::to(['/unit']), ['class' => 'nav-link']) ?>
+                <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div> Service Units', Url::to(['/service-unit']), ['class' => 'nav-link']) ?>
                 <?php
                 echo Html::a(
                     '<div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
@@ -114,33 +116,34 @@ if($this->context->route == 'drivers/index' || $this->context->route == 'drivers
                         <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-file-excel"></i></div> Report 2', Url::to(['/reports']), ['class' => 'nav-link '.$activerolereport2]) ?>
                     </nav>
                 </div>
-                <?php if (Yii::$app->user->identity->username == 'admin') { ?>
                     <?php
-                    echo Html::a(
-                        '<div class="sb-nav-link-icon"><i class="fas fa-cogs"></i></div>
-                        RBAC
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>',
-                        Url::to(['#']),
-                        [
-                            'class' => 'nav-link ' . $collapse,
-                            'data-toggle' => 'collapse',
-                            'data-target' => '#collapseSettings',
-                            'aria-expanded' => $bool,
-                            'aria-controls' => 'collapseSettings'
-                        ]
-                    );
+                    if(Helper::checkRoute('/admin') || Helper::checkRoute('/admin/*')){
+                        echo Html::a(
+                            '<div class="sb-nav-link-icon"><i class="fas fa-cogs"></i></div>
+                            RBAC
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>',
+                            Url::to(['#']),
+                            [
+                                'class' => 'nav-link ' . $collapse,
+                                'data-toggle' => 'collapse',
+                                'data-target' => '#collapseSettings',
+                                'aria-expanded' => $bool,
+                                'aria-controls' => 'collapseSettings'
+                            ]
+                        );
+                    }
+        
                     ?>
                     <div class="collapse <?= $show; ?>"  id="collapseSettings" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
-                            <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-users"></i></div> Users', Url::to(['/admin/user']), ['class' => 'nav-link '.$activeuser]) ?>
-                            <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-drum"></i></div> Assignment', Url::to(['/admin/assignment']), ['class' => 'nav-link '.$activeassignment]) ?>
-                            <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-key"></i></div> Permission', Url::to(['/admin/permission']), ['class' => 'nav-link '.$activepermission]) ?>
-                            <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-route"></i></div> Route', Url::to(['/admin/route']), ['class' => 'nav-link '.$activeroute]) ?>
-                            <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-user-tag"></i></div> Role', Url::to(['/admin/role']), ['class' => 'nav-link '.$activerole]) ?>
+                            <?php if(Helper::checkRoute('/admin/user/index')) echo Html::a('<div class="sb-nav-link-icon"><i class="fas fa-users"></i></div> Users', Url::to(['/admin/user']), ['class' => 'nav-link '.$activeuser]); ?>
+                            <?php if(Helper::checkRoute('/admin/assignment/index')) echo Html::a('<div class="sb-nav-link-icon"><i class="fas fa-drum"></i></div> Assignment', Url::to(['/admin/assignment']), ['class' => 'nav-link '.$activeassignment]) ?>
+                            <?php if(Helper::checkRoute('/admin/permission/index')) echo Html::a('<div class="sb-nav-link-icon"><i class="fas fa-key"></i></div> Permission', Url::to(['/admin/permission']), ['class' => 'nav-link '.$activepermission]) ?>
+                            <?php if(Helper::checkRoute('/admin/route/index')) echo Html::a('<div class="sb-nav-link-icon"><i class="fas fa-route"></i></div> Route', Url::to(['/admin/route']), ['class' => 'nav-link '.$activeroute]) ?>
+                            <?php if(Helper::checkRoute('/admin/role/index')) echo Html::a('<div class="sb-nav-link-icon"><i class="fas fa-user-tag"></i></div> Role', Url::to(['/admin/role']), ['class' => 'nav-link '.$activerole]) ?>
                             <!-- <a class="nav-link" href="layout-sidenav-light.html">Report 2</a> -->
                         </nav>
                     </div>
-                <?php } ?>
 
                 <!-- <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAccount" aria-expanded="false" aria-controls="collapseLayouts">
                     <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>

@@ -16,7 +16,8 @@ class AppAsset extends AssetBundle
         'css/font-awesome.min.css',
         'css/bootstrap-datepicker3.min.css',
         'css/summernote-bs4.min.css',
-        'css/sbadmin/styles.css'
+        'css/sbadmin/styles.css',
+        'css/multi-select.css'
     ];
     public $js = [
         'js/angular.min.js',
@@ -40,6 +41,8 @@ class AppAsset extends AssetBundle
         'js/sbadmin/bootstrap.bundle.min.js',
         'js/sbadmin/chart.min.js',
         'js/sbadmin/chartjs-plugin-datalabels.js',
+        'js/serviceunit.js',
+        'js/jquery.multi-select.min.js',        
         //'js/sbadmin/assets/chart-pie.js'
 
     ];

@@ -11,8 +11,10 @@ use common\models\Pstc;
 use common\models\CustomerV2;
 use common\models\CommentV2;
 use common\models\RatingV2;
+use common\models\ImportanceRatingV2;
 use common\models\NpsRatingV2;
 use common\models\Drivers;
+use yii\web\ForbiddenHttpException;
 
 class CsfController extends \yii\web\Controller
 {
@@ -22,14 +24,21 @@ class CsfController extends \yii\web\Controller
         $serviceunit = $this->findServiceUnit($service_unit_id);
         $model = $this->findAttributes($service_unit_id);
         $drivers = $this->getDrivers($region_id);
+        $request = Yii::$app->request;
         if($serviceunit->is_with_pstc == 1){
             if(!isset($_GET['pstc_id'])){
                 throw new NotFoundHttpException('The requested page does not exist.');
             }
-            $this->findPstc($_GET['pstc_id'],$region_id);
-            return $this->render('index',['model' => $model, 'service_unit_id' => $service_unit_id]);
+            $pstc = $this->findPstc($_GET['pstc_id'],$region_id);
+            return $this->render('index',['model' => $model, 'service_unit_id' => $service_unit_id, 'pstc' => $pstc, 'region_id' => $region_id, 'request' => $request, 'serviceunit' => $serviceunit]);
+        }else{
+            if(isset($_GET['pstc_id'])){
+                throw new NotFoundHttpException('The requested page does not exist.');
+            }
+            return $this->render('index',['model' => $model, 'service_unit_id' => $service_unit_id, 'drivers' => $drivers,'region_id' => $region_id,'request' => $request, 'serviceunit' => $serviceunit]); 
         }
-        return $this->render('index',['model' => $model, 'service_unit_id' => $service_unit_id, 'drivers' => $drivers ]);
+  
+        
     }
     protected function findAttributes($id)
     {
@@ -65,15 +74,42 @@ class CsfController extends \yii\web\Controller
     }
     public function actionPostRating(){
 
-        $customer_id = $this->CustomerId();
+        $customer_id = $this->generateCustomerId();
         $customer = new CustomerV2();
-        $comment = new CommentV2();
         $nps = new NpsRatingV2();
 
         $request = Yii::$app->request;
 
+        //$serviceunit = $this->findServiceUnit($request->get('service_unit_id'));
+
         if(Yii::$app->request->isPost){
-            $customer->customer_id = $this->generateCustomerId();
+            if($request->get('service_unit_id') == 10){
+                if(empty($request->post('drivers_name'))){
+                    $data['message'] = 'blank';
+                    return json_encode($data);
+                } 
+            }
+            if (empty($request->post('customer_age')) || empty($request->post('customer_gender')) || empty($request->post('customer_client_type'))) {
+                $data['message'] = 'blank';
+                return json_encode($data);
+            }
+            $k = 0;
+            $data['complaint'] = false;
+            foreach ($request->post('rating')[$request->get('service_unit_id')] as $complaint) {
+                if($request->post('rating')[$request->get('service_unit_id')][$k] <= 3){
+                    $data['complaint'] = true; 
+                    if(empty($request->post('comments'))){  
+                        return json_encode($data);
+                    } 
+                    if(empty($request->post('customer_email'))){ 
+                        $data['message'] = 'blank';
+                        return json_encode($data);
+                    } 
+                }
+                $k++;
+            }
+            //This is to save data on table customer
+            $customer->customer_id = $customer_id;
             $customer->customer_email = $request->post('customer_email');
             $customer->customer_name = $request->post('customer_name');
             $customer->client_type = $request->post('customer_client_type');
@@ -84,8 +120,61 @@ class CsfController extends \yii\web\Controller
             if(!empty($request->post('preggy')) && $request->post('customer_gender') == 'female') $customer->pregnant = $request->post('preggy');
             if(!empty($request->post('senior'))) $customer->senior_citizen = $request->post('senior');
             $customer->signature = $request->post('sigText');
+            $customer->service_unit_id = $request->get('service_unit_id');
+            if(null !== $request->get('pstc_id')) $customer->pstc_id = $request->get('pstc_id');
+            if($request->get('service_unit_id') == 10) $customer->driver_id = $request->post('drivers_name');
+            $customer->region_id = $request->get('region_id');
             $customer->date_created = date("Y-m-d H:i:s");
             $customer->save(false);
+
+            $comment = new CommentV2();
+            $comment->customer_id = $customer_id;
+            if(!empty($request->post('comments'))) $comment->comment = $request->post('comments');
+            if(!empty($request->post('other_important_attrib'))) $comment->comment = $request->post('other_important_attrib');
+            if($data['complaint']) $comment->is_complaint = true;
+            if(!empty($request->post('comments')) || !empty($request->post('other_important_attrib'))) $comment->save(false);
+
+            $i=0;
+            foreach ($request->post('rating')[$request->get('service_unit_id')] as $rating_score){
+                $rating = new RatingV2();
+                $rating->customer_id = $customer_id;
+                //$rating->service_unit_id = $request->get('service_unit_id');
+                $rating->attribute_id = $request->post('questionId')[$request->get('service_unit_id')][$i];
+                $rating->rating_point = $request->post('rating')[$request->get('service_unit_id')][$i];
+                $rating->rating_date = date("Y-m-d H:i:s");
+                $rating->save(false);
+                $i++;
+            }
+      
+            $j=0;
+            foreach ($request->post('importance')[$request->get('service_unit_id')] as $importance){
+                $important = new ImportanceRatingV2();
+                $important->customer_id = $customer_id;
+                //$important->service_unit_id = $request->get('service_unit_id');
+                $important->attribute_id = $request->post('questionimportance')[$request->get('service_unit_id')][$j];
+                $important->rating_point = $request->post('importance')[$request->get('service_unit_id')][$j];
+                //$important->rating_point = $importance[$j];
+                $important->rating_date = date("Y-m-d H:i:s");
+                $important->save(false);
+                $j++;
+            }
+            $nps->score = $request->post('nps');
+            $nps->customer_id = $customer_id;
+            //$nps->service_unit_id = $request->get('service_unit_id');
+            $nps->rating_date = date("Y-m-d H:i:s");
+            $nps->save(false);
+
+            $data['message'] = 'success';
+            $data['region_id'] = $request->get('region_id');
+            $data['service_unit_id'] = $request->get('service_unit_id');
+            if(null !== $request->get('pstc_id')){
+                $data['pstc_id'] = $request->get('pstc_id');
+            }else{
+                $data['pstc_id'] = 0;
+            }
+            return json_encode($data);
+        }else{
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
         }
     }
     protected function generateCustomerId()

@@ -203,7 +203,7 @@ $("#form-rating").submit(function (e) {
                                         $textarea2.removeClass('is-invalid');
                                         $textarea2.addClass('is-valid');
                                     }
-                                    swal("Warning", "You have rated below satisfied. Please write your complaint on the box provided and submit again...", "warning");
+                                    swal("Message", "You have rated below satisfied. Please write your complaint on the box provided and submit again...", "warning");
                                 }
                                 if (data.message == 'success') {
                                     swal("Good job!", "Your response has been recorded.", "success", {
@@ -212,7 +212,7 @@ $("#form-rating").submit(function (e) {
                                         .then((value) => {
                                             // window.location.replace( frontendURI + '/csf/' + unit_id);
                                             if (data.isPstc == true) {
-                                                window.location.replace(frontendURI + '/csf/' + unit_id + '?pstc_id=' + data.pstc_id);
+                                                window.location.replace(frontendURI + '/services/csf?' + unit_id + '?pstc_id=' + data.pstc_id);
                                             } else {
                                                 window.location.replace(frontendURI + '/csf/' + unit_id);
                                             }
@@ -238,7 +238,7 @@ $("#form-csf").submit(function (e) {
     var url = form.attr('action');
     validationkey = randomchar(5);
 
-    if($("#services").val() == 12){
+    if($("#services").val() == 10){
         if (isEmptyOrSpaces($gender.val()) || isEmptyOrSpaces($age.val()) || isEmptyOrSpaces($client.val()) || !$drivers.is(':checked')) {
             if ($drivers.is(':checked')) {
                 //console.log('trulala');
@@ -293,12 +293,22 @@ $("#form-csf").submit(function (e) {
                                     if (isEmptyOrSpaces($textarea2.val())) {
                                         $textarea2.removeClass('is-valid');
                                         $textarea2.addClass('is-invalid');
+                                        $textarea2[0].scrollIntoView();
                                         $textarea2.focus();
                                     } else {
                                         $textarea2.removeClass('is-invalid');
                                         $textarea2.addClass('is-valid');
                                     }
-                                    swal("Warning", "You have rated below satisfied. Please write your complaint on the box provided and submit again...", "warning");
+                                    $('#lblEmail').html('<b>Email</b> <span class="text-danger">*</span>');
+                                    if (isEmptyOrSpaces($email.val())) {
+                                        $email.removeClass('is-valid');
+                                        $email.addClass('is-invalid');
+                                        $email.focus();
+                                    } else {
+                                        $email.removeClass('is-invalid');
+                                        $email.addClass('is-valid');
+                                    }
+                                    swal("Message", "You have rated below satisfied. Please write your complaint and email on the textbox provided and submit again...", "warning");
                                 }
                                 if (data.message == 'success') {
                                     swal("Good job!", "Your response has been recorded.", "success", {
@@ -306,10 +316,10 @@ $("#form-csf").submit(function (e) {
                                     })
                                         .then((value) => {
                                             // window.location.replace( frontendURI + '/csf/' + unit_id);
-                                            if (data.isPstc == true) {
-                                                window.location.replace(frontendURI + '/csf/' + unit_id + '?pstc_id=' + data.pstc_id);
+                                            if (data.pstc_id != 0) {
+                                                window.location.replace(frontendURI + '/services/csf?service_unit_id=' + data.service_unit_id + '&region_id=' + data.region_id + '&pstc_id=' + data.pstc_id);
                                             } else {
-                                                window.location.replace(frontendURI + '/csf/' + unit_id);
+                                                window.location.replace(frontendURI + '/services/csf?service_unit_id=' + data.service_unit_id + '&region_id=' + data.region_id);
                                             }
     
                                         });
@@ -366,16 +376,26 @@ $("#form-csf").submit(function (e) {
                             dataType: 'JSON',
                             success: function (data) {
                                 if (data.complaint == true) {
+                                    swal("Message", "You have rated below satisfied. Please write your complaint and email on the textbox provided and submit again...", "warning");
                                     $('#comments-complaint').html('<b>Please write your <span class="text-danger">complaint</span> below.</b> <span class="text-danger">*</span>');
                                     if (isEmptyOrSpaces($textarea2.val())) {
                                         $textarea2.removeClass('is-valid');
                                         $textarea2.addClass('is-invalid');
+                                        $textarea2[0].scrollIntoView();
                                         $textarea2.focus();
                                     } else {
                                         $textarea2.removeClass('is-invalid');
                                         $textarea2.addClass('is-valid');
                                     }
-                                    swal("Warning", "You have rated below satisfied. Please write your complaint on the box provided and submit again...", "warning");
+                                    $('#lblEmail').html('<b>Email</b> <span class="text-danger">*</span>');
+                                    if (isEmptyOrSpaces($email.val())) {
+                                        $email.removeClass('is-valid');
+                                        $email.addClass('is-invalid');
+                                        $email.focus();
+                                    } else {
+                                        $email.removeClass('is-invalid');
+                                        $email.addClass('is-valid');
+                                    }
                                 }
                                 if (data.message == 'success') {
                                     swal("Good job!", "Your response has been recorded.", "success", {
@@ -383,10 +403,10 @@ $("#form-csf").submit(function (e) {
                                     })
                                         .then((value) => {
                                             // window.location.replace( frontendURI + '/csf/' + unit_id);
-                                            if (data.isPstc == true) {
-                                                window.location.replace(frontendURI + '/csf/' + unit_id + '?pstc_id=' + data.pstc_id);
+                                            if (data.pstc_id != 0) {
+                                                window.location.replace(frontendURI + '/services/csf?service_unit_id=' + data.service_unit_id + '&region_id=' + data.region_id + '&pstc_id=' + data.pstc_id);
                                             } else {
-                                                window.location.replace(frontendURI + '/csf/' + unit_id);
+                                                window.location.replace(frontendURI + '/services/csf?service_unit_id=' + data.service_unit_id + '&region_id=' + data.region_id);
                                             }
     
                                         });

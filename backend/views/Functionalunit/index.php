@@ -7,6 +7,7 @@ use kartik\grid\GridView;
 use common\models\Functionalunit;
 use Da\QrCode\QrCode;
 use common\models\UnitServices;
+use backend\modules\admin\components\Helper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\Functionalunit\FunctionalunitSearch */
@@ -55,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => \yii\bootstrap4\LinkPager::class
         ],
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            ['class' => 'kartik\grid\SerialColumn'],
 
             //'functional_unit_id',
             //'services_id',
@@ -123,7 +124,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'panel' => [
             'heading'=>'',
             'type'=>'primary',
-            'before'=>Html::a('<i class="fas fa-plus"></i> Create Functional Unit', ['create'], ['class' => 'btn btn-success']),
+            'before'=>  Html::a('<i class="fas fa-plus"></i> Create Functional Unit', ['create'], ['class' => 'btn btn-success']),
             // 'after'=>Html::a('<i class="fas fa-redo"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
             //'footer'=>true
         ],
