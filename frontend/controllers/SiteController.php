@@ -45,7 +45,9 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout'],
+                        'actions' => [
+                            'logout',
+                        ],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -112,45 +114,45 @@ class SiteController extends Controller
         $regions = $con->createCommand($sql)->queryAll();
         return $this->render('index',['regions' => $regions]);
     }
-    public function actionCsf($id)
-    {
-        $con = Yii::$app->db;
-        $id = base64_decode(base64_decode($id));
-        //$sql1 = 'SELECT * FROM `tbl_unit` WHERE `unit_id` =' . $id . ' AND `is_disabled` = 0';
-        $sql1 = 'SELECT a.`unit_id`,
-                        a.`services_id`,
-                        c.`services_name`,
-                        a.`unit_name`, 
-                        a.`region_id`, 
-                        a.`unit_url`, 
-                        a.`date_created`, 
-                        a.`is_disabled`, 
-                        b.`region_code`,
-                        c.`with_pstc_hrdc`
-                FROM tbl_unit AS a 
-                INNER JOIN tbl_region AS b 
-                ON b.`region_id` = a.`region_id`
-                INNER JOIN  tbl_unit_services AS c
-                ON c.`services_id` = a.`services_id`
-                WHERE a.`unit_id` = :unit_id AND a.`is_disabled` = 0'; 
-        try {
-            $title = $con->createCommand($sql1,[':unit_id' => $id])->queryOne();
-            if (!$title) {
-                throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
-            }
-        } catch (\yii\db\Exception $exception) {
-            //throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
-            echo '<h1>Not found (#404)</h1>';
-        }
-        $sql2 = 'SELECT * FROM `tbl_question_group_unit` WHERE `unit_id` =' . $id . ' AND `importance` = 0';
+    // public function actionCsf($id)
+    // {
+    //     $con = Yii::$app->db;
+    //     $id = base64_decode(base64_decode($id));
+    //     //$sql1 = 'SELECT * FROM `tbl_unit` WHERE `unit_id` =' . $id . ' AND `is_disabled` = 0';
+    //     $sql1 = 'SELECT a.`unit_id`,
+    //                     a.`services_id`,
+    //                     c.`services_name`,
+    //                     a.`unit_name`, 
+    //                     a.`region_id`, 
+    //                     a.`unit_url`, 
+    //                     a.`date_created`, 
+    //                     a.`is_disabled`, 
+    //                     b.`region_code`,
+    //                     c.`with_pstc_hrdc`
+    //             FROM tbl_unit AS a 
+    //             INNER JOIN tbl_region AS b 
+    //             ON b.`region_id` = a.`region_id`
+    //             INNER JOIN  tbl_unit_services AS c
+    //             ON c.`services_id` = a.`services_id`
+    //             WHERE a.`unit_id` = :unit_id AND a.`is_disabled` = 0'; 
+    //     try {
+    //         $title = $con->createCommand($sql1,[':unit_id' => $id])->queryOne();
+    //         if (!$title) {
+    //             throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
+    //         }
+    //     } catch (\yii\db\Exception $exception) {
+    //         //throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
+    //         echo '<h1>Not found (#404)</h1>';
+    //     }
+    //     $sql2 = 'SELECT * FROM `tbl_question_group_unit` WHERE `unit_id` =' . $id . ' AND `importance` = 0';
 
-        try {
-            $groups = $con->createCommand($sql2)->queryAll();
-            return $this->render('_csf', ['groups' => $groups, 'title' => $title]);
-        } catch (\yii\db\Exception $exception) {
-            //throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
-        } 
-    }
+    //     try {
+    //         $groups = $con->createCommand($sql2)->queryAll();
+    //         return $this->render('_csf', ['groups' => $groups, 'title' => $title]);
+    //     } catch (\yii\db\Exception $exception) {
+    //         //throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
+    //     } 
+    // }
     /**
      * @var mixed $id must convert to base64 2x
      */
@@ -536,18 +538,18 @@ class SiteController extends Controller
         }
 
     }
-    public function actionUnits($region_id){
-        $model = UnitServices::find()->select(['services_id' => 'services_id','services_name' => 'services_name', 'with_pstc_hrdc'])->all();
+    // public function actionUnits($region_id){
+    //     $model = UnitServices::find()->select(['services_id' => 'services_id','services_name' => 'services_name', 'with_pstc_hrdc'])->all();
          
-        $region = Region::find()->where(['region_id' => $region_id])->one();
+    //     $region = Region::find()->where(['region_id' => $region_id])->one();
         
-        if($region){
-            return $this->render('__menu', ['model' => $model, 'region_id' => $region_id]);
-        }else{
-            throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
-        }
+    //     if($region){
+    //         return $this->render('__menu', ['model' => $model, 'region_id' => $region_id]);
+    //     }else{
+    //         throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
+    //     }
        
-    }
+    // }
 
     public function actionSubMenu($region_code,$service_id){
         $con = Yii::$app->db;
