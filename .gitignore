@@ -20,7 +20,7 @@ Thumbs.db
 # composer vendor dir
 /vendor/*
 !/vendor/kartik-v
-
+!/vendor/composer
 
 # composer itself is not needed
 composer.phar
