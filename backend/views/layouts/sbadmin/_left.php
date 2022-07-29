@@ -96,19 +96,19 @@ if($this->context->route == 'drivers/index' || $this->context->route == 'drivers
                 </a>
                 <?= Html::a('<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div> Service Units', Url::to(['/service-unit']), ['class' => 'nav-link']) ?>
                 <?php
-                echo Html::a(
-                    '<div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                    Reports
-                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>',
-                    Url::to(['#']),
-                    [
-                        'class' => 'nav-link '.$collapsereport,
-                        'data-toggle' => 'collapse',
-                        'data-target' => '#collapseReport',
-                        'aria-expanded' => $boolreport,
-                        'aria-controls' => 'collapseReport'
-                    ]
-                );
+                // echo Html::a(
+                //     '<div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                //     Reports
+                //     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>',
+                //     Url::to(['#']),
+                //     [
+                //         'class' => 'nav-link '.$collapsereport,
+                //         'data-toggle' => 'collapse',
+                //         'data-target' => '#collapseReport',
+                //         'aria-expanded' => $boolreport,
+                //         'aria-controls' => 'collapseReport'
+                //     ]
+                // );
                 ?>
                 <div class="collapse <?= $showreport; ?>" id="collapseReport" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">

@@ -11,6 +11,9 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use yii\base\Exception;
 
+use backend\models\TmpRating;
+use backend\models\TmpImportance;
+
 class ReportsController extends \yii\web\Controller
 {
     // public function behaviors()
@@ -304,5 +307,19 @@ class ReportsController extends \yii\web\Controller
         $sql = 'SELECT * FROM tbl_drivers WHERE region_id = :region_id';
         $drivers = $con->createCommand($sql,[':region_id' => $region_id])->queryAll();
         return $drivers;
+    }
+
+    public function acttionSatisfactionIndex(){
+        $con = Yii::$app->db;
+        $sql1 = 'CALL sp_rating2(:date_from,:date_to,:unit_id,:attribute_id,:region_id,:pstc_id,:driver_id)';
+        $rating = $con->createCommand($sql1,[
+            ':date_from' => '2022-07-10',
+            ':date_to' => '2022-07-10',
+            ':unit_id ',
+            ':attribute_id',
+            ':region_id',
+            ':pstc_id',
+            ':driver_id'
+            ])->queryOne();
     }
 }

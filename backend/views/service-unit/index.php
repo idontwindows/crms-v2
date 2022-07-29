@@ -8,6 +8,7 @@ use kartik\grid\GridView;
 use yii\bootstrap4\Modal;
 use backend\modules\admin\components\Helper;
 
+
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\ServiceUnitSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -89,7 +90,7 @@ Modal::end();
             //'is_with_pstc',
             [
                 'class' => 'kartik\grid\ActionColumn',
-                'template' => '{view}',
+                'template' => '{view} {rating}',
                 'buttons' => [
                     'view' => function ($url, $model) {
                         if ($model->is_parent == true) {
@@ -100,15 +101,12 @@ Modal::end();
                         }
                         return Html::button('<span class="fas fa-eye"></span> View', ['value' => Url::to(['service-unit/view', 'service_unit_id' => $model->service_unit_id]), 'class' => 'btn btn-primary btn-sm button-view', 'id' => 'button-view']);
                     },
-                    // 'update' => function ($url,$model)
-                    // {
-                    //     return Html::a('<span class="fas fa-edit"></span>',['update','functional_unit_id' => $model->unit_id],['class' => 'btn btn-info btn-sm','data-toggle' => 'tooltip', 'title' => 'update']);
-                    // }
+                    'rating' => function ($url, $model) use ($region_id) {
+                        if (!$model->is_parent && !$model->is_with_pstc) {
+                            return Html::a('<span class="fas fa-file"></span> Rating', ['/reports2', 'service_unit_id' => $model->service_unit_id, 'region_id' => $region_id], ['class' => 'btn btn-warning btn-sm', 'data-toggle' => 'tooltip', 'title' => 'rating']);
+                        }
+                    },
                 ],
-                // 
-                // 'urlCreator' => function ($action, ServiceUnit $model, $key, $index, $column) {
-                //     return Url::toRoute([$action, 'service_unit_id' => $model->service_unit_id]);
-                //  }
             ],
         ],
         'panel' => [

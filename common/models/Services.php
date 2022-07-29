@@ -50,6 +50,6 @@ class Services extends \yii\db\ActiveRecord
      */
     public function getTblServiceUnits()
     {
-        return $this->hasMany(TblServiceUnit::className(), ['services_id' => 'services_id']);
+        return $this->hasMany(ServiceUnit::className(), ['services_id' => 'services_id']);
     }
 }

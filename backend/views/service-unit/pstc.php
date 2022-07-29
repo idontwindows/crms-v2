@@ -60,10 +60,13 @@ Modal::end();
             ],
             [
                 'class' => 'kartik\grid\ActionColumn',
-                'template' => '{view}',
+                'template' => '{view} {rating}',
                 'buttons' => [
                     'view' => function ($url, $model) use ($serviceunit) {
                         return Html::button('<span class="fas fa-eye"></span> View', ['value' => Url::to(['service-unit/view', 'service_unit_id' => $serviceunit->service_unit_id,'pstc_id' => $model->pstc_id]), 'class' => 'btn btn-primary btn-sm button-view', 'id' => 'button-view']);
+                    },
+                    'rating' => function ($url, $model) use ($region_id,$serviceunit) {
+                            return Html::a('<span class="fas fa-file"></span> Rating', ['/reports2', 'service_unit_id' => $serviceunit->service_unit_id, 'region_id' => $region_id, 'pstc_id' => $model->pstc_id], ['class' => 'btn btn-warning btn-sm', 'data-toggle' => 'tooltip', 'title' => 'rating']);
                     },
 
                 ],

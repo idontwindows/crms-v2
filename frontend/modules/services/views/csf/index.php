@@ -3,6 +3,7 @@
 use yii\widgets\ActiveForm;
 use yii\bootstrap4\Modal;
 use common\models\Hrdc;
+use frontend\models\Tooltip;
 //use kartik\rating\StarRating;
 /* @var $this yii\web\View */
 
@@ -23,8 +24,7 @@ $serveruri = $protocol . "$_SERVER[HTTP_HOST]";
 $this->title = 'My Yii Application';
 
 
-
-
+$tooltip = new Tooltip;
 
 $this->registerJsFile('/js/signature_pad.min.js', ['position' => \yii\web\View::POS_END]);
 $this->registerJsFile('/js/site2.js', ['position' => \yii\web\View::POS_END]);
@@ -261,7 +261,7 @@ $this->registerCss('.modal-confirm {
                                     <div class="form-group">
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" name="digital-literate" id="check-dl" value="1">
-                                            <label class="form-check-label font-weight-bold" for="check-dl">Digital Literate</label>
+                                            <label class="form-check-label font-weight-bold" for="check-dl">Digital Literacy</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" name="pwd" id="check-pwd" value="1">
@@ -297,23 +297,23 @@ $this->registerCss('.modal-confirm {
                                     <input type="hidden" id="custId" name="questionId[<?= $service_unit_id ?>][<?= $q ?>]" value="<?= $attribute->attribute_id ?>">
                                 </div>
                                 <div class="d-flex align-items-center justify-content-center" id="smileys">
-                                    <div class="checkboxgroup">
+                                    <div class="checkboxgroup" data-toggle="tooltip" title="<?= $tooltip->tooltips('a5');?>">
                                         <input type="radio" name="<?= 'rating[' . $service_unit_id . '][' . $q . ']' ?>" value="5" class="smiley5" id="radio1" required>
                                         <label for="radio1"><b>Very satisfied</b></label>
                                     </div>
-                                    <div class="checkboxgroup">
+                                    <div class="checkboxgroup" data-toggle="tooltip" title="<?= $tooltip->tooltips('a4');?>">
                                         <input type="radio" name="<?= 'rating[' . $service_unit_id . '][' . $q . ']' ?>" value="4" class="smiley4" id="radio2" required>
                                         <label for="radio2"><b>Satisfied</b></label>
                                     </div>
-                                    <div class="checkboxgroup">
+                                    <div class="checkboxgroup" data-toggle="tooltip" title="<?= $tooltip->tooltips('a3');?>">
                                         <input type="radio" name="<?= 'rating[' . $service_unit_id . '][' . $q . ']' ?>" value="3" class="smiley3" id="radio3" required>
                                         <label for="radio3"><b>Neither</b></label>
                                     </div>
-                                    <div class="checkboxgroup">
+                                    <div class="checkboxgroup" data-toggle="tooltip" title="<?= $tooltip->tooltips('a2');?>">
                                         <input type="radio" name="<?= 'rating[' . $service_unit_id . '][' . $q . ']' ?>" value="2" class="smiley2" id="radio4" required>
                                         <label for="radio4"><b>Dissatisfied</b></label>
                                     </div>
-                                    <div class="checkboxgroup">
+                                    <div class="checkboxgroup" data-toggle="tooltip" title="<?= $tooltip->tooltips('a1');?>">
                                         <input type="radio" name="<?= 'rating[' . $service_unit_id . '][' . $q . ']' ?>" value="1" class="smiley1" id="radio5" required>
                                         <label for="radio5"><b>Very dissatisfied</b></label>
                                     </div>
@@ -328,23 +328,23 @@ $this->registerCss('.modal-confirm {
                                 </div>
                                 <div class="d-flex align-items-center justify-content-center" id="smileys">
 
-                                    <div class="checkboxgroup">
+                                    <div class="checkboxgroup" data-toggle="tooltip" title="<?= $tooltip->tooltips('b5');?>">
                                         <input type="radio" name="<?= 'importance[' . $service_unit_id . '][' . $q . ']' ?>" value="5" class="numero5" id="radio1" required>
                                         <label for="radio1"><b>Very Important</b></label>
                                     </div>
-                                    <div class="checkboxgroup">
+                                    <div class="checkboxgroup" data-toggle="tooltip" title="<?= $tooltip->tooltips('b4');?>">
                                         <input type="radio" name="<?= 'importance[' . $service_unit_id . '][' . $q . ']' ?>" value="4" class="numero4" id="radio2" required>
                                         <label for="radio2"><b>Important</b></label>
                                     </div>
-                                    <div class="checkboxgroup">
+                                    <div class="checkboxgroup" data-toggle="tooltip" title="<?= $tooltip->tooltips('b3');?>">
                                         <input type="radio" name="<?= 'importance[' . $service_unit_id . '][' . $q . ']' ?>" value="3" class="numero3" id="radio3" required>
                                         <label for="radio3"><b>Moderately</b></label>
                                     </div>
-                                    <div class="checkboxgroup">
+                                    <div class="checkboxgroup" data-toggle="tooltip" title="<?= $tooltip->tooltips('b2');?>">
                                         <input type="radio" name="<?= 'importance[' . $service_unit_id . '][' . $q . ']' ?>" value="2" class="numero2" id="radio4" required>
                                         <label for="radio4"><b>Slightly</b></label>
                                     </div>
-                                    <div class="checkboxgroup">
+                                    <div class="checkboxgroup" data-toggle="tooltip" title="<?= $tooltip->tooltips('b1');?>">
                                         <input type="radio" name="<?= 'importance[' . $service_unit_id . '][' . $q . ']' ?>" value="1" class="numero1" id="radio5" required>
                                         <label for="radio5"><b>Not at all</b></label>
                                     </div>
@@ -443,5 +443,6 @@ $this->registerCss('.modal-confirm {
 </div> -->
 
 <!-- Modal HTML -->
+
 
 

@@ -69,29 +69,25 @@ $serveruri = $protocol . "$_SERVER[HTTP_HOST]";
                     'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                     'options' => [
                         'class' => 'breadcrumb-arrow'
-                        ]
+                    ]
                 ]) ?>
                 <?= Alert::widget() ?>
                 <div class="container-fluid">
-                    <h1><?= Html::encode($this->title) ?></h1>
-                    <hr>
                     <div class="mb-5">
-                        <?= $content ?>
+                        <!-- <div class="card mb-3 mt-0 border-0 rounded shadow-lg"> -->
+                            <h1 class="ml-3 mt-3"><?= Html::encode($this->title) ?></h1>
+                            <hr>
+
+                            <!-- <div class="card-body"> -->
+                                <?= $content ?>
+                            <!-- </div> -->
+                        <!-- </div> -->
                     </div>
                 </div>
             </main>
             <?= $this->render('_footer'); ?>
         </div>
     </div>
-    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script src="js/scripts.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="assets/demo/chart-area-demo.js"></script>
-    <script src="assets/demo/chart-bar-demo.js"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-    <script src="assets/demo/datatables-demo.js"></script> -->
     <?php $this->endBody() ?>
 </body>
 

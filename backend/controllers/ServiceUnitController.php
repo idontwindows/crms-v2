@@ -43,9 +43,12 @@ class ServiceUnitController extends Controller
         $searchModel = new ServiceUnitSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
+        $region_id = Yii::$app->user->identity->region_id;
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'region_id' => $region_id
         ]);
     }
 
@@ -137,13 +140,14 @@ class ServiceUnitController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
     public function actionSubUnit($service_unit_id){
+        $region_id = Yii::$app->user->identity->region_id;
         $query = ServiceUnit::find()->where(['is_child' => 1,'parent_id' => $service_unit_id]);
         $model = $this->findModel($service_unit_id);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => false
         ]);
-        return $this->render('sub_units',['dataProvider'=>$dataProvider,'model'=>$model]);
+        return $this->render('sub_units',['dataProvider'=>$dataProvider,'model'=>$model,'region_id' => $region_id]);
     }
     public function actionPstc($service_unit_id){
         $region_id = Yii::$app->user->identity->region_id;
@@ -154,7 +158,7 @@ class ServiceUnitController extends Controller
             'query' => $query,
             'pagination' => false
         ]);
-        return $this->render('pstc',['dataProvider' => $dataProvider,'model' => $model]);
+        return $this->render('pstc',['dataProvider' => $dataProvider,'model' => $model, 'region_id' => $region_id]);
     }
     public function actionDownloadQrcode($id,$region_id,$name,$pstc_id=0)
     {

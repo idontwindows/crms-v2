@@ -18,8 +18,8 @@ nbproject
 Thumbs.db
 
 # composer vendor dir
-!/vendor/kartik-v/*
-/vendor
+/vendor/*
+!/vendor/kartik-v
 
 
 # composer itself is not needed

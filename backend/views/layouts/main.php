@@ -39,7 +39,7 @@ $serveruri = $protocol . "$_SERVER[HTTP_HOST]";
     <script src="/js/app.js"></script> -->
     <script type="text/javascript">
         var backendURI = "<?= $serveruri ?>";
-        var region_id  = "<?= Yii::$app->user->identity->region_id ?>";
+        var region_id = "<?= Yii::$app->user->identity->region_id ?>";
         var event_id = "<?= !empty($_GET['id']) ? $_GET['id'] : '' ?>";
     </script>
     <!-- <style>
@@ -114,7 +114,9 @@ $serveruri = $protocol . "$_SERVER[HTTP_HOST]";
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             ]) ?>
             <?= Alert::widget() ?>
-            <?= $content ?>
+            <div class="card mb-3 mt-0 border rounded shadow-lg">
+                <?= $content ?>
+            </div>
         </div>
     </main>
 
