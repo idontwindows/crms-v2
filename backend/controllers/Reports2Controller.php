@@ -46,7 +46,7 @@ class Reports2Controller extends Controller
     public function actionIndex($datefrom='',$dateto='',$service_unit_id,$region_id,$pstc_id=0,$driver_id=0)
     {
         
-        $satIndex = ["is_total_init" => 0, "ws_total" => 0, "promoters" =>  0, "detractors" => 0, "respondent_number" => 0 , "nps" => 0, "satisfaction_index" =>  0];
+        $satIndex = ["is_total_init" => 0, "ws_total" => 0, "promoters" =>  0, "detractors" => 0, "respondent_number" => 0 , "nps" => 0, "satisfaction_index" =>  0,"vss" => 0,"csat_score" => 0];
 
         if ($this->request->isPost) {
             $datefrom = date_create($_POST['datefrom']);
@@ -75,7 +75,8 @@ class Reports2Controller extends Controller
             'datefrom' =>  $datefrom,
             'dateto' =>  $dateto,
             'service_unit' => $service_unit,
-            'satIndex' => $satIndex
+            'satIndex' => $satIndex,
+            'pstc_id' => $pstc_id
          ]);
     }
 
