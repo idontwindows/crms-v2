@@ -42,6 +42,8 @@ $layout = <<< HTML
         <button class="btn btn-outline-secondary btn-success text-white" type="submit">Generate</button>
 </div>
 HTML;
+
+
 ?>
 <div class="tmp-rating-index">
     <div class="card mb-3 mt-0 border-0 rounded shadow-lg">
@@ -58,7 +60,11 @@ HTML;
 
     <?php $form = ActiveForm::begin([
         'method' => 'post',
-        'action' => ['index', 'service_unit_id' => $_GET['service_unit_id'], 'region_id' => $_GET['region_id']],
+        'action' => isset($_GET['pstc_id']) ? 
+        ['index', 'service_unit_id' => $_GET['service_unit_id'], 'region_id' => $_GET['region_id'], 'pstc_id' => $_GET['pstc_id']] :
+        (isset($_GET['driver_id']) ? 
+        ['index', 'service_unit_id' => $_GET['service_unit_id'], 'region_id' => $_GET['region_id'], 'driver_id' => $_GET['driver_id']] : 
+        ['index', 'service_unit_id' => $_GET['service_unit_id'], 'region_id' => $_GET['region_id']]),
     ]); ?>
     <div class="card mb-3 mt-0 border-0 rounded shadow-lg">
         <div class="mb-3 mt-3 mr-3 ml-3">
@@ -191,6 +197,14 @@ HTML;
                         <div class="card-body d-inline-block">
                             <div class="d-inline-block font-weight-bold">Net Promoters Score:&nbsp;</div>
                             <div class="d-inline-block font-weight-bold"><span class="badge badge-light"><b><?= $satIndex['promoters'] - $satIndex['detractors'] ?>%</b></span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-md-6">
+                    <div class="card bg-danger text-white mb-4">
+                        <div class="card-body d-inline-block">
+                            <div class="d-inline-block font-weight-bold">CSAT Score:&nbsp;</div>
+                            <div class="d-inline-block font-weight-bold"><span class="badge badge-light"><b><?= $satIndex['csat_score']?>%</b></span></div>
                         </div>
                     </div>
                 </div>
