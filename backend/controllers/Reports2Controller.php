@@ -43,15 +43,30 @@ class Reports2Controller extends Controller
      *
      * @return string
      */
-    public function actionIndex($datefrom='',$dateto='',$service_unit_id,$region_id,$pstc_id=0,$driver_id=0)
+    public function actionIndex($datefrom='',$dateto='',$service_unit_id,$region_id,$pstc_id=0,$driver_id=0,$clientType=0)
     {
         
-        $satIndex = ["is_total_init" => 0, "ws_total" => 0, "promoters" =>  0, "detractors" => 0, "respondent_number" => 0 , "nps" => 0, "satisfaction_index" =>  0,"vss" => 0,"csat_score" => 0];
+        $satIndex = [
+            "is_total_init" => 0, 
+            "ws_total" => 0, 
+            "promoters" =>  0, 
+            "detractors" => 0, 
+            "respondent_number" => 0, 
+            "nps" => 0, 
+            "satisfaction_index" => 0,
+            "vss" => 0,
+            "csat_score" => 0
+        ];
+
+        $comments = [];
 
         if ($this->request->isPost) {
             $datefrom = date_create($_POST['datefrom']);
             $dateto = date_create($_POST['dateto']);
-            $satIndex = $this->getSatisfactionIndex(date_format($datefrom,'Y-m-d'),date_format($dateto,'Y-m-d'),$service_unit_id,$region_id,$pstc_id,$driver_id);
+            if($service_unit_id == 12 )$clientType = $_POST['client_type'];
+            $satIndex = $this->getSatisfactionIndex(date_format($datefrom,'Y-m-d'),date_format($dateto,'Y-m-d'),$service_unit_id,$region_id,$pstc_id,$driver_id,$clientType);
+            $comments = $this->getComments(date_format($datefrom,'Y-m-d'),date_format($dateto,'Y-m-d'),$service_unit_id,$region_id,$pstc_id,$driver_id,$clientType);
+            //$print = $this->actionPrint(date_format($datefrom,'Y-m-d'),date_format($dateto,'Y-m-d'),$service_unit_id,$region_id,$pstc_id,$driver_id,$clientType);
         }else{
             $this->clearRatings();
         }
@@ -66,7 +81,7 @@ class Reports2Controller extends Controller
 
         $searchModel2 = new SearchTmpImportance();
         $dataProvider2 = $searchModel2->search($this->request->queryParams);
-
+ 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -76,10 +91,60 @@ class Reports2Controller extends Controller
             'dateto' =>  $dateto,
             'service_unit' => $service_unit,
             'satIndex' => $satIndex,
-            'pstc_id' => $pstc_id
+            'pstc_id' => $pstc_id,
+            'clientType' => $clientType,
+            'comments' => $comments
          ]);
     }
+    public function actionPrint($datefrom='',$dateto='',$service_unit_id,$region_id,$pstc_id=0,$driver_id=0,$clientType=0)
+    {
+        
+        $satIndex = [
+            "is_total_init" => 0, 
+            "ws_total" => 0, 
+            "promoters" =>  0, 
+            "detractors" => 0, 
+            "respondent_number" => 0, 
+            "nps" => 0, 
+            "satisfaction_index" => 0,
+            "vss" => 0,
+            "csat_score" => 0
+        ];
 
+        $comments = [];
+
+        if ($this->request->isGet) {
+            $satIndex = $this->getSatisfactionIndex($datefrom,$dateto,$service_unit_id,$region_id,$pstc_id,$driver_id,$clientType);
+            $comments = $this->getComments($datefrom,$dateto,$service_unit_id,$region_id,$pstc_id,$driver_id,$clientType);
+        }else{
+            $this->clearRatings();
+        }
+        
+        $service_unit = ServiceUnit::find()
+                        ->joinWith('services')
+                        ->where(['service_unit_id' => $service_unit_id])
+                        ->one();
+
+        $searchModel = new SearchTmpRating();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        $searchModel2 = new SearchTmpImportance();
+        $dataProvider2 = $searchModel2->search($this->request->queryParams);
+ 
+        return $this->renderAjax('_print', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'searchModel2' => $searchModel2,
+            'dataProvider2' => $dataProvider2,
+            'datefrom' =>  $datefrom,
+            'dateto' =>  $dateto,
+            'service_unit' => $service_unit,
+            'satIndex' => $satIndex,
+            'pstc_id' => $pstc_id,
+            'clientType' => $clientType,
+            'comments' => $comments
+         ]);
+    }
     /**
      * Displays a single TmpRating model.
      * @param int $id ID
@@ -170,11 +235,17 @@ class Reports2Controller extends Controller
         $delete = $con->createCommand($sql)->execute();
         return $delete;
     }
-    public function  getSatisfactionIndex($datefrom,$dateto,$service_unit_id,$region_id,$pstc_id=0,$driver_id=0){
+    public function  getSatisfactionIndex($datefrom,$dateto,$service_unit_id,$region_id,$pstc_id=0,$driver_id=0,$clientType=0){
         $con = Yii::$app->db;
-        $sql = "CALL `sp_satisfaction_index`('$datefrom','$dateto',$service_unit_id,$region_id,$pstc_id,$driver_id)";
+        $sql = "CALL `sp_satisfaction_index`('$datefrom','$dateto',$service_unit_id,$region_id,$pstc_id,$driver_id,$clientType)";
         $satIndex = $con->createCommand($sql)->queryOne();
         return $satIndex;
+    }
+    public function getComments($datefrom,$dateto,$service_unit_id,$region_id,$pstc_id=0,$driver_id=0,$clientType=0){
+        $con = Yii::$app->db;
+        $sql = "CALL `sp_comments`('$datefrom','$dateto',$service_unit_id,$region_id,$pstc_id,$driver_id,$clientType)";
+        $comments = $con->createCommand($sql)->queryAll();
+        return $comments;
     }
     public function getRegions(){
         $user_id = Yii::$app->user->identity->id;
