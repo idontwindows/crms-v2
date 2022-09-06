@@ -301,6 +301,8 @@ foreach($comments as $comment){
     </div>
     <?php ActiveForm::end(); ?>
 </div>
-<iframe src="" id="toPrint" name="toPrint" style="display:none"></iframe>
+<div style="display:none">
+    <iframe src="" id="toPrint" name="toPrint"></iframe>
+</div>
 
 

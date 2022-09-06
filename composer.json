@@ -28,7 +28,8 @@
         "kartik-v/yii2-widget-fileinput": "dev-master",
         "yii2mod/yii2-sweet-alert": "*",
         "kartik-v/yii2-widget-datepicker": "dev-master",
-        "kartik-v/yii2-field-range": "^1.3"
+        "kartik-v/yii2-field-range": "^1.3",
+        "kartik-v/yii2-mpdf": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

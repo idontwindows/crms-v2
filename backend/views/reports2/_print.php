@@ -18,35 +18,6 @@ use yii\helpers\ArrayHelper;
 $this->title = 'Customer Satisfaction Index';
 $this->params['breadcrumbs'][] = $this->title;
 
-// $date1 = empty($datefrom) ? '' : date_format($datefrom, 'd-M-Y');
-// $date2 = empty($dateto) ? '' : date_format($dateto, 'd-M-Y');
-
-//echo $satIndex["satisfaction_index"];
-
-// $this->registerJs("$('#date').val('" . $date1 . "');
-// $('#date-2').val('" . $date2 . "');");
-
-// $this->registerJs("$('#clientTypeSelect').val('" . $clientType  . "');");
-
-// $this->registerJs("    $(document).ready(function() {
-//     window.print();
-// });");
-
-// $layout = <<< HTML
-// <div class="input-group-prepend">
-//     <span class="input-group-text">Date From</span>
-// </div>
-// {input1}
-// <!-- <div class="input-group-prepend">
-//     <span class="input-group-text">aft</span>
-// </div>
-// {separator} -->
-// <div class="input-group-prepend">
-//     <span class="input-group-text">Date To</span>
-// </div>
-// {input2}
-
-// HTML;
 $countComments = 0;
 $countComplaints = 0;
 foreach($comments as $comment){

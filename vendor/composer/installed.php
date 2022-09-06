@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'c9ffd8b10a7743e534d65bae1f2535f2cc812d0f',
+        'reference' => 'b1ad91d46464a1144a85b10949056a9fcbfa9756',
         'name' => 'yiisoft/yii2-app-advanced',
         'dev' => true,
     ),
@@ -311,6 +311,17 @@
             'reference' => '23234fce6abc4b6f3f9ba1c7f66f56fbebcde139',
             'dev_requirement' => false,
         ),
+        'kartik-v/yii2-mpdf' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'type' => 'yii2-extension',
+            'install_path' => __DIR__ . '/../kartik-v/yii2-mpdf',
+            'aliases' => array(
+                0 => '1.0.x-dev',
+            ),
+            'reference' => '2679af91552c1919e10ac13fbb1f3b3eea02bbb5',
+            'dev_requirement' => false,
+        ),
         'kartik-v/yii2-widget-activeform' => array(
             'pretty_version' => 'v1.6.1',
             'version' => '1.6.1.0',
@@ -387,6 +398,15 @@
             'reference' => '10e526fbcf6350ed4cc9ba6298f887d611685367',
             'dev_requirement' => false,
         ),
+        'mpdf/mpdf' => array(
+            'pretty_version' => 'v8.1.2',
+            'version' => '8.1.2.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../mpdf/mpdf',
+            'aliases' => array(),
+            'reference' => 'a8a22f4874157e490d41b486053a20bec42e182c',
+            'dev_requirement' => false,
+        ),
         'myclabs/deep-copy' => array(
             'pretty_version' => '1.10.2',
             'version' => '1.10.2.0',
@@ -394,7 +414,7 @@
             'install_path' => __DIR__ . '/../myclabs/deep-copy',
             'aliases' => array(),
             'reference' => '776f831124e9c62e1a2c601ecc52e776d8bb7220',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
             'replaced' => array(
                 0 => '1.10.2',
             ),
@@ -443,6 +463,15 @@
             'aliases' => array(),
             'reference' => '45a2ec53a73c70ce41d55cedef9063630abaf1b6',
             'dev_requirement' => true,
+        ),
+        'php-http/message-factory' => array(
+            'pretty_version' => 'v1.0.2',
+            'version' => '1.0.2.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../php-http/message-factory',
+            'aliases' => array(),
+            'reference' => 'a478cb11f66a6ac48d8954216cfed9aa06a501a1',
+            'dev_requirement' => false,
         ),
         'phpdocumentor/reflection-common' => array(
             'pretty_version' => '2.1.0',
@@ -574,13 +603,22 @@
             'install_path' => __DIR__ . '/../psr/http-message',
             'aliases' => array(),
             'reference' => 'f6561bf28d520154e4b0ec72be95418abe6d9363',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'psr/http-message-implementation' => array(
             'dev_requirement' => true,
             'provided' => array(
                 0 => '1.0',
             ),
+        ),
+        'psr/log' => array(
+            'pretty_version' => '1.1.4',
+            'version' => '1.1.4.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../psr/log',
+            'aliases' => array(),
+            'reference' => 'd49695b909c3b7628b6289db5479a1c204601f11',
+            'dev_requirement' => false,
         ),
         'psr/log-implementation' => array(
             'dev_requirement' => true,
@@ -704,6 +742,15 @@
             'aliases' => array(),
             'reference' => '99732be0ddb3361e16ad77b68ba41efc8e979019',
             'dev_requirement' => true,
+        ),
+        'setasign/fpdi' => array(
+            'pretty_version' => 'v2.3.6',
+            'version' => '2.3.6.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../setasign/fpdi',
+            'aliases' => array(),
+            'reference' => '6231e315f73e4f62d72b73f3d6d78ff0eed93c31',
+            'dev_requirement' => false,
         ),
         'swiftmailer/swiftmailer' => array(
             'pretty_version' => 'v6.3.0',
@@ -933,7 +980,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'c9ffd8b10a7743e534d65bae1f2535f2cc812d0f',
+            'reference' => 'b1ad91d46464a1144a85b10949056a9fcbfa9756',
             'dev_requirement' => false,
         ),
         'yiisoft/yii2-bootstrap' => array(
