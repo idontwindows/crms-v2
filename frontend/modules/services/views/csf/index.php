@@ -168,14 +168,7 @@ $this->registerCss('.modal-confirm {
                     <p class="card-text">This questionaire aims to solicit your honest assessment of our services.
                         Please take a minute in filling out this form and help us serve you better. </p>
                     <div class="form-group form-email">
-                    <?php
-                        if($serviceunit->service_unit_id == 29 || $serviceunit->service_unit_id == 36){
-                            echo ' <label for="txtEmail" id="lblEmail"><b>Email</b> (<span class="text-danger">Required</span>)</label>';
-                        }else{
-                            echo ' <label for="txtEmail" id="lblEmail"><b>Email</b> (<span class="text-info">Optional</span>)</label>';
-                        }
-                        ?>
-                       
+                        <label for="txtEmail" id="lblEmail"><b>Email</b> (<span class="text-info">Optional</span>)</label>
                         <input type="text" class="form-control" id="txtEmail" name="customer_email" placeholder="Type your email here..." autofocus="" aria-required="true" aria-invalid="">
                         <div class="invalid-feedback invalid-feedback-email"></div>
                     </div>
@@ -191,8 +184,16 @@ $this->registerCss('.modal-confirm {
                     </div>
                     -->
                     <div class="form-group form-name">
-                        <label for="txtName"><b>Name</b> (<span class="text-info">Optional</span>)</label>
-                        <input type="text" class="form-control" id="txtName" name="customer_name" placeholder="Type your name here..." aria-required="true" aria-invalid="">
+                    <?php
+                        if($serviceunit->service_unit_id == 29 || $serviceunit->service_unit_id == 36){
+                            echo '<label for="txtName"><b>Name</b> <span class="text-danger">*</span></label>';
+                            echo '<input type="text" class="form-control" id="txtName" name="customer_name" placeholder="Type your name here..." aria-required="true" aria-invalid="" required>';
+                        }else{
+                            echo '<label for="txtName"><b>Name</b> (<span class="text-info">Optional</span>)</label>';
+                            echo '<input type="text" class="form-control" id="txtName" name="customer_name" placeholder="Type your name here..." aria-required="true" aria-invalid="">';
+                        }
+                        ?>
+                        
                         <div class="invalid-feedback invalid-feedback-name"></div>
                     </div>
                     <div class="row">
