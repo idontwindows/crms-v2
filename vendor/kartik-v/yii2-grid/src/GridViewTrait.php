@@ -4,15 +4,15 @@
  * @package   yii2-grid
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
  * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2022
- * @version   3.5.0
+ * @version   3.5.1
  */
 
 namespace kartik\grid;
 
 use Closure;
 use Exception;
-use kartik\base\BootstrapTrait;
 use kartik\base\Config;
+use kartik\base\Lib;
 use kartik\dialog\Dialog;
 use Yii;
 use yii\base\InvalidConfigException;
@@ -49,29 +49,6 @@ trait GridViewTrait
      * @see http://demos.krajee.com/dialog
      */
     public $krajeeDialogSettings = [];
-
-    /**
-     * @var string the layout that determines how different sections of the list view should be organized.
-     * The layout template will be automatically set based on the [[panel]] setting. If [[panel]] is a valid
-     * array, then the [[layout]] will default to the [[panelTemplate]] property. If the [[panel]] property
-     * is set to `false`, then the [[layout]] will default to `{summary}\n{items}\n{pager}`.
-     *
-     * The following tokens will be replaced with the corresponding section contents:
-     *
-     * - `{summary}`: the summary section. See [[renderSummary()]].
-     * - `{errors}`: the filter model error summary. See [[renderErrors()]].
-     * - `{items}`: the list items. See [[renderItems()]].
-     * - `{sorter}`: the sorter. See [[renderSorter()]].
-     * - `{pager}`: the pager. See [[renderPager()]].
-     * - `{export}`: the grid export button menu. See [[renderExport()]].
-     * - `{toolbar}`: the grid panel toolbar. See [[renderToolbar()]].
-     * - `{toolbarContainer}`: the toolbar container. See [[renderToolbarContainer()]].
-     *
-     * In addition to the above tokens, refer the [[panelTemplate]] property for other tokens supported as
-     * part of the bootstrap styled panel.
-     *
-     */
-    public $layout = "{summary}\n{items}\n{pager}";
 
     /**
      * @var string the default label shown for each record in the grid (singular). This label will replace the singular
@@ -497,12 +474,12 @@ HTML;
     public $footerContainer = ['class' => 'kv-table-footer'];
 
     /**
-     * @deprecated since release v3.5.0
+     * @deprecated since release v3.5.1
      */
     public $floatOverflowContainer = false;
 
     /**
-     * @deprecated since release v3.5.0
+     * @deprecated since release v3.5.1
      */
     public $floatHeaderOptions = [];
 
@@ -682,7 +659,7 @@ HTML;
      *   configuration options are read specific to each file type:
      *     - `HTML`: The following properties can be set as array key-value pairs:
      *          - `cssFile`: _string_, the css file that will be used in the exported HTML file. Defaults to:
-     *            `https://maxcdn.bootstrapcdn.com/bootstrap/3.5.0/css/bootstrap.min.css`.
+     *            `https://maxcdn.bootstrapcdn.com/bootstrap/3.5.1/css/bootstrap.min.css`.
      *     - `CSV` and `TEXT`: The following properties can be set as array key-value pairs:
      *          - `colDelimiter`: _string_, the column delimiter string for TEXT and CSV downloads.
      *          - `rowDelimiter`: _string_, the row delimiter string for TEXT and CSV downloads.
@@ -805,6 +782,7 @@ HTML;
 
     /**
      * Initializes the Krajee GridView widget
+     *
      * @throws InvalidConfigException
      */
     protected function initGridView()
@@ -866,6 +844,7 @@ HTML;
 
     /**
      * Prepares the Krajee GridView widget for run
+     *
      * @throws InvalidConfigException
      */
     protected function prepareGridView()
@@ -891,7 +870,9 @@ HTML;
 
     /**
      * Gets default sorter icons
+     *
      * @param  bool  $notBs3
+     *
      * @return array
      */
     public static function getDefaultSorterIcons($notBs3)
@@ -947,6 +928,7 @@ HTML;
 
     /**
      * Get pjax container identifier
+     *
      * @return string
      */
     public function getPjaxContainerId()
@@ -994,8 +976,10 @@ HTML;
 
     /**
      * Adds CSS class to the pager parameter
+     *
      * @param  string  $param  the pager param
      * @param  string  $css  the CSS class
+     *
      * @throws Exception
      */
     protected function setPagerOptionClass($param, $css)
@@ -1009,7 +993,7 @@ HTML;
      * Renders the table page summary.
      *
      * @return string the rendering result.
-     * @throws InvalidConfigException|Exception
+     * @throws Exception
      */
     public function renderPageSummary()
     {
@@ -1033,6 +1017,7 @@ HTML;
 
     /**
      * Get the page summary row markup
+     *
      * @return string
      * @throws Exception
      */
@@ -1078,9 +1063,11 @@ HTML;
 
     /**
      * Renders a table row with the given data model and key.
+     *
      * @param  mixed  $model  the data model to be rendered
      * @param  mixed  $key  the key associated with the data model
      * @param  int  $index  the zero-based index of the data model among the model array returned by [[dataProvider]].
+     *
      * @return string the rendering result
      */
     public function renderTableRow($model, $key, $index)
@@ -1103,7 +1090,9 @@ HTML;
 
     /**
      * Parses the key and returns parsed key value as string based on the data type
+     *
      * @param  mixed  $key
+     *
      * @return string
      */
     public static function parseKey($key)
@@ -1215,6 +1204,7 @@ HTML;
 
     /**
      * Initialize the module based on module identifier
+     *
      * @throws InvalidConfigException
      */
     protected function initModule()
@@ -1233,7 +1223,8 @@ HTML;
 
     /**
      * Initialize grid export.
-     * @throws InvalidConfigException|Exception
+     *
+     * @throws Exception
      */
     protected function initExport()
     {
@@ -1493,7 +1484,8 @@ HTML;
 
     /**
      * Initialize toggle data button options.
-     * @throws InvalidConfigException|Exception
+     *
+     * @throws Exception
      */
     protected function initToggleData()
     {
@@ -1541,7 +1533,8 @@ HTML;
 
     /**
      * Initialize bootstrap specific styling.
-     * @throws InvalidConfigException|Exception
+     *
+     * @throws Exception
      */
     protected function initBootstrapStyle()
     {
@@ -1589,15 +1582,20 @@ HTML;
 
     /**
      * Initialize the grid layout.
+     *
      * @throws InvalidConfigException
      */
     protected function initLayout()
     {
         Html::addCssClass($this->filterRowOptions, ['filters', 'skip-export']);
         if ($this->resizableColumns && $this->persistResize) {
-            $key = empty($this->resizeStorageKey) ? Yii::$app->user->id : $this->resizeStorageKey;
-            $gridId = empty($this->options['id']) ? $this->getId() : $this->options['id'];
-            $this->containerOptions['data-resizable-columns-id'] = (empty($key) ? "kv-{$gridId}" : "kv-{$key}-{$gridId}");
+            if (Lib::strlen($this->resizeStorageKey) > 0) {
+                $key = $this->resizeStorageKey;
+            } else {
+                $key = Lib::strlen(Yii::$app->user->id) > 0 ? Yii::$app->user->id : 'guest';
+            }
+            $gridId = ArrayHelper::getValue($this->options, 'id', $this->getId());
+            $this->containerOptions['data-resizable-columns-id'] = "kv-{$key}-{$gridId}";
         }
         if ($this->hideResizeMobile) {
             Html::addCssClass($this->options, 'hide-resize');
@@ -1614,20 +1612,21 @@ HTML;
                 if ($value instanceof Closure) {
                     $value = call_user_func($value, $this);
                 }
-                $this->layout = str_replace($key, $value, $this->layout);
+                $this->layout = Lib::str_replace($key, $value, $this->layout);
             }
         }
     }
 
     /**
      * Replace layout tokens
+     *
      * @param  array  $pairs  the token to find and its replaced value as key value pairs
      */
     protected function replaceLayoutTokens($pairs)
     {
         foreach ($pairs as $token => $replace) {
-            if (strpos($this->layout, $token) !== false) {
-                $this->layout = str_replace($token, $replace, $this->layout);
+            if (Lib::strpos($this->layout, $token) !== false) {
+                $this->layout = Lib::str_replace($token, $replace, $this->layout);
             }
         }
     }
@@ -1677,7 +1676,8 @@ HTML;
 
     /**
      * Initializes and sets the grid panel layout based on the [[template]] and [[panel]] settings.
-     * @throws InvalidConfigException|Exception
+     *
+     * @throws Exception
      */
     protected function initPanel()
     {
@@ -1718,20 +1718,20 @@ HTML;
         }
         if ($footer !== false) {
             static::initCss($footerOptions, $this->getCssClass(self::BS_PANEL_FOOTER));
-            $content = strtr($this->panelFooterTemplate, ['{footer}' => $footer]);
+            $content = Lib::strtr($this->panelFooterTemplate, ['{footer}' => $footer]);
             $panelFooter = Html::tag('div', $content, $footerOptions);
         }
         if ($before !== false) {
             static::initCss($beforeOptions, 'kv-panel-before');
-            $content = strtr($this->panelBeforeTemplate, ['{before}' => $before]);
+            $content = Lib::strtr($this->panelBeforeTemplate, ['{before}' => $before]);
             $panelBefore = Html::tag('div', $content, $beforeOptions);
         }
         if ($after !== false) {
             static::initCss($afterOptions, 'kv-panel-after');
-            $content = strtr($this->panelAfterTemplate, ['{after}' => $after]);
+            $content = Lib::strtr($this->panelAfterTemplate, ['{after}' => $after]);
             $panelAfter = Html::tag('div', $content, $afterOptions);
         }
-        $out = strtr($this->panelTemplate, [
+        $out = Lib::strtr($this->panelTemplate, [
             '{panelHeading}' => $panelHeading,
             '{type}' => $type,
             '{panelFooter}' => $panelFooter,
@@ -1739,7 +1739,7 @@ HTML;
             '{panelAfter}' => $panelAfter,
         ]);
 
-        $this->layout = Html::tag('div', strtr($out, [
+        $this->layout = Html::tag('div', Lib::strtr($out, [
             '{title}' => Html::tag($titleTag, $heading, $titleOptions),
             '{summary}' => Html::tag('div', '{summary}', $summaryOptions),
         ]), $options);
@@ -1776,7 +1776,8 @@ HTML;
 
     /**
      * Generates the toolbar container with the toolbar
-     * @throws InvalidConfigException|Exception
+     *
+     * @throws Exception
      */
     protected function renderToolbarContainer()
     {
@@ -1787,8 +1788,8 @@ HTML;
          * forcing float-right only if no float is defined in toolbarContainerOptions
          */
         if (
-            !strpos($this->toolbarContainerOptions['class'], $this->getCssClass(self::BS_PULL_RIGHT))
-            && !strpos($this->toolbarContainerOptions['class'], $this->getCssClass(self::BS_PULL_LEFT))
+            !Lib::stripos($this->toolbarContainerOptions['class'], $this->getCssClass(self::BS_PULL_RIGHT))
+            && !Lib::stripos($this->toolbarContainerOptions['class'], $this->getCssClass(self::BS_PULL_LEFT))
         ) {
             $this->addCssClass($this->toolbarContainerOptions, self::BS_PULL_RIGHT);
         }
@@ -1804,7 +1805,7 @@ HTML;
      * @return string
      * @throws Exception
      */
-    protected function generateRows($data)
+    protected static function generateRows($data)
     {
         if (empty($data)) {
             return '';
@@ -1866,6 +1867,7 @@ HTML;
 
     /**
      * Registers client assets for the [[GridView]] widget.
+     *
      * @throws Exception
      */
     protected function registerAssets()
@@ -1961,26 +1963,27 @@ HTML;
 
     /**
      * Renders the table header or footer part
+     *
      * @param  string  $part  whether thead or tfoot
      * @param  string  $content
+     *
      * @return string
      * @throws Exception
      */
     protected function renderTablePart($part, $content)
     {
-        $content = strtr($content, ["<{$part}>\n" => '', "\n</{$part}>" => '', "<{$part}>" => '', "</{$part}>" => '']);
         $token = $part === 'thead' ? 'Header' : 'Footer';
-        $prop = strtolower($token).'Container';
+        $prop = Lib::strtolower($token).'Container';
         $options = $this->$prop;
         $before = "before{$token}";
         $after = "after{$token}";
         $out = [];
         if (isset($this->$before)) {
-            $out[] = $this->generateRows($this->$before);
+            $out[] = static::generateRows($this->$before);
         }
         $out[] = $content;
         if (isset($this->$after)) {
-            $out[] = $this->generateRows($this->$after);
+            $out[] = static::generateRows($this->$after);
         }
         $content = implode("\n", $out);
 
