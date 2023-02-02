@@ -12,8 +12,6 @@ use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
-use function array_unique;
-
 class Configuration
 {
     protected static $suites = [];
@@ -133,7 +131,6 @@ class Configuration
             'config' => [],
         ],
         'error_level' => 'E_ALL & ~E_STRICT & ~E_DEPRECATED',
-        'convert_deprecations_to_exceptions' => false
     ];
 
     protected static $params;
@@ -777,7 +774,7 @@ class Configuration
             $paths[] = codecept_relative_path($file->getPath());
         }
 
-        return array_unique($paths);
+        return $paths;
     }
 
     private static function prepareParams($settings)

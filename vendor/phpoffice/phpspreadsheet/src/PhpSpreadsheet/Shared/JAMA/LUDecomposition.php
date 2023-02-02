@@ -64,7 +64,7 @@ class LUDecomposition
     /**
      * LU Decomposition constructor.
      *
-     * @param ?Matrix $A Rectangular matrix
+     * @param Matrix $A Rectangular matrix
      */
     public function __construct($A)
     {
@@ -77,7 +77,7 @@ class LUDecomposition
                 $this->piv[$i] = $i;
             }
             $this->pivsign = 1;
-            $LUcolj = [];
+            $LUrowi = $LUcolj = [];
 
             // Outer loop.
             for ($j = 0; $j < $this->n; ++$j) {
@@ -135,7 +135,6 @@ class LUDecomposition
      */
     public function getL()
     {
-        $L = [];
         for ($i = 0; $i < $this->m; ++$i) {
             for ($j = 0; $j < $this->n; ++$j) {
                 if ($i > $j) {
@@ -160,7 +159,6 @@ class LUDecomposition
      */
     public function getU()
     {
-        $U = [];
         for ($i = 0; $i < $this->n; ++$i) {
             for ($j = 0; $j < $this->n; ++$j) {
                 if ($i <= $j) {
@@ -191,9 +189,7 @@ class LUDecomposition
     /**
      * Alias for getPivot.
      *
-     * @see getPivot
-     *
-     * @return array Pivot vector
+     *    @see getPivot
      */
     public function getDoublePivot()
     {
@@ -223,7 +219,7 @@ class LUDecomposition
     /**
      * Count determinants.
      *
-     * @return float
+     * @return array d matrix deterninat
      */
     public function det()
     {
@@ -244,11 +240,14 @@ class LUDecomposition
     /**
      * Solve A*X = B.
      *
-     * @param Matrix $B a Matrix with as many rows as A and any number of columns
+     * @param mixed $B a Matrix with as many rows as A and any number of columns
+     *
+     * @throws CalculationException illegalArgumentException Matrix row dimensions must agree
+     * @throws CalculationException runtimeException  Matrix is singular
      *
      * @return Matrix X so that L*U*X = B(piv,:)
      */
-    public function solve(Matrix $B)
+    public function solve($B)
     {
         if ($B->getRowDimension() == $this->m) {
             if ($this->isNonsingular()) {

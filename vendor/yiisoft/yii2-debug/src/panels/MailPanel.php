@@ -1,8 +1,8 @@
 <?php
 /**
- * @link https://www.yiiframework.com/
+ * @link http://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license https://www.yiiframework.com/license/
+ * @license http://www.yiiframework.com/license/
  */
 
 namespace yii\debug\panels;
@@ -17,7 +17,7 @@ use yii\mail\BaseMailer;
 /**
  * Debugger panel that collects and displays the generated emails.
  *
- * @property-read array $messagesFileName
+ * @property-read array $messagesFileName This property is read-only.
  *
  * @author Mark Jebri <mark.github@yandex.ru>
  * @since 2.0

@@ -1,22 +1,12 @@
 Change Log: `yii2-grid`
 =======================
 
-## Version 3.5.1
-
-**Date:** 17-Jun-2022
-
-- (bug #1037): Correct resizable columns persist resize.
-- (bug #1036): Correct usage of `layout` property in `GridView`.
-- (enh #1031, #1032, #1033, #1034): Update Uzbek Translations.
-- (enh #1019): Update Arabic Translations.
-
 ## Version 3.5.0
 
-**Date:** 25-Feb-2022
+**Date:** 11-Jan-2022
 
 ### BC Breaking new major release
 
-- (enh #1017): PHP 8.1 enhancements for native functions.
 - Enhance & standardize php docs for new website https://docs.krajee.com.
 - (bug #1011): Correct GridView initialization for `toggleData` set to `false`.
 - (enh #1010): Enhance sorter link rendering to include customizable sorter icons.

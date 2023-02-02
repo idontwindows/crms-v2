@@ -3,14 +3,13 @@
 /**
  * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2022
  * @package yii2-grid
- * @version 3.5.1
+ * @version 3.5.0
  */
 
 namespace kartik\grid;
 
 use Closure;
 use Exception;
-use kartik\base\Lib;
 use Yii;
 use yii\grid\ActionColumn as YiiActionColumn;
 use yii\helpers\ArrayHelper;
@@ -205,7 +204,7 @@ class ActionColumn extends YiiActionColumn
         $label = ArrayHelper::remove($options, 'label');
         if (is_null($label)) {
             $icon = $this->renderIcon($options, $iconOptions);
-            if (Lib::strlen($icon) > 0) {
+            if (strlen($icon) > 0) {
                 $label = $this->_isDropdown ? ($icon.' '.$title) : $icon;
             } else {
                 $label = $title;
@@ -285,7 +284,7 @@ class ActionColumn extends YiiActionColumn
         if (!isset($options['class'])) {
             $options['class'] = 'btn '.$this->grid->getDefaultBtnCss();
         }
-        $trimmed = Lib::trim($content);
+        $trimmed = trim($content);
         if ($this->_isDropdown && !empty($trimmed)) {
             $label = ArrayHelper::remove($options, 'label', Yii::t('kvgrid', 'Actions'));
             $caret = $notBs3 ? '' : ArrayHelper::remove($options, 'caret', ' <span class="caret"></span>');

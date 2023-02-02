@@ -134,8 +134,7 @@ $this->title = 'Yii Debugger';
                             'post' => 'POST',
                             'delete' => 'DELETE',
                             'put' => 'PUT',
-                            'head' => 'HEAD',
-                            'command' => 'COMMAND'
+                            'head' => 'HEAD'
                         ]
                     ],
                     [
@@ -147,17 +146,16 @@ $this->title = 'Yii Debugger';
                     ],
                     [
                         'attribute' => 'url',
-                        'label' => 'URL/Command',
+                        'label' => 'URL',
                     ],
                     [
                         'attribute' => 'statusCode',
                         'value' => function ($data) {
                             $statusCode = $data['statusCode'];
-                            $method = $data['method'];
                             if ($statusCode === null) {
                                 $statusCode = 200;
                             }
-                            if (($statusCode >= 200 && $statusCode < 300) || ($method == 'COMMAND' && $statusCode == 0)) {
+                            if ($statusCode >= 200 && $statusCode < 300) {
                                 $class = 'badge-success';
                             } elseif ($statusCode >= 300 && $statusCode < 400) {
                                 $class = 'badge-info';

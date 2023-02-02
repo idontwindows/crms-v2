@@ -20,18 +20,22 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $countComments = 0;
 $countComplaints = 0;
-foreach($comments as $comment){
-    if($comment['is_complaint'] != 1){
+foreach ($comments as $comment) {
+    if ($comment['is_complaint'] != 1) {
         $countComments++;
-    }else{
+    } else {
         $countComplaints++;
     }
 }
 
 ?>
 <div class="tmp-rating-index">
-    <div><h3 class="text-center">CUSTOMER SATISFACTION FEEDBACK</h3></div>
-    <div><h5 class="text-center">SUMMARY REPORT FOR JULY 2022</h5></div>
+    <div>
+        <h3 class="text-center">CUSTOMER SATISFACTION FEEDBACK</h3>
+    </div>
+    <div>
+        <h5 class="text-center">SUMMARY REPORT FOR JULY 2022</h5>
+    </div>
 
     <div class="card mb-3 mt-0 border-0 rounded">
         <ul class="list-group list-group-flush">
@@ -122,7 +126,7 @@ foreach($comments as $comment){
                     'toolbar' => false
                 ]); ?>
             </div>
-            <div class="row mt-3">
+            <!-- <div class="row mt-3">
                 <div class="col-sm-6">
                     <div class="card bg-primary text-white mb-4">
                         <div class="card-body d-inline-block">
@@ -131,7 +135,7 @@ foreach($comments as $comment){
                         </div>
                     </div>
                 </div>
-      
+
                 <div class="col-sm-6">
                     <div class="card bg-info text-white mb-4">
                         <div class="card-body d-inline-block">
@@ -166,7 +170,7 @@ foreach($comments as $comment){
                         </div>
                     </div>
                 </div>
-         
+
                 <div class="col-sm-6">
                     <div class="card bg-success text-white mb-4">
                         <div class="card-body d-inline-block">
@@ -175,11 +179,47 @@ foreach($comments as $comment){
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
+
+            <table style="width:100%; border-collapse:collapse;" class="mt-5">
+                <tr>
+                    <td style="width:38%; border:1px solid black; padding:8px; background-color:powderblue;"><b>Total No of Customers/Respondents:</b></td>
+                    <td style="width:10%; border:1px solid black; padding:8px; text-align:center"><b><?= $satIndex['respondent_number'] ?></b></td>
+                    <td style="width:4%;">&nbsp;</td>
+                    <td style="width:14%; border:1px solid black; padding:8px; background-color:powderblue;"><b>% of Promoters:</b></td>
+                    <td style="width:10%; border:1px solid black; padding:8px; text-align:center"><b><?= $satIndex['promoters'] ?>%</b></td>
+                    <td style="width:14%; border:1px solid black; padding:8px; background-color:powderblue;"><b>% of Detrators:</b></td>
+                    <td style="width:10%; border:1px solid black; padding:8px; text-align:center"><b><?= $satIndex['detractors'] ?>%</b></td>
+                </tr>
+            </table>
+
+            <table style="width:100%; border-collapse:collapse;" class="mt-3">
+                <tr>
+                    <td style="width:38%; border:1px solid black; padding:8px; background-color:powderblue;"><b>Total Score of Satisfied Response (VS & S):</b></td>
+                    <td style="width:10%; border:1px solid black; padding:8px; text-align:center"><b><?= $satIndex['vss_score'] ?></b></td>
+                    <td style="width:4%;">&nbsp;</td>
+                    <td style="width:38%; border:1px solid black; padding:8px; background-color:powderblue;"><b>Net Promoter Score:</b></td>
+                    <td style="width:10%; border:1px solid black; padding:8px; text-align:center"><b><?= $satIndex['promoters'] - $satIndex['detractors'] ?>%</b></td>
+                </tr>
+            </table>
+
+            <table style="width:100%; border-collapse:collapse;" class="mt-3 mb-5">
+                <tr>
+                    <td style="width:38%; border:1px solid black; padding:8px; background-color:powderblue;"><b>Customer Satisfation Score (CSAT) Rating:</b></td>
+                    <td style="width:10%; border:1px solid black; padding:8px; text-align:center"><b><?= $satIndex['csat_score'] ?>%</b></td>
+                    <td style="width:4%;">&nbsp;</td>
+                    <td style="width:38%; border:1px solid black; padding:8px; background-color:powderblue;"><b>Customer Satisfation Index:</b></td>
+                    <td style="width:10%; border:1px solid black; padding:8px; text-align:center"><b><?= $satIndex['satisfaction_index'] <= 100 ?  $satIndex['satisfaction_index'] : 100 ?>%</b></td>
+                </tr>
+            </table>
+
+
+
+
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Comments and Complaints</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Comments <span class="badge badge-primary"><?= $countComments?></span> Complaints <span class="badge badge-danger"><?= $countComplaints?></span></h6>
+                    <h6 class="card-subtitle mb-2 text-muted">Comments <span class="badge badge-primary"><?= $countComments ?></span> Complaints <span class="badge badge-danger"><?= $countComplaints ?></span></h6>
                     <?php foreach ($comments as $comment) { ?>
                         <?php if ($comment['is_complaint'] != 1) { ?>
                             <div class="alert alert-primary" role="alert">

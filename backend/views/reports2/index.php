@@ -250,7 +250,7 @@ foreach($comments as $comment){
                     <div class="card bg-danger text-white mb-4">
                         <div class="card-body d-inline-block">
                             <div class="d-inline-block font-weight-bold">Total Number of Satisfied Responses (VS & S):&nbsp;</div>
-                            <div class="d-inline-block font-weight-bold"><span class="badge badge-light"><b><?= $satIndex['vss'] ?></b></span></div>
+                            <div class="d-inline-block font-weight-bold"><span class="badge badge-light"><b><?= $satIndex['vss_score'] ?></b></span></div>
                         </div>
                     </div>
                 </div>

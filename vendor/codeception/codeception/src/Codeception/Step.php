@@ -293,7 +293,6 @@ abstract class Step
             }
             throw $e;
         }
-
         return $res;
     }
 

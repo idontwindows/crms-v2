@@ -3,24 +3,23 @@
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 
-/** @var yii\web\View $this */
-/** @var yii\gii\generators\crud\Generator $generator */
+/* @var $this yii\web\View */
+/* @var $generator yii\gii\generators\crud\Generator */
 
 $modelClass = StringHelper::basename($generator->modelClass);
 
 echo "<?php\n";
 ?>
 
-use <?= $generator->modelClass ?>;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use <?= $generator->indexWidgetType === 'grid' ? "yii\\grid\\GridView" : "yii\\widgets\\ListView" ?>;
 <?= $generator->enablePjax ? 'use yii\widgets\Pjax;' : '' ?>
 
-/** @var yii\web\View $this */
-<?= !empty($generator->searchModelClass) ? "/** @var " . ltrim($generator->searchModelClass, '\\') . " \$searchModel */\n" : '' ?>
-/** @var yii\data\ActiveDataProvider $dataProvider */
+/* @var $this yii\web\View */
+<?= !empty($generator->searchModelClass) ? "/* @var \$searchModel " . ltrim($generator->searchModelClass, '\\') . " */\n" : '' ?>
+/* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = <?= $generator->generateString(Inflector::pluralize(Inflector::camel2words(StringHelper::basename($generator->modelClass)))) ?>;
 $this->params['breadcrumbs'][] = $this->title;

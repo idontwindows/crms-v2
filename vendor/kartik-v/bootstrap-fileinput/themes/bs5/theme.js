@@ -1,12 +1,12 @@
 /*!
- * bootstrap-fileinput v5.5.0
+ * bootstrap-fileinput v5.2.7
  * http://plugins.krajee.com/file-input
  *
  * Bootstrap 5.x icon theme configuration for bootstrap-fileinput. Requires bootstrap 5.x icons CSS to be loaded.
  * This is used as the default theme within the bootstrap-fileinput plugin.
  *
  * Author: Kartik Visweswaran
- * Copyright: 2014 - 2022, Kartik Visweswaran, Krajee.com
+ * Copyright: 2014 - 2021, Kartik Visweswaran, Krajee.com
  *
  * Licensed under the BSD-3-Clause
  * https://github.com/kartik-v/bootstrap-fileinput/blob/master/LICENSE.md
@@ -27,9 +27,8 @@
         fileActionSettings: {
             removeIcon: '<i class="bi-trash"></i>',
             uploadIcon: '<i class="bi-upload"></i>',
-            uploadRetryIcon: '<i class="bi-cloud-arrow-up-fill"></i>',
+            uploadRetryIcon: '<i class="bi-arrow-clockwise"></i>',
             downloadIcon: '<i class="bi-download"></i>',
-            rotateIcon: '<i class="bi-arrow-clockwise"></i>',
             zoomIcon: '<i class="bi-zoom-in"></i>',
             dragIcon: '<i class="bi-arrows-move"></i>',
             indicatorNew: '<i class="bi-plus-lg text-warning"></i>',
@@ -44,7 +43,6 @@
         previewZoomButtonIcons: {
             prev: '<i class="bi-chevron-left"></i>',
             next: '<i class="bi-chevron-right"></i>',
-            rotate: '<i class="bi-arrow-clockwise"></i>',
             toggleheader: '<i class="bi-arrows-expand"></i>',
             fullscreen: '<i class="bi-arrows-fullscreen"></i>',
             borderless: '<i class="bi-arrows-angle-expand"></i>',

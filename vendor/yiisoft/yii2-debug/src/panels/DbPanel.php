@@ -1,8 +1,8 @@
 <?php
 /**
- * @link https://www.yiiframework.com/
+ * @link http://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license https://www.yiiframework.com/license/
+ * @license http://www.yiiframework.com/license/
  */
 
 namespace yii\debug\panels;
@@ -17,8 +17,9 @@ use yii\log\Logger;
 /**
  * Debugger panel that collects and displays database queries performed.
  *
- * @property-read array $profileLogs
- * @property-read string $summaryName Short name of the panel, which will be use in summary.
+ * @property-read array $profileLogs This property is read-only.
+ * @property-read string $summaryName Short name of the panel, which will be use in summary. This property is
+ * read-only.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0

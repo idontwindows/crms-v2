@@ -18,7 +18,6 @@
     }
   ],
   "require": {
-    "kartik-v/yii2-krajee-base": ">=3.0.3",
     "kartik-v/yii2-dialog": "~1.0"
   },
   "autoload": {
@@ -33,7 +32,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "3.5.x-dev"
+      "dev-master": "3.3.x-dev"
     }
   }
 }
