@@ -600,3 +600,9 @@ $con = Yii::$app->db;
     </div>
 </div>
 
+
+<script>
+    $(document).ready(function() {
+        swal("Disclaimer", "The DOST is committed to protect and respect your personal data privacy. All information collected will only be used for documentation purposes and will not be published in any platform.", "warning");
+    });
+</script>
